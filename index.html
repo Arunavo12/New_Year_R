@@ -53,18 +53,33 @@
     .moment:hover { transform: translateY(-2px); }
     .moment h3 { margin:0 0 6px; font-size: 16px; }
     .moment small { color: var(--muted); }
-    .moment .msg { margin-top: 10px; color: var(--text); line-height: 1.55; display:none; }
+
+    /* Updated for image-in-card */
+    .moment img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 12px;
+      margin: 10px 0;
+      opacity: 0.9;
+    }
+    .moment.open img { opacity: 1; }
+
+    .moment .msg {
+      margin-top: 12px;
+      padding-top: 10px;
+      border-top: 1px solid rgba(255,255,255,.12);
+      color: var(--text);
+      line-height: 1.55;
+      display:none;
+    }
     .moment.open .msg { display:block; }
+
     .moment .tag {
       display:inline-block; margin-top: 10px; font-size: 12px; color: rgba(255,255,255,.85);
       padding: 6px 10px; border-radius: 999px; background: rgba(124,92,255,.18);
       border: 1px solid rgba(124,92,255,.35);
     }
-
-    .photos { grid-template-columns: repeat(12, 1fr); }
-    .photo { grid-column: span 4; overflow:hidden; padding:0; }
-    .photo img { width:100%; height:220px; object-fit:cover; display:block; }
-    .photo .cap { padding: 12px 14px; color: var(--muted); font-size: 13px; }
 
     .lockOverlay {
       position: fixed; inset: 0; display:flex; align-items:center; justify-content:center;
@@ -79,8 +94,7 @@
 
     @media (max-width: 780px) {
       .moment { grid-column: span 12; }
-      .photo { grid-column: span 12; }
-      .photo img { height: 240px; }
+      .moment img { height: 220px; }
     }
   </style>
 </head>
@@ -89,7 +103,7 @@
     <div class="lockBox card">
       <div class="pill"><span class="dot"></span><span id="lockLabel">Locked until New Year</span></div>
       <div id="countdown" class="count">--:--:--</div>
-      <p class="sub">A little time capsule for you </p>
+      <p class="sub">A little time capsule for you</p>
       <button id="enterBtn" class="btn" style="display:none;">Open ✨</button>
       <div class="hint">If it doesn’t unlock automatically, tap “Open”.</div>
     </div>
@@ -117,9 +131,6 @@
 
     <div class="sectionTitle">Timeline</div>
     <div class="grid timeline" id="timeline"></div>
-
-    <div class="sectionTitle">Photos</div>
-    <div class="grid photos" id="photos"></div>
   </div>
 
   <script>
@@ -129,19 +140,44 @@
 
     // ✅ Edit these
     const FRIEND_NAME = "Your Friend";
-    const MOMENTS = [
-      { date: "Jan", title: "That one day we couldn’t stop laughing", tag: "core memory", message: "Write a short message here about what happened." },
-      { date: "Mar", title: "The random late-night talk", tag: "real ones", message: "Write what you appreciated about them in that moment." },
-      { date: "Jun", title: "We actually did it", tag: "proud of you", message: "Add a proud message." },
-      { date: "Sep", title: "The chaos day", tag: "iconic", message: "Add a funny message." },
-      { date: "Dec", title: "Ending the year strong", tag: "grateful", message: "Add a heartfelt message." },
-    ];
 
-    // Use images that are publicly accessible URLs (or host them with the site)
-    const PHOTOS = [
-      { src: "https://images.unsplash.com/photo-1520975958225-3f61d52d823d?auto=format&fit=crop&w=1200&q=70", caption: "Replace this with your photo + caption" },
-      { src: "https://images.unsplash.com/photo-1520975693416-35a8ef1b2dc9?auto=format&fit=crop&w=1200&q=70", caption: "Another memory caption" },
-      { src: "https://images.unsplash.com/photo-1520975698838-5a5f2de913b4?auto=format&fit=crop&w=1200&q=70", caption: "Another caption" },
+    // Each moment now has an image!
+    const MOMENTS = [
+      {
+        date: "Jan",
+        title: "That one day we couldn’t stop laughing",
+        tag: "core memory",
+        image: "https://images.unsplash.com/photo-1520975958225-3f61d52d823d?auto=format&fit=crop&w=1200&q=70",
+        message: "Write your message here about what happened — 2 to 4 sentences is perfect."
+      },
+      {
+        date: "Mar",
+        title: "The random late-night talk",
+        tag: "real ones",
+        image: "https://images.unsplash.com/photo-1520975693416-35a8ef1b2dc9?auto=format&fit=crop&w=1200&q=70",
+        message: "Write what you appreciated about them in that moment."
+      },
+      {
+        date: "Jun",
+        title: "We actually did it",
+        tag: "proud of you",
+        image: "https://images.unsplash.com/photo-1520975698838-5a5f2de913b4?auto=format&fit=crop&w=1200&q=70",
+        message: "Add a proud message here."
+      },
+      {
+        date: "Sep",
+        title: "The chaos day",
+        tag: "iconic",
+        image: "https://images.unsplash.com/photo-1520975692752-99bd5f6f27aa?auto=format&fit=crop&w=1200&q=70",
+        message: "Add a funny memory here."
+      },
+      {
+        date: "Dec",
+        title: "Ending the year strong",
+        tag: "grateful",
+        image: "https://images.unsplash.com/photo-1542384557-0824d90731ee?auto=format&fit=crop&w=1200&q=70",
+        message: "Add a heartfelt message here."
+      },
     ];
 
     // Render content
@@ -155,19 +191,12 @@
         <small>${m.date}</small>
         <h3>${m.title}</h3>
         <div class="tag">${m.tag}</div>
+        <img src="${m.image}" alt="memory photo">
         <div class="msg">${m.message}</div>
       `;
       el.addEventListener("click", () => el.classList.toggle("open"));
       el.dataset.index = idx;
       tl.appendChild(el);
-    });
-
-    const ph = document.getElementById("photos");
-    PHOTOS.forEach(p => {
-      const el = document.createElement("div");
-      el.className = "card photo";
-      el.innerHTML = `<img src="${p.src}" alt="memory photo"><div class="cap">${p.caption}</div>`;
-      ph.appendChild(el);
     });
 
     // Surprise button
