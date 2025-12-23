@@ -112,6 +112,73 @@
       box-shadow: 0 20px 60px rgba(0,0,0,0.6);
     }
 
+    /* ===== Snapchat-style Saved Chats (chronological) ===== */
+    .snapWrap { margin-top: 12px; }
+    .snapCard {
+      background: rgba(0,0,0,.28);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 16px;
+      padding: 14px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.25);
+    }
+    .snapHeader {
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+      margin-bottom: 10px;
+      color: rgba(255,255,255,.85);
+      font-weight: 800;
+      letter-spacing: .02em;
+    }
+    .snapHeader small { color: rgba(255,255,255,.55); font-weight: 650; }
+
+    .snapList { display:flex; flex-direction:column; gap:10px; }
+
+    .snapItem {
+      display:flex; gap:10px; align-items:flex-start;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.10);
+      border-radius: 14px;
+      padding: 10px;
+    }
+
+    .snapAvatar {
+      width: 42px; height: 42px; border-radius: 12px;
+      display:flex; align-items:center; justify-content:center;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.10);
+      flex: 0 0 auto;
+      font-weight: 900;
+    }
+
+    .snapMain { flex: 1; min-width: 0; }
+
+    .snapTop {
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+      margin-bottom: 4px;
+    }
+    .snapName {
+      display:flex; align-items:center; gap:8px;
+      font-weight: 900;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .snapBadge {
+      font-size: 12px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: rgba(255, 230, 0, .18);
+      border: 1px solid rgba(255, 230, 0, .35);
+      color: rgba(255,255,255,.85);
+      font-weight: 800;
+    }
+    .snapTime { color: rgba(255,255,255,.55); font-size: 12px; white-space: nowrap; }
+
+    .snapMsg {
+      color: rgba(255,255,255,.90);
+      line-height: 1.35;
+      word-wrap: break-word;
+    }
+
     @media (max-width: 780px) {
       .moment { grid-column: span 12; }
       .moment img { height: 220px; }
@@ -165,15 +232,79 @@
     // ✅ Edit these
     const FRIEND_NAME = "Radhaaaaaa";
 
-    // ✅ IMPORTANT: your GitHub image MUST be in the same folder as index.html,
-    // or adjust the path to e.g. "images/IMG_3377.PNG"
+    // Snapchat saved messages (we’ll render these chronological: oldest → newest)
+    const SNAP_MESSAGES = [
+      { who: "arunavo", initials: "A", text: "WOOOW", time: "2024-11-29T23:56:30Z" },
+      { who: "radha.amazing32", initials: "R", text: "Remember whatever is said in this chat", time: "2024-11-29T23:58:08Z" },
+      { who: "radha.amazing32", initials: "R", text: "Stays in this chat", time: "2024-11-29T23:58:11Z" },
+      { who: "radha.amazing32", initials: "R", text: "🎉🎁🎂🎉", time: "2024-12-01T00:05:01Z" },
+      { who: "arunavo", initials: "A", text: "Just say you won’t unadd me again????", time: "2024-12-01T00:36:29Z" },
+      { who: "radha.amazing32", initials: "R", text: "pinky promise", time: "2024-12-01T00:36:45Z" },
+    ];
+
+    // Sort chronological (oldest -> newest)
+    SNAP_MESSAGES.sort((a,b) => new Date(a.time) - new Date(b.time));
+
+    function escHTML(str) {
+      return String(str)
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+    }
+
+    function formatTimeLocal(iso) {
+      const d = new Date(iso);
+      return d.toLocaleString(undefined, { month:"numeric", day:"numeric", year:"2-digit", hour:"numeric", minute:"2-digit" });
+    }
+
+    function renderSnapSavedChats() {
+      if (!SNAP_MESSAGES.length) return "";
+
+      const first = SNAP_MESSAGES[0].time;
+      const last  = SNAP_MESSAGES[SNAP_MESSAGES.length - 1].time;
+
+      const items = SNAP_MESSAGES.map(m => `
+        <div class="snapItem">
+          <div class="snapAvatar">${escHTML(m.initials)}</div>
+          <div class="snapMain">
+            <div class="snapTop">
+              <div class="snapName">
+                <span>${escHTML(m.who)}</span>
+                <span class="snapBadge">Saved</span>
+              </div>
+              <div class="snapTime">${escHTML(formatTimeLocal(m.time))}</div>
+            </div>
+            <div class="snapMsg">${escHTML(m.text)}</div>
+          </div>
+        </div>
+      `).join("");
+
+      return `
+        <div class="snapWrap">
+          <div class="snapCard">
+            <div class="snapHeader">
+              <div>Saved Chats</div>
+              <small>${escHTML(formatTimeLocal(first))} → ${escHTML(formatTimeLocal(last))}</small>
+            </div>
+            <div class="snapList">
+              ${items}
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // Each moment can optionally include the snap block
     const MOMENTS = [
       {
         date: "Jan",
         title: "That one day we couldn’t stop laughing",
         tag: "core memory",
-        image: "IMG_3377.PNG",
-        message: "One of the only screenshots I could find on my phone from January. But I see a yellow heart and I see me replying to only one person. It has only been that case but it is still the case. I still reply to my number one (also my pinned). I think I came back from Desh and that was the first thing I did when I replied after getting internet back."
+        image: "IMG_3377.PNG", // make sure this file is in the same folder as index.html (or use images/IMG_3377.PNG)
+        message: "One of the only screenshots I could find on my phone from January. But I see a yellow heart and I see me replying to only one person. It has only been that case but it is still the case. I still reply to my number one (also my pinned). I think I came back from Desh and that was the first thing I did when I replied after getting internet back.",
+        showSnap: true
       },
       {
         date: "Mar",
@@ -212,18 +343,26 @@
     MOMENTS.forEach((m, idx) => {
       const el = document.createElement("div");
       el.className = "card moment";
+
+      const snapHTML = m.showSnap ? renderSnapSavedChats() : "";
+
       el.innerHTML = `
-        <small>${m.date}</small>
-        <h3>${m.title}</h3>
-        <div class="tag">${m.tag}</div>
-        <img src="${m.image}" alt="memory photo" class="expandable">
-        <div class="msg">${m.message}</div>
+        <small>${escHTML(m.date)}</small>
+        <h3>${escHTML(m.title)}</h3>
+        <div class="tag">${escHTML(m.tag)}</div>
+        <img src="${escHTML(m.image)}" alt="memory photo" class="expandable">
+        <div class="msg">
+          <div>${escHTML(m.message)}</div>
+          ${snapHTML}
+        </div>
       `;
+
       el.addEventListener("click", (ev) => {
         // Don't toggle open/close when showing the expanded image
-        if (ev.target && ev.target.classList.contains("expandable")) return;
+        if (ev.target && ev.target.classList && ev.target.classList.contains("expandable")) return;
         el.classList.toggle("open");
       });
+
       el.dataset.index = idx;
       tl.appendChild(el);
     });
