@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Our 2025 ✨</title>
+  <style>
+    :root { --bg:#070711; --card:#0f1020; --text:#f3f4ff; --muted:#b9b9d6; --accent:#7c5cff; }
+    * { box-sizing:border-box; }
+    body {
+      margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background: radial-gradient(1200px 600px at 20% 0%, rgba(124,92,255,.25), transparent 60%),
+                  radial-gradient(1000px 500px at 90% 20%, rgba(0,255,198,.12), transparent 60%),
+                  var(--bg);
+      color:var(--text);
+    }
+    .wrap { max-width: 980px; margin: 0 auto; padding: 28px 18px 60px; }
+    header { display:flex; gap:16px; align-items:center; justify-content:space-between; flex-wrap:wrap; }
+    .title h1 { margin:0; font-size: 28px; letter-spacing: .2px; }
+    .title p { margin: 6px 0 0; color:var(--muted); }
+    .pill {
+      display:inline-flex; align-items:center; gap:10px;
+      padding:10px 14px; background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.12); border-radius: 999px;
+      backdrop-filter: blur(10px);
+    }
+    .dot { width:10px; height:10px; border-radius:50%; background: var(--accent); box-shadow: 0 0 18px rgba(124,92,255,.9); }
+    .grid { display:grid; gap:14px; }
+    .cards { grid-template-columns: repeat(12, 1fr); margin-top: 18px; }
+    .card {
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 18px;
+      padding: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.25);
+    }
+    .hero { grid-column: span 12; padding: 22px; }
+    .hero h2 { margin: 0 0 8px; font-size: 22px; }
+    .hero p { margin: 0; color: var(--muted); line-height: 1.55; }
+    .btn {
+      margin-top: 14px;
+      display:inline-flex; align-items:center; justify-content:center;
+      padding: 10px 14px; border-radius: 12px; cursor:pointer;
+      background: linear-gradient(135deg, rgba(124,92,255,.95), rgba(124,92,255,.55));
+      color: white; border: 0; font-weight: 600;
+    }
+    .btn:active { transform: translateY(1px); }
+
+    .sectionTitle { margin: 28px 0 10px; font-size: 16px; color: var(--muted); letter-spacing: .12em; text-transform: uppercase; }
+
+    .timeline { grid-template-columns: repeat(12, 1fr); }
+    .moment { grid-column: span 6; cursor:pointer; transition: transform .15s ease; }
+    .moment:hover { transform: translateY(-2px); }
+    .moment h3 { margin:0 0 6px; font-size: 16px; }
+    .moment small { color: var(--muted); }
+    .moment .msg { margin-top: 10px; color: var(--text); line-height: 1.55; display:none; }
+    .moment.open .msg { display:block; }
+    .moment .tag {
+      display:inline-block; margin-top: 10px; font-size: 12px; color: rgba(255,255,255,.85);
+      padding: 6px 10px; border-radius: 999px; background: rgba(124,92,255,.18);
+      border: 1px solid rgba(124,92,255,.35);
+    }
+
+    .photos { grid-template-columns: repeat(12, 1fr); }
+    .photo { grid-column: span 4; overflow:hidden; padding:0; }
+    .photo img { width:100%; height:220px; object-fit:cover; display:block; }
+    .photo .cap { padding: 12px 14px; color: var(--muted); font-size: 13px; }
+
+    .lockOverlay {
+      position: fixed; inset: 0; display:flex; align-items:center; justify-content:center;
+      background: rgba(7,7,17,.92);
+      backdrop-filter: blur(10px);
+      z-index: 50;
+    }
+    .lockBox { width:min(520px, 92vw); text-align:center; }
+    .count { font-size: 42px; font-weight: 800; letter-spacing: .02em; margin: 10px 0 6px; }
+    .sub { color: var(--muted); margin: 0 0 16px; line-height: 1.5; }
+    .hint { color: rgba(255,255,255,.75); font-size: 13px; margin-top: 10px; }
+
+    @media (max-width: 780px) {
+      .moment { grid-column: span 12; }
+      .photo { grid-column: span 12; }
+      .photo img { height: 240px; }
+    }
+  </style>
+</head>
+<body>
+  <div id="lock" class="lockOverlay" aria-hidden="false">
+    <div class="lockBox card">
+      <div class="pill"><span class="dot"></span><span id="lockLabel">Locked until New Year</span></div>
+      <div id="countdown" class="count">--:--:--</div>
+      <p class="sub">A little time capsule for you </p>
+      <button id="enterBtn" class="btn" style="display:none;">Open ✨</button>
+      <div class="hint">If it doesn’t unlock automatically, tap “Open”.</div>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <header>
+      <div class="title">
+        <h1>For <span id="friendName">My Favourite Person</span> ✨</h1>
+        <p>Some moments I never want to forget.</p>
+      </div>
+      <div class="pill"><span class="dot"></span><span id="yearLabel">2025 → 2026</span></div>
+    </header>
+
+    <div class="grid cards">
+      <div class="card hero">
+        <h2 id="heroTitle">Happy New Year 🥂</h2>
+        <p id="heroText">
+          I made this so you can scroll through our year whenever you want.
+          Tap a memory to open it. (And yes, I got emotional building it.)
+        </p>
+        <button class="btn" id="randomBtn">Surprise me 🎲</button>
+      </div>
+    </div>
+
+    <div class="sectionTitle">Timeline</div>
+    <div class="grid timeline" id="timeline"></div>
+
+    <div class="sectionTitle">Photos</div>
+    <div class="grid photos" id="photos"></div>
+  </div>
+
+  <script>
+    // ✅ Set your unlock time here (local time on the viewer’s device):
+    // Example: 2026-01-01 00:00:00
+    const UNLOCK_AT = new Date("2026-01-01T00:00:00");
+
+    // ✅ Edit these
+    const FRIEND_NAME = "Your Friend";
+    const MOMENTS = [
+      { date: "Jan", title: "That one day we couldn’t stop laughing", tag: "core memory", message: "Write a short message here about what happened." },
+      { date: "Mar", title: "The random late-night talk", tag: "real ones", message: "Write what you appreciated about them in that moment." },
+      { date: "Jun", title: "We actually did it", tag: "proud of you", message: "Add a proud message." },
+      { date: "Sep", title: "The chaos day", tag: "iconic", message: "Add a funny message." },
+      { date: "Dec", title: "Ending the year strong", tag: "grateful", message: "Add a heartfelt message." },
+    ];
+
+    // Use images that are publicly accessible URLs (or host them with the site)
+    const PHOTOS = [
+      { src: "https://images.unsplash.com/photo-1520975958225-3f61d52d823d?auto=format&fit=crop&w=1200&q=70", caption: "Replace this with your photo + caption" },
+      { src: "https://images.unsplash.com/photo-1520975693416-35a8ef1b2dc9?auto=format&fit=crop&w=1200&q=70", caption: "Another memory caption" },
+      { src: "https://images.unsplash.com/photo-1520975698838-5a5f2de913b4?auto=format&fit=crop&w=1200&q=70", caption: "Another caption" },
+    ];
+
+    // Render content
+    document.getElementById("friendName").textContent = FRIEND_NAME;
+
+    const tl = document.getElementById("timeline");
+    MOMENTS.forEach((m, idx) => {
+      const el = document.createElement("div");
+      el.className = "card moment";
+      el.innerHTML = `
+        <small>${m.date}</small>
+        <h3>${m.title}</h3>
+        <div class="tag">${m.tag}</div>
+        <div class="msg">${m.message}</div>
+      `;
+      el.addEventListener("click", () => el.classList.toggle("open"));
+      el.dataset.index = idx;
+      tl.appendChild(el);
+    });
+
+    const ph = document.getElementById("photos");
+    PHOTOS.forEach(p => {
+      const el = document.createElement("div");
+      el.className = "card photo";
+      el.innerHTML = `<img src="${p.src}" alt="memory photo"><div class="cap">${p.caption}</div>`;
+      ph.appendChild(el);
+    });
+
+    // Surprise button
+    document.getElementById("randomBtn").addEventListener("click", () => {
+      const cards = [...document.querySelectorAll(".moment")];
+      const pick = cards[Math.floor(Math.random() * cards.length)];
+      cards.forEach(c => c.classList.remove("open"));
+      pick.classList.add("open");
+      pick.scrollIntoView({ behavior: "smooth", block: "center" });
+    });
+
+    // Lock screen logic
+    const lock = document.getElementById("lock");
+    const countdown = document.getElementById("countdown");
+    const enterBtn = document.getElementById("enterBtn");
+    const lockLabel = document.getElementById("lockLabel");
+
+    function pad(n){ return String(n).padStart(2,"0"); }
+
+    function tick() {
+      const now = new Date();
+      const diff = UNLOCK_AT - now;
+
+      if (diff <= 0) {
+        countdown.textContent = "00:00:00";
+        lockLabel.textContent = "Unlocked";
+        enterBtn.style.display = "inline-flex";
+        return;
+      }
+
+      const s = Math.floor(diff / 1000);
+      const hh = Math.floor(s / 3600);
+      const mm = Math.floor((s % 3600) / 60);
+      const ss = s % 60;
+      countdown.textContent = `${pad(hh)}:${pad(mm)}:${pad(ss)}`;
+    }
+
+    const interval = setInterval(() => { tick(); }, 250);
+    tick();
+
+    function openSite() {
+      lock.style.display = "none";
+      lock.setAttribute("aria-hidden", "true");
+      clearInterval(interval);
+    }
+
+    // Auto-open once time passes
+    const auto = setInterval(() => {
+      if (new Date() >= UNLOCK_AT) { clearInterval(auto); openSite(); }
+    }, 500);
+
+    enterBtn.addEventListener("click", openSite);
+
+    // Optional: let you open for testing by adding ?preview=1 to the URL
+    const params = new URLSearchParams(location.search);
+    if (params.get("preview") === "1") openSite();
+  </script>
+</body>
+</html>
