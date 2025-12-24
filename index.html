@@ -48,40 +48,85 @@
 
     .sectionTitle { margin: 28px 0 10px; font-size: 16px; color: var(--muted); letter-spacing: .12em; text-transform: uppercase; }
 
-    .timeline { grid-template-columns: repeat(12, 1fr); }
-    .moment { grid-column: span 6; cursor:pointer; transition: transform .15s ease; }
-    .moment:hover { transform: translateY(-2px); }
-    .moment h3 { margin:0 0 6px; font-size: 16px; }
-    .moment small { color: var(--muted); }
-
-    /* Updated for image-in-card */
-    .moment img {
+    /* Month accordion */
+    .months { display:flex; flex-direction:column; gap:12px; }
+    .month {
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.05);
+    }
+    .monthBtn {
       width: 100%;
-      height: 180px;
+      text-align: left;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 12px;
+      padding: 14px 16px;
+      background: transparent;
+      border: 0;
+      color: var(--text);
+      cursor: pointer;
+    }
+    .monthBtn:hover { background: rgba(255,255,255,.04); }
+    .monthLeft { display:flex; flex-direction:column; gap:4px; }
+    .monthTitle { font-weight: 900; font-size: 16px; letter-spacing:.2px; }
+    .monthMeta { color: rgba(255,255,255,.55); font-size: 13px; }
+    .chev {
+      width: 34px; height: 34px;
+      border-radius: 12px;
+      display:flex; align-items:center; justify-content:center;
+      background: rgba(124,92,255,.18);
+      border: 1px solid rgba(124,92,255,.35);
+      transition: transform .18s ease;
+      flex: 0 0 auto;
+    }
+    .month.open .chev { transform: rotate(180deg); }
+
+    .monthContent { display:none; padding: 0 16px 16px; }
+    .month.open .monthContent { display:block; }
+
+    /* Memory cards inside months */
+    .memList { display:flex; flex-direction:column; gap:12px; margin-top: 10px; }
+    .mem {
+      background: rgba(0,0,0,.18);
+      border: 1px solid rgba(255,255,255,.10);
+      border-radius: 16px;
+      padding: 12px;
+    }
+    .memTop { display:flex; align-items:flex-start; justify-content:space-between; gap: 10px; }
+    .memDate { color: rgba(255,255,255,.60); font-size: 12px; white-space: nowrap; }
+    .memTitle { margin: 0; font-size: 15px; font-weight: 850; line-height: 1.25; }
+    .memTag {
+      display:inline-block;
+      margin-top: 8px;
+      font-size: 12px;
+      padding: 5px 10px;
+      border-radius: 999px;
+      background: rgba(124,92,255,.18);
+      border: 1px solid rgba(124,92,255,.35);
+      color: rgba(255,255,255,.85);
+      font-weight: 750;
+    }
+    .memImg {
+      width: 100%;
+      height: 220px;
       object-fit: cover;
       border-radius: 12px;
-      margin: 10px 0;
-      opacity: 0.9;
+      margin-top: 10px;
+      opacity: .92;
       cursor: zoom-in;
+      display:block;
     }
-    .moment.open img { opacity: 1; }
-
-    .moment .msg {
-      margin-top: 12px;
-      padding-top: 10px;
-      border-top: 1px solid rgba(255,255,255,.12);
-      color: var(--text);
+    .memCaption {
+      margin-top: 10px;
+      color: rgba(255,255,255,.88);
       line-height: 1.55;
-      display:none;
-    }
-    .moment.open .msg { display:block; }
-
-    .moment .tag {
-      display:inline-block; margin-top: 10px; font-size: 12px; color: rgba(255,255,255,.85);
-      padding: 6px 10px; border-radius: 999px; background: rgba(124,92,255,.18);
-      border: 1px solid rgba(124,92,255,.35);
+      white-space: pre-wrap;
     }
 
+    /* Lock overlay */
     .lockOverlay {
       position: fixed; inset: 0; display:flex; align-items:center; justify-content:center;
       background: rgba(7,7,17,.92);
@@ -93,7 +138,7 @@
     .sub { color: var(--muted); margin: 0 0 16px; line-height: 1.5; }
     .hint { color: rgba(255,255,255,.75); font-size: 13px; margin-top: 10px; }
 
-    /* Image modal (click to expand) */
+    /* Image modal */
     .image-modal {
       position: fixed;
       inset: 0;
@@ -112,76 +157,9 @@
       box-shadow: 0 20px 60px rgba(0,0,0,0.6);
     }
 
-    /* ===== Snapchat-style Saved Chats (chronological) ===== */
-    .snapWrap { margin-top: 12px; }
-    .snapCard {
-      background: rgba(0,0,0,.28);
-      border: 1px solid rgba(255,255,255,.12);
-      border-radius: 16px;
-      padding: 14px;
-      box-shadow: 0 10px 30px rgba(0,0,0,.25);
-    }
-    .snapHeader {
-      display:flex; align-items:center; justify-content:space-between; gap:10px;
-      margin-bottom: 10px;
-      color: rgba(255,255,255,.85);
-      font-weight: 800;
-      letter-spacing: .02em;
-    }
-    .snapHeader small { color: rgba(255,255,255,.55); font-weight: 650; }
-
-    .snapList { display:flex; flex-direction:column; gap:10px; }
-
-    .snapItem {
-      display:flex; gap:10px; align-items:flex-start;
-      background: rgba(255,255,255,.06);
-      border: 1px solid rgba(255,255,255,.10);
-      border-radius: 14px;
-      padding: 10px;
-    }
-
-    .snapAvatar {
-      width: 42px; height: 42px; border-radius: 12px;
-      display:flex; align-items:center; justify-content:center;
-      background: rgba(255,255,255,.08);
-      border: 1px solid rgba(255,255,255,.10);
-      flex: 0 0 auto;
-      font-weight: 900;
-    }
-
-    .snapMain { flex: 1; min-width: 0; }
-
-    .snapTop {
-      display:flex; align-items:center; justify-content:space-between; gap:10px;
-      margin-bottom: 4px;
-    }
-    .snapName {
-      display:flex; align-items:center; gap:8px;
-      font-weight: 900;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .snapBadge {
-      font-size: 12px;
-      padding: 4px 8px;
-      border-radius: 999px;
-      background: rgba(255, 230, 0, .18);
-      border: 1px solid rgba(255, 230, 0, .35);
-      color: rgba(255,255,255,.85);
-      font-weight: 800;
-    }
-    .snapTime { color: rgba(255,255,255,.55); font-size: 12px; white-space: nowrap; }
-
-    .snapMsg {
-      color: rgba(255,255,255,.90);
-      line-height: 1.35;
-      word-wrap: break-word;
-    }
-
     @media (max-width: 780px) {
-      .moment { grid-column: span 12; }
-      .moment img { height: 220px; }
+      .memImg { height: 240px; }
+      .count { font-size: 36px; }
     }
   </style>
 </head>
@@ -200,7 +178,7 @@
     <header>
       <div class="title">
         <h1>For <span id="friendName">My Favourite Person</span> ✨</h1>
-        <p>Some moments I never want to forget.</p>
+        <p>Months you can open like little folders. Screenshots included. 🫶</p>
       </div>
       <div class="pill"><span class="dot"></span><span id="yearLabel">2025 → 2026</span></div>
     </header>
@@ -209,42 +187,64 @@
       <div class="card hero">
         <h2 id="heroTitle">Happy New Year 🥂</h2>
         <p id="heroText">
-          I made this so you can scroll through our year whenever you want.
-          Tap a memory to open it. (And yes, I got emotional building it.)
+          I made this so you can open each month and replay our year.
+          Tap any screenshot to zoom in.
         </p>
         <button class="btn" id="randomBtn">Surprise me 🎲</button>
       </div>
     </div>
 
-    <div class="sectionTitle">Timeline</div>
-    <div class="grid timeline" id="timeline"></div>
+    <div class="sectionTitle">Months</div>
+    <div class="months" id="months"></div>
   </div>
 
-  <!-- Image modal (click any image to expand) -->
+  <!-- Image modal -->
   <div id="imageModal" class="image-modal" aria-hidden="true">
     <img id="modalImg" src="" alt="expanded memory">
   </div>
 
   <script>
-    // ✅ Set your unlock time here (local time on the viewer’s device):
-    const UNLOCK_AT = new Date("2026-01-01T00:00:00");
-
-    // ✅ Edit these
+    // ===== SETTINGS =====
+    const UNLOCK_AT = new Date("2026-01-01T00:00:00"); // viewer's local time
     const FRIEND_NAME = "Radhaaaaaa";
 
-    // Snapchat saved messages (we’ll render these chronological: oldest → newest)
-    const SNAP_MESSAGES = [
-      { who: "arunavo", initials: "A", text: "WOOOW", time: "2024-11-29T23:56:30Z" },
-      { who: "radha.amazing32", initials: "R", text: "Remember whatever is said in this chat", time: "2024-11-29T23:58:08Z" },
-      { who: "radha.amazing32", initials: "R", text: "Stays in this chat", time: "2024-11-29T23:58:11Z" },
-      { who: "radha.amazing32", initials: "R", text: "🎉🎁🎂🎉", time: "2024-12-01T00:05:01Z" },
-      { who: "arunavo", initials: "A", text: "Just say you won’t unadd me again????", time: "2024-12-01T00:36:29Z" },
-      { who: "radha.amazing32", initials: "R", text: "pinky promise", time: "2024-12-01T00:36:45Z" },
+    // ===== DATA (EDIT THIS) =====
+    // Images should be relative paths, e.g. "IMG_3377.PNG" or "images/IMG_3377.PNG"
+    // Dates can be "2025-01-05" etc. We'll display them nicely.
+    const MONTHS = [
+      {
+        month: "January",
+        year: "2025",
+        items: [
+          {
+            date: "2025-01-10",
+            title: "That one day we couldn’t stop laughing",
+            tag: "core memory",
+            image: "IMG_3377.PNG",
+            caption:
+              "One of the only screenshots I could find on my phone from January.\n\nBut I see a yellow heart and I see me replying to only one person. It has only been that case but it is still the case. I still reply to my number one (also my pinned). I think I came back from Desh and that was the first thing I did when I replied after getting internet back."
+          },
+          // Add more January items here...
+        ]
+      },
+      {
+        month: "February",
+        year: "2025",
+        items: [
+          // Example:
+          // { date:"2025-02-14", title:"...", tag:"...", image:"images/feb.png", caption:"..." }
+        ]
+      },
+      {
+        month: "March",
+        year: "2025",
+        items: [
+          // ...
+        ]
+      },
     ];
 
-    // Sort chronological (oldest -> newest)
-    SNAP_MESSAGES.sort((a,b) => new Date(a.time) - new Date(b.time));
-
+    // ===== HELPERS =====
     function escHTML(str) {
       return String(str)
         .replaceAll("&","&amp;")
@@ -254,120 +254,86 @@
         .replaceAll("'","&#039;");
     }
 
-    function formatTimeLocal(iso) {
-      const d = new Date(iso);
-      return d.toLocaleString(undefined, { month:"numeric", day:"numeric", year:"2-digit", hour:"numeric", minute:"2-digit" });
+    function formatDate(dateStr) {
+      // "2025-01-10" -> "10 Jan 2025"
+      const d = new Date(dateStr + "T00:00:00");
+      if (Number.isNaN(d.getTime())) return dateStr;
+      return d.toLocaleDateString(undefined, { day: "2-digit", month: "short", year: "numeric" });
     }
 
-    function renderSnapSavedChats() {
-      if (!SNAP_MESSAGES.length) return "";
-
-      const first = SNAP_MESSAGES[0].time;
-      const last  = SNAP_MESSAGES[SNAP_MESSAGES.length - 1].time;
-
-      const items = SNAP_MESSAGES.map(m => `
-        <div class="snapItem">
-          <div class="snapAvatar">${escHTML(m.initials)}</div>
-          <div class="snapMain">
-            <div class="snapTop">
-              <div class="snapName">
-                <span>${escHTML(m.who)}</span>
-                <span class="snapBadge">Saved</span>
-              </div>
-              <div class="snapTime">${escHTML(formatTimeLocal(m.time))}</div>
-            </div>
-            <div class="snapMsg">${escHTML(m.text)}</div>
-          </div>
-        </div>
-      `).join("");
-
-      return `
-        <div class="snapWrap">
-          <div class="snapCard">
-            <div class="snapHeader">
-              <div>Saved Chats</div>
-              <small>${escHTML(formatTimeLocal(first))} → ${escHTML(formatTimeLocal(last))}</small>
-            </div>
-            <div class="snapList">
-              ${items}
-            </div>
-          </div>
-        </div>
-      `;
+    function sortChronologicalItems(items) {
+      // Oldest -> newest
+      return [...items].sort((a,b) => new Date(a.date) - new Date(b.date));
     }
 
-    // Each moment can optionally include the snap block
-    const MOMENTS = [
-      {
-        date: "Jan",
-        title: "That one day we couldn’t stop laughing",
-        tag: "core memory",
-        image: "IMG_3377.PNG", // make sure this file is in the same folder as index.html (or use images/IMG_3377.PNG)
-        message: "One of the only screenshots I could find on my phone from January. But I see a yellow heart and I see me replying to only one person. It has only been that case but it is still the case. I still reply to my number one (also my pinned). I think I came back from Desh and that was the first thing I did when I replied after getting internet back.",
-        showSnap: true
-      },
-      {
-        date: "Mar",
-        title: "The random late-night talk",
-        tag: "real ones",
-        image: "https://images.unsplash.com/photo-1520975693416-35a8ef1b2dc9?auto=format&fit=crop&w=1200&q=70",
-        message: "Write what you appreciated about them in that moment."
-      },
-      {
-        date: "Jun",
-        title: "We actually did it",
-        tag: "proud of you",
-        image: "https://images.unsplash.com/photo-1520975698838-5a5f2de913b4?auto=format&fit=crop&w=1200&q=70",
-        message: "Add a proud message here."
-      },
-      {
-        date: "Sep",
-        title: "The chaos day",
-        tag: "iconic",
-        image: "https://images.unsplash.com/photo-1520975692752-99bd5f6f27aa?auto=format&fit=crop&w=1200&q=70",
-        message: "Add a funny memory here."
-      },
-      {
-        date: "Dec",
-        title: "Ending the year strong",
-        tag: "grateful",
-        image: "https://images.unsplash.com/photo-1542384557-0824d90731ee?auto=format&fit=crop&w=1200&q=70",
-        message: "Add a heartfelt message here."
-      },
-    ];
-
-    // Render content
+    // ===== RENDER MONTHS (one open at a time) =====
     document.getElementById("friendName").textContent = FRIEND_NAME;
 
-    const tl = document.getElementById("timeline");
-    MOMENTS.forEach((m, idx) => {
-      const el = document.createElement("div");
-      el.className = "card moment";
+    const monthsEl = document.getElementById("months");
 
-      const snapHTML = m.showSnap ? renderSnapSavedChats() : "";
-
-      el.innerHTML = `
-        <small>${escHTML(m.date)}</small>
-        <h3>${escHTML(m.title)}</h3>
-        <div class="tag">${escHTML(m.tag)}</div>
-        <img src="${escHTML(m.image)}" alt="memory photo" class="expandable">
-        <div class="msg">
-          <div>${escHTML(m.message)}</div>
-          ${snapHTML}
-        </div>
-      `;
-
-      el.addEventListener("click", (ev) => {
-        // Don't toggle open/close when showing the expanded image
-        if (ev.target && ev.target.classList && ev.target.classList.contains("expandable")) return;
-        el.classList.toggle("open");
+    function closeAllMonths(exceptIndex = null) {
+      const all = [...document.querySelectorAll(".month")];
+      all.forEach((mEl) => {
+        if (exceptIndex !== null && mEl.dataset.index === String(exceptIndex)) return;
+        mEl.classList.remove("open");
       });
+    }
 
-      el.dataset.index = idx;
-      tl.appendChild(el);
-    });
+    function render() {
+      monthsEl.innerHTML = "";
 
-    // Click-to-expand image modal
+      MONTHS.forEach((m, idx) => {
+        const items = sortChronologicalItems(m.items || []);
+        const monthBlock = document.createElement("div");
+        monthBlock.className = "month";
+        monthBlock.dataset.index = idx;
+
+        const count = items.length;
+        const meta = count === 0 ? "No memories added yet" : `${count} ${count === 1 ? "memory" : "memories"}`;
+
+        monthBlock.innerHTML = `
+          <button class="monthBtn" type="button" aria-expanded="false">
+            <div class="monthLeft">
+              <div class="monthTitle">${escHTML(m.month)} <span style="color:rgba(255,255,255,.55); font-weight:750;">${escHTML(m.year || "")}</span></div>
+              <div class="monthMeta">${escHTML(meta)}</div>
+            </div>
+            <div class="chev">⌄</div>
+          </button>
+
+          <div class="monthContent">
+            <div class="memList">
+              ${items.map((it, j) => `
+                <div class="mem" data-month="${idx}" data-item="${j}">
+                  <div class="memTop">
+                    <div>
+                      <p class="memTitle">${escHTML(it.title || "")}</p>
+                      ${it.tag ? `<span class="memTag">${escHTML(it.tag)}</span>` : ""}
+                    </div>
+                    <div class="memDate">${escHTML(formatDate(it.date || ""))}</div>
+                  </div>
+                  ${it.image ? `<img class="memImg expandable" src="${escHTML(it.image)}" alt="memory screenshot">` : ""}
+                  ${it.caption ? `<div class="memCaption">${escHTML(it.caption)}</div>` : ""}
+                </div>
+              `).join("")}
+            </div>
+          </div>
+        `;
+
+        const btn = monthBlock.querySelector(".monthBtn");
+        btn.addEventListener("click", () => {
+          const isOpen = monthBlock.classList.contains("open");
+          closeAllMonths(isOpen ? null : idx); // close others
+          monthBlock.classList.toggle("open");
+          btn.setAttribute("aria-expanded", String(monthBlock.classList.contains("open")));
+        });
+
+        monthsEl.appendChild(monthBlock);
+      });
+    }
+
+    render();
+
+    // ===== IMAGE MODAL =====
     const modal = document.getElementById("imageModal");
     const modalImg = document.getElementById("modalImg");
 
@@ -385,16 +351,40 @@
       modal.setAttribute("aria-hidden", "true");
     });
 
-    // Surprise button
+    // ===== SURPRISE BUTTON (opens a random month + scrolls to memory) =====
     document.getElementById("randomBtn").addEventListener("click", () => {
-      const cards = [...document.querySelectorAll(".moment")];
-      const pick = cards[Math.floor(Math.random() * cards.length)];
-      cards.forEach(c => c.classList.remove("open"));
-      pick.classList.add("open");
-      pick.scrollIntoView({ behavior: "smooth", block: "center" });
+      const allItems = [];
+      MONTHS.forEach((m, mi) => {
+        (m.items || []).forEach((it, ii) => allItems.push({ mi, it, ii }));
+      });
+
+      if (allItems.length === 0) return;
+
+      const pick = allItems[Math.floor(Math.random() * allItems.length)];
+
+      // Open the month
+      const monthEl = document.querySelector(`.month[data-index="${pick.mi}"]`);
+      if (monthEl) {
+        closeAllMonths(pick.mi);
+        monthEl.classList.add("open");
+        const btn = monthEl.querySelector(".monthBtn");
+        if (btn) btn.setAttribute("aria-expanded", "true");
+
+        // Scroll to the picked memory
+        const memList = monthEl.querySelectorAll(".mem");
+        // Because we sort items when rendering, we need to find it by matching date+title+image
+        const target = [...memList].find(mem => {
+          const img = mem.querySelector("img")?.getAttribute("src") || "";
+          const title = mem.querySelector(".memTitle")?.textContent || "";
+          const date = mem.querySelector(".memDate")?.textContent || "";
+          return title === (pick.it.title || "") || img === (pick.it.image || "") || date.includes((pick.it.date || "").slice(5,7));
+        }) || memList[0];
+
+        if (target) target.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
     });
 
-    // Lock screen logic
+    // ===== LOCK SCREEN =====
     const lock = document.getElementById("lock");
     const countdown = document.getElementById("countdown");
     const enterBtn = document.getElementById("enterBtn");
@@ -420,7 +410,7 @@
       countdown.textContent = `${pad(hh)}:${pad(mm)}:${pad(ss)}`;
     }
 
-    const interval = setInterval(() => { tick(); }, 250);
+    const interval = setInterval(tick, 250);
     tick();
 
     function openSite() {
@@ -429,14 +419,13 @@
       clearInterval(interval);
     }
 
-    // Auto-open once time passes
     const auto = setInterval(() => {
       if (new Date() >= UNLOCK_AT) { clearInterval(auto); openSite(); }
     }, 500);
 
     enterBtn.addEventListener("click", openSite);
 
-    // Optional: let you open for testing by adding ?preview=1 to the URL
+    // Preview mode: add ?preview=1
     const params = new URLSearchParams(location.search);
     if (params.get("preview") === "1") openSite();
   </script>
