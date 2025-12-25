@@ -143,6 +143,23 @@
       margin-top:14px;
       flex-wrap:wrap;
     }
+          .pinRow{display:flex;gap:10px;justify-content:center;margin-top:14px;}
+      .pinBox{
+        width:44px;height:54px;
+        border-radius:14px;
+        border:1px solid rgba(255,255,255,.16);
+        background:rgba(255,255,255,.06);
+        color:var(--text);
+        font-size:22px;
+        font-weight:800;
+        text-align:center;
+        outline:none;
+      }
+      .pinBox:focus{
+        border-color: rgba(124,92,255,.55);
+        box-shadow: 0 0 0 4px rgba(124,92,255,.18);
+      }
+
     .codeInput{
       width:min(260px, 72vw);
       padding:12px 14px;
@@ -192,10 +209,19 @@
       <div id="countdown" class="count">--:--:--</div>
       <p class="sub">A little time capsule for you</p>
 
-      <div class="codeRow">
-        <input id="codeInput" class="codeInput" type="password" placeholder="Code" autocomplete="one-time-code" />
+      <div class="pinRow" id="pinRow" aria-label="6 digit code">
+        <input class="pinBox" inputmode="numeric" maxlength="1" autocomplete="one-time-code" />
+        <input class="pinBox" inputmode="numeric" maxlength="1" />
+        <input class="pinBox" inputmode="numeric" maxlength="1" />
+        <input class="pinBox" inputmode="numeric" maxlength="1" />
+        <input class="pinBox" inputmode="numeric" maxlength="1" />
+        <input class="pinBox" inputmode="numeric" maxlength="1" />
+      </div>
+      <div class="codeRow" style="justify-content:center;">
         <button id="unlockBtn" class="btn" style="margin-top:0;">Unlock</button>
       </div>
+
+
 
       <div id="codeError" class="hint codeError">Wrong code 😭 try again</div>
       <div class="hint">Tip: press Enter to unlock.</div>
@@ -537,9 +563,12 @@
     const lock = document.getElementById("lock");
     const countdown = document.getElementById("countdown");
     const lockLabel = document.getElementById("lockLabel");
-    const codeInput = document.getElementById("codeInput");
     const unlockBtn = document.getElementById("unlockBtn");
     const codeError = document.getElementById("codeError");
+    
+    const pinRow = document.getElementById("pinRow");
+    const pinBoxes = [...pinRow.querySelectorAll(".pinBox")];
+
 
     function pad(n){ return String(n).padStart(2,"0"); }
 
@@ -564,23 +593,66 @@
       lock.setAttribute("aria-hidden", "true");
     }
 
-    function tryUnlock() {
-      const typed = (codeInput.value || "").trim();
-      if (typed === SECRET_CODE) {
-        codeError.style.display = "none";
-        lockLabel.textContent = "Unlocked ✨";
-        openSite();
-      } else {
-        codeError.style.display = "block";
-        codeInput.value = "";
-        codeInput.focus();
-      }
-    }
+    function getPin() {
+  return pinBoxes.map(b => (b.value || "").trim()).join("");
+}
+
+function clearPin() {
+  pinBoxes.forEach(b => b.value = "");
+  pinBoxes[0].focus();
+}
+
+function tryUnlock() {
+  const typed = getPin();
+  if (typed.length !== 6) {
+    codeError.style.display = "block";
+    codeError.textContent = "Enter all 6 digits";
+    return;
+  }
+  if (typed === SECRET_CODE) {
+    codeError.style.display = "none";
+    lockLabel.textContent = "Unlocked ✨";
+    openSite();
+  } else {
+    codeError.style.display = "block";
+    codeError.textContent = "Wrong code 😭 try again";
+    clearPin();
+  }
+}
+
 
     unlockBtn.addEventListener("click", tryUnlock);
-    codeInput.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") tryUnlock();
-    });
+    pinBoxes.forEach((box, idx) => {
+  box.addEventListener("input", () => {
+    // only allow digits
+    box.value = (box.value || "").replace(/\D/g, "").slice(0,1);
+
+    // auto advance
+    if (box.value && idx < pinBoxes.length - 1) pinBoxes[idx + 1].focus();
+
+    // auto-unlock when 6 digits filled
+    if (getPin().length === 6) tryUnlock();
+  });
+
+  box.addEventListener("keydown", (e) => {
+    if (e.key === "Backspace" && !box.value && idx > 0) {
+      pinBoxes[idx - 1].focus();
+    }
+    if (e.key === "Enter") tryUnlock();
+  });
+
+  box.addEventListener("paste", (e) => {
+    e.preventDefault();
+    const pasted = (e.clipboardData.getData("text") || "").replace(/\D/g, "").slice(0,6);
+    pasted.split("").forEach((ch, i) => { if (pinBoxes[i]) pinBoxes[i].value = ch; });
+    (pinBoxes[Math.min(pasted.length, 6) - 1] || pinBoxes[5]).focus();
+    if (pasted.length === 6) tryUnlock();
+  });
+});
+
+// focus first box on load
+pinBoxes[0].focus();
+
 
     // countdown display + auto unlock at midnight
     const interval = setInterval(tick, 250);
@@ -592,3 +664,4 @@
   </script>
 </body>
 </html>
+
