@@ -136,6 +136,28 @@
     .sub { color: var(--muted); margin: 0 0 16px; line-height: 1.5; }
     .hint { color: rgba(255,255,255,.75); font-size: 13px; margin-top: 10px; }
 
+    .codeRow{
+      display:flex;
+      gap:10px;
+      justify-content:center;
+      margin-top:14px;
+      flex-wrap:wrap;
+    }
+    .codeInput{
+      width:min(260px, 72vw);
+      padding:12px 14px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,.16);
+      background:rgba(255,255,255,.06);
+      color:var(--text);
+      outline:none;
+    }
+    .codeError{
+      color: rgba(255,120,120,.95);
+      display:none;
+      margin-top:10px;
+    }
+
     /* Image modal */
     .image-modal {
       position: fixed;
@@ -162,13 +184,21 @@
   </style>
 </head>
 <body>
+
+  <!-- LOCK OVERLAY (UPDATED: CODE UNLOCK + MIDNIGHT AUTO UNLOCK) -->
   <div id="lock" class="lockOverlay" aria-hidden="false">
     <div class="lockBox card">
-      <div class="pill"><span class="dot"></span><span id="lockLabel">Locked until New Year</span></div>
+      <div class="pill"><span class="dot"></span><span id="lockLabel">Enter the code ✨</span></div>
       <div id="countdown" class="count">--:--:--</div>
       <p class="sub">A little time capsule for you</p>
-      <button id="enterBtn" class="btn" style="display:none;">Open ✨</button>
-      <div class="hint">If it doesn’t unlock automatically, tap “Open”.</div>
+
+      <div class="codeRow">
+        <input id="codeInput" class="codeInput" type="password" placeholder="Code" autocomplete="one-time-code" />
+        <button id="unlockBtn" class="btn" style="margin-top:0;">Unlock</button>
+      </div>
+
+      <div id="codeError" class="hint codeError">Wrong code 😭 try again</div>
+      <div class="hint">Tip: press Enter to unlock.</div>
     </div>
   </div>
 
@@ -202,6 +232,7 @@
 
   <script>
     const UNLOCK_AT = new Date("2026-01-01T00:00:00");
+    const SECRET_CODE = "011210"; // <-- CHANGE THIS
     const FRIEND_NAME = "Radhaaaaaa";
 
     const MONTHS = [
@@ -214,7 +245,7 @@
             title: "Unadd",
             tag: "core memory",
             image: "snapchat_convo.png",
-            caption: "I might lowkey have the memory of a goldfish at times but I know that I definitely remember this. Yes we weren't close close but when you added me back and wished me. I did feel happy. I felt glad. I know we hadn't talked talked but I really really appreciated you for being you and just seemed like a very cool (still do) person and someone I would have wanted to spend more time getting to know and spending time with. That's why this pinky promise is important :)"
+            caption: "I might lowkey have the memory of a goldfish at times but I know that I definitely remember this. Yes we weren't close close but when you added me back and wished me. I did feel happy. I felt glad. I know we hadn't talked talks but I really really appreciated you for being you and just seemed like a very cool (still do) person and someone I would have wanted to spend more time getting to know and spending time with. That's why this pinky promise is important :)"
           },
           {
             date: "2025-01-03",
@@ -454,12 +485,12 @@
         `;
 
         const btn = monthBlock.querySelector(".monthBtn");
-         btn.addEventListener("click", () => {
-        const willOpen = !monthBlock.classList.contains("open");
-        closeAllMonths(willOpen ? idx : null);      // if opening, keep this one; if closing, close all
-        monthBlock.classList.toggle("open", willOpen);
-        btn.setAttribute("aria-expanded", String(willOpen));
-      });
+        btn.addEventListener("click", () => {
+          const willOpen = !monthBlock.classList.contains("open");
+          closeAllMonths(willOpen ? idx : null);
+          monthBlock.classList.toggle("open", willOpen);
+          btn.setAttribute("aria-expanded", String(willOpen));
+        });
 
         monthsEl.appendChild(monthBlock);
       });
@@ -502,10 +533,13 @@
       if (firstMem) firstMem.scrollIntoView({ behavior: "smooth", block: "center" });
     });
 
+    // ===== IMAGE LOCK + MIDNIGHT AUTO UNLOCK =====
     const lock = document.getElementById("lock");
     const countdown = document.getElementById("countdown");
-    const enterBtn = document.getElementById("enterBtn");
     const lockLabel = document.getElementById("lockLabel");
+    const codeInput = document.getElementById("codeInput");
+    const unlockBtn = document.getElementById("unlockBtn");
+    const codeError = document.getElementById("codeError");
 
     function pad(n){ return String(n).padStart(2,"0"); }
 
@@ -514,8 +548,8 @@
       const diff = UNLOCK_AT - now;
       if (diff <= 0) {
         countdown.textContent = "00:00:00";
-        lockLabel.textContent = "Unlocked";
-        enterBtn.style.display = "inline-flex";
+        lockLabel.textContent = "Unlocked ✨";
+        openSite();
         return;
       }
       const s = Math.floor(diff / 1000);
@@ -525,24 +559,36 @@
       countdown.textContent = `${pad(hh)}:${pad(mm)}:${pad(ss)}`;
     }
 
-    const interval = setInterval(tick, 250);
-    tick();
-
     function openSite() {
       lock.style.display = "none";
       lock.setAttribute("aria-hidden", "true");
-      clearInterval(interval);
     }
 
-    const auto = setInterval(() => {
-      if (new Date() >= UNLOCK_AT) { clearInterval(auto); openSite(); }
-    }, 500);
+    function tryUnlock() {
+      const typed = (codeInput.value || "").trim();
+      if (typed === SECRET_CODE) {
+        codeError.style.display = "none";
+        lockLabel.textContent = "Unlocked ✨";
+        openSite();
+      } else {
+        codeError.style.display = "block";
+        codeInput.value = "";
+        codeInput.focus();
+      }
+    }
 
-    enterBtn.addEventListener("click", openSite);
+    unlockBtn.addEventListener("click", tryUnlock);
+    codeInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") tryUnlock();
+    });
 
+    // countdown display + auto unlock at midnight
+    const interval = setInterval(tick, 250);
+    tick();
+
+    // Preview mode: add ?preview=1
     const params = new URLSearchParams(location.search);
     if (params.get("preview") === "1") openSite();
   </script>
 </body>
 </html>
-
