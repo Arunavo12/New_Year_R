@@ -454,12 +454,12 @@
         `;
 
         const btn = monthBlock.querySelector(".monthBtn");
-        btn.addEventListener("click", () => {
-          const isOpen = monthBlock.classList.contains("open");
-          closeAllMonths(isOpen ? null : idx);
-          monthBlock.classList.toggle("open");
-          btn.setAttribute("aria-expanded", String(monthBlock.classList.contains("open")));
-        });
+         btn.addEventListener("click", () => {
+        const willOpen = !monthBlock.classList.contains("open");
+        closeAllMonths(willOpen ? idx : null);      // if opening, keep this one; if closing, close all
+        monthBlock.classList.toggle("open", willOpen);
+        btn.setAttribute("aria-expanded", String(willOpen));
+      });
 
         monthsEl.appendChild(monthBlock);
       });
@@ -545,3 +545,4 @@
   </script>
 </body>
 </html>
+
