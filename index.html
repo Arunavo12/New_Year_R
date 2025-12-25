@@ -45,7 +45,6 @@
       color: white; border: 0; font-weight: 600;
     }
     .btn:active { transform: translateY(1px); }
-
     .sectionTitle { margin: 28px 0 10px; font-size: 16px; color: var(--muted); letter-spacing: .12em; text-transform: uppercase; }
 
     /* Month accordion */
@@ -83,7 +82,6 @@
       flex: 0 0 auto;
     }
     .month.open .chev { transform: rotate(180deg); }
-
     .monthContent { display:none; padding: 0 16px 16px; }
     .month.open .monthContent { display:block; }
 
@@ -198,184 +196,193 @@
     <div class="months" id="months"></div>
   </div>
 
-  <!-- Image modal -->
   <div id="imageModal" class="image-modal" aria-hidden="true">
     <img id="modalImg" src="" alt="expanded memory">
   </div>
 
   <script>
-    // ===== SETTINGS =====
-    const UNLOCK_AT = new Date("2026-01-01T00:00:00"); // viewer's local time
+    const UNLOCK_AT = new Date("2026-01-01T00:00:00");
     const FRIEND_NAME = "Radhaaaaaa";
 
-    // ===== DATA (EDIT THIS) =====
-    // Images should be relative paths, e.g. "IMG_3377.PNG" or "images/IMG_3377.PNG"
-    // Dates can be "2025-01-05" etc. We'll display them nicely.
-   const MONTHS = [
-  {
-    month: "January",
-    year: "2025",
-    items: [
+    const MONTHS = [
       {
-        date: "2024-12-01",
-        title: "Unadd",
-        tag: "core memory",
-        image: "snapchat_convo.png",
-        caption:
-          "I might lowkey have the memory of a goldfish at times but I know that I definitely remember this. Yes we weren't close close but when you added me back and wished me. I did feel happy. I felt glad. I know we hadn't talked talked but I really really appreciated you for being you and just seemed like a very cool (still do) person and someone I would have wanted to spend more time getting to know and spending time with. That's why this pinky promise is important :)"
+        month: "January",
+        year: "2025",
+        items: [
+          {
+            date: "2024-12-01",
+            title: "Unadd",
+            tag: "core memory",
+            image: "snapchat_convo.png",
+            caption: "I might lowkey have the memory of a goldfish at times but I know that I definitely remember this. Yes we weren't close close but when you added me back and wished me. I did feel happy. I felt glad. I know we hadn't talked talked but I really really appreciated you for being you and just seemed like a very cool (still do) person and someone I would have wanted to spend more time getting to know and spending time with. That's why this pinky promise is important :)"
+          },
+          {
+            date: "2025-01-03",
+            title: "Yellow heart Radha 💛",
+            tag: "core memory",
+            image: "IMG_3377.PNG",
+            caption: "One of the only screenshots I could find on my phone from January. But I see a yellow heart and I see me replying to only one person. It has only been that case but it is still the case. I still reply to my number one (also my pinned). I think I came back from Desh and that was the first thing I did when I replied after getting internet back."
+          },
+          {
+            date: "2025-01-16",
+            title: "Not liking anyone",
+            tag: "core memory",
+            image: "day2_notlikinganyone.png",
+            caption: "This foreshadowing goes crazyyyyyy. But I know you did your best so well done for being you Radha and trying to do what you do. You are much better than anything I could have ever done:)"
+          },
+          {
+            date: "2025-01-27",
+            title: "Novo advice??",
+            tag: "core memory",
+            image: "snapchat_convo_arunavo.png",
+            caption: "I am sure you know how much I care anyway but I came across this and it made me realise that I still wish you loved yourself more. I wish you could see yourself the way I see you. Sundor both on the inside and outside. You need to hype yourself up more Radha. You could pull anyone if you really wanted to (but Radha knows her priorities so won't x) but think about your amazing qualities from your dress sense to knowing what clothes to buy to knowing what to style and maybe actually helping me style?? Shush we don't count the concert clothing that you told me to wear- I take credit. But just know that people would want to have your eyes, ears, hair, lips, body, and anything else you can think of. So appreciate it and if you do then even more :)"
+          }
+        ]
       },
       {
-        date: "2025-01-03",
-        title: "Yellow heart Radha 💛",
-        tag: "core memory",
-        image: "IMG_3377.PNG",
-        caption:
-          "One of the only screenshots I could find on my phone from January. But I see a yellow heart and I see me replying to only one person. It has only been that case but it is still the case. I still reply to my number one (also my pinned). I think I came back from Desh and that was the first thing I did when I replied after getting internet back."
+        month: "February",
+        year: "2025",
+        items: [
+          {
+            date: "2025-02-01",
+            title: "Our bet",
+            tag: "core memory",
+            image: "snapchat_convo_bet.png",
+            caption: "I do roughly remember this but reading back at it made me realise what I actually said. I stand by it still of course. I will tell you the reasons why. Obviously firstly is exams and stuff and I need you as much as you need yourself to smash these exams and do amazing and just show your talent off to everyone because that is who you are. But also, I do think a lot of it is distractions and just your mind acting up and I know how close you get, attached and I saw a lot of myself in you so maybe I was trying to protect you as well. But this being in February I wonder if it was also because of me not wanting to lose our bond and the amount of time that we spend talking to each other."
+          },
+          {
+            date: "2025-02-01",
+            title: "Our bet added on",
+            tag: "core memory",
+            image: "snapchat_convo_bf18.png",
+            caption: "Lowkey reminding you of our bet still because I did not remember the 18 one. But I now make it a 100 quid bet instead. But deep down I know that money won't ever stop you if you really want to get into a relationship. So this isn't anything that bad. I am just giving my incentive for you. Whether its a protect or not, you can decide."
+          }
+        ]
       },
       {
-        date: "2025-01-16",
-        title: "Not liking anyone",
-        tag: "core memory",
-        image: "day2_notlikinganyone.png",
-        caption:
-          "This foreshadowing goes crazyyyyyy. But I know you did your best so well done for being you Radha and trying to do what you do. You are much better than anything I could have ever done:)"
+        month: "March",
+        year: "2025",
+        items: [
+          {
+            date: "2025-03-06",
+            title: "Pain",
+            tag: "core memory",
+            image: "pain_quote.png",
+            caption: `I have no memory of me saying this. But it sounds like a lot of stuff I normally say anyway so not surprised. I know when you are mad, you don't think about it. I know you don't really feel it I guess but it hurts knowing that I can't help or be there. I can't say it for others because I know you have people close and I know how you have many people who care especially now. But I still want to be there when I can be. If I can lend you a hand or just even temporarily make you smile while you're going through something then it is better than nothing and it actually makes me happy. You take on too much pressure, sadness and emotions all on your shoulders. Letting someone help you even for a second isn't a sign of weakness, it is you growing up. When you were growing up and learning to walk, did you not use a walker? Did aunty and uncle not hold your hand? It is that Radha. Let people, let us, let me, help you and be there for when you need it. We all face tough times, it makes us human. But having those people genuinely means you have someone who cares so don't forget it :)`
+          },
+          {
+            date: "2025-03-06",
+            title: "Steal what???",
+            tag: "core memory",
+            image: "handwriting_r.png",
+            caption: `I know this just says handwriting. But there is so much more I would happily take from you. I know I say it anyways but your voice, your handwriting, even your dancing? In my eyes, you have so many good qualities that you will know but it still surprises me every time. The way you have perfected so many things. The way you do them. I do feel proud knowing you.`
+          },
+          {
+            date: "2025-03-21",
+            title: "Don't get hurt.",
+            tag: "core memory",
+            image: "snapchat_convo_march21_full.png",
+            caption: `Do I repeat myself that much? Why does it feel like I have said this so many times... or maybe I just have. Radha, there is so much pain around. And I know you face it. The "something is better than nothing" line hurts. It really does. Not because it is a painful experience (it is) but also because I have been there. Maybe I still am. I was talking about this with someone the other day and I said that sometimes when you love someone the most, you almost want them to find someone first. You know that you physically can't. You know that while they are single, deep down you're going to want to look for a chance to be with them. You do this a lot. I have before as well. It is a new year so let's try not to do this anymore. Radha's feelings. Radha's emotions. Radha's health. Radha's everything comes first. No one else. Nothing else. I know you can't help not be attached. I know. I can't either. That's why I hurt so much. That's why I hate it so much. But let's try it. Even if we like someone, we need to try and do something more. Let's not sit there idly. Let's not let them have their way around it. It is you. It has always been you Radha. From the start. No one else. Don't forget that.`
+          },
+          {
+            date: "2025-03-26",
+            title: "Ask out J",
+            tag: "core memory",
+            image: "ask_out_jay.png",
+            caption: `I take blame for the whole incident. Was I wrong? Maybe. I think me seeing it eat away at you really just hurt me I guess to an extent. Maybe you shouldn't have said anything. I am sorry Radha. I know what happens next. I know what happened next. I blame myself. I am sorry the lil prick did that. Even if he is a fine shyt, he still hurt you. So he immediately pmo. And if I ever see this guy on the streets, best believe there will be unthinkable things happening.`
+          }
+        ]
       },
       {
-        date: "2025-01-27",
-        title: "Novo advice??",
-        tag: "core memory",
-        image: "snapchat_convo_arunavo.png",
-        caption:
-          "I am sure you know how much I care anyway but I came across this and it made me realise that I still wish you loved yourself more. I wish you could see yourself the way I see you. Sundor both on the inside and outside. You need to hype yourself up more Radha. You could pull anyone if you really wanted to (but Radha knows her priorities so won't x) but think about your amazing qualities from your dress sense to knowing what clothes to buy to knowing what to style and maybe actually helping me style?? Shush we don't count the concert clothing that you told me to wear- I take credit. But just know that people would want to have your eyes, ears, hair, lips, body, and anything else you can think of. So appreciate it and if you do then even more :)"
+        month: "April",
+        year: "2025",
+        items: [
+          {
+            date: "2025-04-04",
+            title: "Moving forward",
+            tag: "core memory",
+            image: "snapchat_convo_apr04.png",
+            caption: `You got rejected. So what. As time goes on, you will meet more people. You will find better people. You will find more fine shyts. You will find more love. But you know what it is: time won't stop. That crush is gone. But you know what isn't? Radha isn't. And sometimes, just take a second to look at the people around you. Look at the people you are talking to right now. Look at the love you are getting from them. Yes, we all want our crush's love, we all want that love — but this love isn't bad either. The love from these people: friends, family, whatever. And when it comes to friends and life — Radha, you know how scared I am of losing people. You know how much I couldn't lose you even during your whole off time — but you will find a way if it is needed. You will find a way to be loved. You will find a way to be okay. You will keep the friends you want to if they want to. You will lose a few. But guess what — you will be okay because you have more than enough amazing loving people, and the ones who have gone are just part of God's plan :)`
+          },
+          {
+            date: "2025-04-21",
+            title: "Fav Saha",
+            tag: "core memory",
+            image: "snapchat_convo_apr21_saha.png",
+            caption: "Pretty sure you have this as a sticker anyway. After getting to know you more and more, I might actually agree when I say that Radha might be my favourite Saha."
+          },
+          {
+            date: "2025-04-24",
+            title: "N being a hoe?",
+            tag: "core memory",
+            image: "snapchat_convo_apr24.png",
+            caption: "Nothing to even comment, just a hoe behaviour from everyone's favourite N💔"
+          },
+          {
+            date: "2025-04-28",
+            title: "Cut?",
+            tag: "core memory",
+            image: "blood.png",
+            caption: "Ummmm, was this when the cut happened and I told you to put salt?? Either a very dumb or a very good decision from me. All I know is Radha was defooo in pain so apologies maybeee. But maybe I did help it heal faster so shushhh"
+          }
+        ]
+      },
+      {
+        month: "May",
+        year: "2025",
+        items: [
+          {
+            date: "2025-05-16",
+            title: "Birthday paragraph",
+            tag: "core memory",
+            image: "snapchat_convo_may15.png",
+            caption: `Tbhhh, I have no clue why I am showing the birthday paragraph again. Maybe to show you the change in how I used to talk to you compared to how I talk to you now? But also maybe because the part where you said that I am the best kind of stays with me? I really really appreciate little things and you know it just feels to hear it. I tell myself it all the time but it gets to a point where you just need to hear it from someone else. I am glad you had a good birthday though.`
+          },
+          {
+            date: "2025-05-17",
+            title: "C",
+            tag: "core memory",
+            image: "snapchat_convo_may17_uktime.png",
+            caption: `Why did this kinda make me laugh or smile? I feel like JB Priestley writing an inspector calls with all the foreshadowing. Arthur Birling talking about the titanic and Novo asking about C. Obviously I became jealous of him for obvious reasons (cough cough, yellow heart being stolen and not making enough time). But deep down, I did wish that you and him could have at least had a whole thing so you could be satisfied cos you know Radha's happiness on top. But you know those memories stay with you still. The thoughts, the feelings, the moments- the video calls and tiktok password, snapchat password. Don't forget those things even if you want to. They were all learning experiences. They were all things that defined you. I know it ended as a bad chapter but it isn't over over Radha. You know why? Cos you are still here, with more than enough that love and care about you.`
+          },
+          {
+            date: "2025-05-24",
+            title: "Attachment",
+            tag: "core memory",
+            image: "attachment.png",
+            caption: `Something I struggle with. I always have. I still do. I probably always will. I care too much and I hate it. But I can't handle that side of me. I care too much. I love too hard. And end up getting hurt and just hurts overall. I know how much that is annoying. That's why I say that you are like me. Both idiots of one coin. We get hurt for that reason. We think too much. We love too much. We care too much. What the fuck can we do. You tell me Radha. How the fuck can I change myself. How do you stop loving so much and so hard. How do you end up trying to control yourself and just being okay? I don't think I can so it just really annoys me. I wish I had more control in that aspect. I just wish I was okay in that way. I mean I will say it as it is but I am attached to people right now even. Maybe if we even take you as an instance, if you're not okay, it will be running through my mind. I will think and think and just yeah. Maybe that's just me. But I don't know if I recommend you doing it cos care just hurts a lot. At the end of the day it really fucking hurts. Even if we say a thousand times that we don't care and it doesn't bother us, it does. I know it does. We just have to act like we don't give a fuck. That's what we are. Just fakers I guess.`
+          },
+          {
+            date: "2025-05-27",
+            title: "Phone Habit",
+            tag: "core memory",
+            image: "phone_habit.png",
+            caption: `Okay you're not going to take this as a blame or anything so don't. But you know as much as I talked to you and stuff but you know how I always left my phone in the other room for charging or just went on it when I wanted to. I always had that self control. The day I stopped this habit was the day your car broke down and you called me. And I remember the words "you're never there when I need you." And it really made an impact-ish. Not because just anyway. But I actually felt needed. Like someone actually remembered me. Someone remembered me while they were in a crisis. The least I could do is be free. From that day onwards, I mean I don't know if you noticed it or not but I started being free on my phone. I also got a lot of notifications. So I changed my DND to a social media where only my social media notifs would come through: WhatsApp, Snapchat and Instagram. When a Snapchat notif came through with a sound, I would take a look to see if it was Radha or not. Maybe it wasn't obvious obvious but I made those lil changes. I wasn't gonna be relied on by someone and let them down. Not again. Probably why we got even closer to be honest.`
+          }
+        ]
+      },
+      {
+        month: "June",
+        year: "2025",
+        items: [
+          {
+            date: "2025-06-09",
+            title: "Getting affected by crushes",
+            tag: "core memory",
+            image: "crush_feelings.png",
+            caption: "You must get so tired of me saying the same bs over and over but still here."
+          },
+          {
+            date: "2025-06-09",
+            title: "Control",
+            tag: "core memory",
+            image: "not_replying.png",
+            caption: `I have no idea what this situation is. But it might be when you didn't reply to someone who wasn't treating you right. You did the hard but right thing. You genuinely made the step yourself. You were okay. Just remember how strong this Radha was and still is.`
+          }
+        ]
       }
-    ]
-  },
+    ];
 
-  {
-    month: "February",
-    year: "2025",
-    items: [
-      {
-        date: "2025-02-01",
-        title: "Our bet",
-        tag: "core memory",
-        image: "snapchat_convo_bet.png",
-        caption:
-          "I do roughly remember this but reading back at it made me realise what I actually said. I stand by it still of course. I will tell you the reasons why. Obviously firstly is exams and stuff and I need you as much as you need yourself to smash these exams and do amazing and just show your talent off to everyone because that is who you are. But also, I do think a lot of it is distractions and just your mind acting up and I know how close you get, attached and I saw a lot of myself in you so maybe I was trying to protect you as well. But this being in February I wonder if it was also because of me not wanting to lose our bond and the amount of time that we spend talking to each other."
-      },
-      {
-        date: "2025-02-01",
-        title: "Our bet added on",
-        tag: "core memory",
-        image: "snapchat_convo_bf18.png",
-        caption:
-          "Lowkey reminding you of our bet still because I did not remember the 18 one. But I now make it a 100 quid bet instead. But deep down I know that money won't ever stop you if you really want to get into a relationship. So this isn't anything that bad. I am just giving my incentive for you. Whether its a protect or not, you can decide."
-      }
-    ]
-  },
-
-  {
-    month: "March",
-    year: "2025",
-    items: [
-      {
-        date: "2025-03-06",
-        title: "Pain",
-        tag: "core memory",
-        image: "pain_quote.png",
-        caption: `I have no memory of me saying this. But it sounds like a lot of stuff I normally say anyway so not surprised.
-        I know when you are mad, you don't think about it. I know you don't really feel it I guess but it hurts knowing that I can't help or be there.
-        I can't say it for others because I know you have people close and I know how you have many people who care especially now. But I still want to be there when I can be? If I can lend you a hand or just even temporarily make you smile while you're going through something then it is better than nothing and it actually makes me happy.
-        You take on too much pressure, sadness and emotions all on your shoulders. Letting someone help you even for a second isn't a sign of weakness, it is you growing up. When you were growing up and learning to walk, did you not use a walker? Did aunty and uncle not hold your hand? It is that Radha.
-        Let people, let us, let me, help you and be there for when you need it. We all face tough times, it makes us human. But having those people genuinely means you have someone who cares so don't forget it :)`
-      },
-      {
-        date: "2025-03-06",
-        title: "Steal what???",
-        tag: "core memory",
-        image: "handwriting_r.png",
-        caption: `I know this just says handwriting. But there is so much more I would happily take from you.
-
-I know I say it anyways but your voice, your handwriting, even your dancing?
-
-In my eyes, you have so many good qualities that you will know but it still surprises me every time. The way you have perfected so many things. The way you do them. I do feel proud knowing you.`
-      },
-      {
-        date: "2025-03-21",
-        title: "Don't get hurt.",
-        tag: "core memory",
-        image: "snapchat_convo_march21.png",
-        caption: `Do I repeat myself that much? Why does it feel like I have said this so many times... or maybe I just have.
-        Radha, there is so much pain around. And I know you face it. The "something is better than nothing" line hurts. It really does.
-        Not because it is a painful experience (it is) but also because I have been there. Maybe I still am.
-        I was talking about this with someone the other day and I said that sometimes when you love someone the most, you almost want them to find someone first. You know that you physically can't. You know that while they are single, deep down you're going to want to look for a chance to be with them.
-        You do this a lot. I have before as well. It is a new year so let's try not to do this anymore. Radha's feelings. Radha's emotions. Radha's health. Radha's everything comes first. No one else. Nothing else.
-        I know you can't help not be attached. I know. I can't either. That's why I hurt so much. That's why I hate it so much. But let's try it.
-        Even if we like someone, we need to try and do something more. Let's not sit there idly. Let's not let them have their way around it. It is you. It has always been you Radha. From the start. No one else.
-        Don't forget that.`
-      },
-      {
-        date: "2025-03-26",
-        title: "Ask out J",
-        tag: "core memory",
-        image: "ask_out_jay.png",
-        caption: `I take blame for the whole incident. Was I wrong? Maybe. 
-        I think me seeing it eat away at you really just hurt me I guess to an extent. Maybe you shouldn't have said anything. I am sorry Radha.
-        I know what happens next. I know what happened next. I blame myself.
-        I am sorry the lil prick did that. Even if he is a fine shyt, he still hurt you. So he immediately pmo.
-        And if I ever see this guy on the streets, best believe there will be unthinkable things happening.`
-      }
-    ]
-  },
-
-  {
-    month: "April",
-    year: "2025",
-    items: [
-      {
-        date: "2025-04-04",
-        title: "Moving forward",
-        tag: "core memory",
-        image: "snapchat_convo_apr04.png",
-        caption: `You got rejected. So what.
-        As time goes on, you will meet more people. You will find better people. You will find more fine shyts. You will find more love.
-        But you know what it is: time won't stop. That crush is gone. But you know what isn't? Radha isn't.
-        And sometimes, just take a second to look at the people around you. Look at the people you are talking to right now. Look at the love you are getting from them.
-        Yes, we all want our crush's love, we all want that love — but this love isn't bad either. The love from these people: friends, family, whatever.
-        And when it comes to friends and life — Radha, you know how scared I am of losing people. You know how much I couldn't lose you even during your whole off time — but you will find a way if it is needed.
-        You will find a way to be loved. You will find a way to be okay. You will keep the friends you want to if they want to. You will lose a few.
-        But guess what — you will be okay because you have more than enough amazing loving people, and the ones who have gone are just part of God's plan :)`
-      },
-      {
-        date: "2025-04-21",
-        title: "Fav Saha",
-        tag: "core memory",
-        image: "snapchat_convo_apr21_saha.png",
-        caption:
-          "Pretty sure you have this as a sticker anyway. After getting to know you more and more, I might actually agree when I say that Radha might be my favourite Saha."
-      },
-      {
-        date: "2025-04-24",
-        title: "N being a hoe?",
-        tag: "core memory",
-        image: "snapchat_convo_apr24.png",
-        caption:
-          "Nothing to even comment, just a hoe behaviour 💔"
-      },
-      {
-        date: "2025-04-28",
-        title: "Cut?",
-        tag: "core memory",
-        image: "blood.png",
-        caption:
-          "Ummmm, was this when the cut happened and I told you to put salt?? Either a very dumb or a very good decision from me. All I know is Radha was defooo in pain so apologies maybeee. But maybe I did help it heal faster so shushhh"
-      }
-    ]
-  }
-];
-
-
-    // ===== HELPERS =====
     function escHTML(str) {
       return String(str)
         .replaceAll("&","&amp;")
@@ -386,20 +393,16 @@ In my eyes, you have so many good qualities that you will know but it still surp
     }
 
     function formatDate(dateStr) {
-      // "2025-01-10" -> "10 Jan 2025"
       const d = new Date(dateStr + "T00:00:00");
       if (Number.isNaN(d.getTime())) return dateStr;
       return d.toLocaleDateString(undefined, { day: "2-digit", month: "short", year: "numeric" });
     }
 
     function sortChronologicalItems(items) {
-      // Oldest -> newest
       return [...items].sort((a,b) => new Date(a.date) - new Date(b.date));
     }
 
-    // ===== RENDER MONTHS (one open at a time) =====
     document.getElementById("friendName").textContent = FRIEND_NAME;
-
     const monthsEl = document.getElementById("months");
 
     function closeAllMonths(exceptIndex = null) {
@@ -407,12 +410,13 @@ In my eyes, you have so many good qualities that you will know but it still surp
       all.forEach((mEl) => {
         if (exceptIndex !== null && mEl.dataset.index === String(exceptIndex)) return;
         mEl.classList.remove("open");
+        const b = mEl.querySelector(".monthBtn");
+        if (b) b.setAttribute("aria-expanded", "false");
       });
     }
 
     function render() {
       monthsEl.innerHTML = "";
-
       MONTHS.forEach((m, idx) => {
         const items = sortChronologicalItems(m.items || []);
         const monthBlock = document.createElement("div");
@@ -430,11 +434,10 @@ In my eyes, you have so many good qualities that you will know but it still surp
             </div>
             <div class="chev">⌄</div>
           </button>
-
           <div class="monthContent">
             <div class="memList">
-              ${items.map((it, j) => `
-                <div class="mem" data-month="${idx}" data-item="${j}">
+              ${items.map((it) => `
+                <div class="mem">
                   <div class="memTop">
                     <div>
                       <p class="memTitle">${escHTML(it.title || "")}</p>
@@ -453,7 +456,7 @@ In my eyes, you have so many good qualities that you will know but it still surp
         const btn = monthBlock.querySelector(".monthBtn");
         btn.addEventListener("click", () => {
           const isOpen = monthBlock.classList.contains("open");
-          closeAllMonths(isOpen ? null : idx); // close others
+          closeAllMonths(isOpen ? null : idx);
           monthBlock.classList.toggle("open");
           btn.setAttribute("aria-expanded", String(monthBlock.classList.contains("open")));
         });
@@ -464,7 +467,6 @@ In my eyes, you have so many good qualities that you will know but it still surp
 
     render();
 
-    // ===== IMAGE MODAL =====
     const modal = document.getElementById("imageModal");
     const modalImg = document.getElementById("modalImg");
 
@@ -482,40 +484,24 @@ In my eyes, you have so many good qualities that you will know but it still surp
       modal.setAttribute("aria-hidden", "true");
     });
 
-    // ===== SURPRISE BUTTON (opens a random month + scrolls to memory) =====
     document.getElementById("randomBtn").addEventListener("click", () => {
       const allItems = [];
-      MONTHS.forEach((m, mi) => {
-        (m.items || []).forEach((it, ii) => allItems.push({ mi, it, ii }));
-      });
-
+      MONTHS.forEach((m, mi) => (m.items || []).forEach((it) => allItems.push({ mi, it })));
       if (allItems.length === 0) return;
 
       const pick = allItems[Math.floor(Math.random() * allItems.length)];
-
-      // Open the month
       const monthEl = document.querySelector(`.month[data-index="${pick.mi}"]`);
-      if (monthEl) {
-        closeAllMonths(pick.mi);
-        monthEl.classList.add("open");
-        const btn = monthEl.querySelector(".monthBtn");
-        if (btn) btn.setAttribute("aria-expanded", "true");
+      if (!monthEl) return;
 
-        // Scroll to the picked memory
-        const memList = monthEl.querySelectorAll(".mem");
-        // Because we sort items when rendering, we need to find it by matching date+title+image
-        const target = [...memList].find(mem => {
-          const img = mem.querySelector("img")?.getAttribute("src") || "";
-          const title = mem.querySelector(".memTitle")?.textContent || "";
-          const date = mem.querySelector(".memDate")?.textContent || "";
-          return title === (pick.it.title || "") || img === (pick.it.image || "") || date.includes((pick.it.date || "").slice(5,7));
-        }) || memList[0];
+      closeAllMonths(pick.mi);
+      monthEl.classList.add("open");
+      const btn = monthEl.querySelector(".monthBtn");
+      if (btn) btn.setAttribute("aria-expanded", "true");
 
-        if (target) target.scrollIntoView({ behavior: "smooth", block: "center" });
-      }
+      const firstMem = monthEl.querySelector(".mem");
+      if (firstMem) firstMem.scrollIntoView({ behavior: "smooth", block: "center" });
     });
 
-    // ===== LOCK SCREEN =====
     const lock = document.getElementById("lock");
     const countdown = document.getElementById("countdown");
     const enterBtn = document.getElementById("enterBtn");
@@ -526,14 +512,12 @@ In my eyes, you have so many good qualities that you will know but it still surp
     function tick() {
       const now = new Date();
       const diff = UNLOCK_AT - now;
-
       if (diff <= 0) {
         countdown.textContent = "00:00:00";
         lockLabel.textContent = "Unlocked";
         enterBtn.style.display = "inline-flex";
         return;
       }
-
       const s = Math.floor(diff / 1000);
       const hh = Math.floor(s / 3600);
       const mm = Math.floor((s % 3600) / 60);
@@ -556,15 +540,8 @@ In my eyes, you have so many good qualities that you will know but it still surp
 
     enterBtn.addEventListener("click", openSite);
 
-    // Preview mode: add ?preview=1
     const params = new URLSearchParams(location.search);
     if (params.get("preview") === "1") openSite();
   </script>
 </body>
 </html>
-
-
-
-
-
-
