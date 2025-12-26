@@ -92,6 +92,7 @@
       border: 1px solid rgba(255,255,255,.10);
       border-radius: 16px;
       padding: 12px;
+      scroll-margin-top: 90px;
     }
     .memTop { display:flex; align-items:flex-start; justify-content:space-between; gap: 10px; }
     .memDate { color: rgba(255,255,255,.60); font-size: 12px; white-space: nowrap; }
@@ -143,31 +144,21 @@
       margin-top:14px;
       flex-wrap:wrap;
     }
-          .pinRow{display:flex;gap:10px;justify-content:center;margin-top:14px;}
-      .pinBox{
-        width:44px;height:54px;
-        border-radius:14px;
-        border:1px solid rgba(255,255,255,.16);
-        background:rgba(255,255,255,.06);
-        color:var(--text);
-        font-size:22px;
-        font-weight:800;
-        text-align:center;
-        outline:none;
-      }
-      .pinBox:focus{
-        border-color: rgba(124,92,255,.55);
-        box-shadow: 0 0 0 4px rgba(124,92,255,.18);
-      }
-
-    .codeInput{
-      width:min(260px, 72vw);
-      padding:12px 14px;
-      border-radius:12px;
+    .pinRow{display:flex;gap:10px;justify-content:center;margin-top:14px; flex-wrap:wrap;}
+    .pinBox{
+      width:44px;height:54px;
+      border-radius:14px;
       border:1px solid rgba(255,255,255,.16);
       background:rgba(255,255,255,.06);
       color:var(--text);
+      font-size:22px;
+      font-weight:800;
+      text-align:center;
       outline:none;
+    }
+    .pinBox:focus{
+      border-color: rgba(124,92,255,.55);
+      box-shadow: 0 0 0 4px rgba(124,92,255,.18);
     }
     .codeError{
       color: rgba(255,120,120,.95);
@@ -202,7 +193,7 @@
 </head>
 <body>
 
-  <!-- LOCK OVERLAY (UPDATED: CODE UNLOCK + MIDNIGHT AUTO UNLOCK) -->
+  <!-- LOCK OVERLAY -->
   <div id="lock" class="lockOverlay" aria-hidden="false">
     <div class="lockBox card">
       <div class="pill"><span class="dot"></span><span id="lockLabel">Enter the code ✨</span></div>
@@ -217,11 +208,10 @@
         <input class="pinBox" inputmode="numeric" maxlength="1" />
         <input class="pinBox" inputmode="numeric" maxlength="1" />
       </div>
+
       <div class="codeRow" style="justify-content:center;">
         <button id="unlockBtn" class="btn" style="margin-top:0;">Unlock</button>
       </div>
-
-
 
       <div id="codeError" class="hint codeError">Wrong code 😭 try again</div>
       <div class="hint">Tip: press Enter to unlock.</div>
@@ -257,10 +247,12 @@
   </div>
 
   <script>
+    // ===== SETTINGS =====
     const UNLOCK_AT = new Date("2026-01-01T00:00:00");
     const SECRET_CODE = "011210"; // <-- CHANGE THIS
     const FRIEND_NAME = "Radhaaaaaa";
 
+    // ===== DATA (FIXED) =====
     const MONTHS = [
       {
         month: "January",
@@ -418,180 +410,162 @@
           }
         ]
       },
-      {
-  month: "June",
-  year: "2025",
-  items: [
-    {
-      date: "2025-06-09",
-      title: "Getting affected by crushes",
-      tag: "core memory",
-      image: "crush_feelings.png",
-      caption: "You must get so tired of me saying the same bs over and over but still here."
-    },
-    {
-      date: "2025-06-09",
-      title: "Control",
-      tag: "core memory",
-      image: "not_replying.png",
-      caption: `I have no idea what this situation is. But it might be when you didn't reply to someone who wasn't treating you right. You did the hard but right thing. You genuinely made the step yourself. You were okay. Just remember how strong this Radha was and still is.`
-    },
-    {
-      date: "2025-06-20",
-      title: "Not rushing in",
-      tag: "core memory",
-      image: "rushing_in.png",
-      caption: "Advice."
-    },
-    {
-      date: "2025-06-25",
-      title: "Everyone cares",
-      tag: "core memory",
-      image: "snapchat_convo_jun25_uktime.png",
-      caption: "I know you still do it and I can't do anything to stop it but genuinely. Genuinely care so so much. Like I know I say it all the time. But actually care. I hope you feel better. I hope you know it. There's so many people who would do anything to make you smile and laugh and just be okay. The little things matter the most. Just know that it is okay to not be okay Radha."
-    },
-    {
-      date: "2025-06-29",
-      title: "Good week",
-      tag: "core memory",
-      image: "snapchat_chat_2025-06-29.png",
-      caption: "Advice."
-    },
-    {
-      date: "2025-06-29",
-      title: "Good week",
-      tag: "core memory",
-      image: "first_time_opening_up.png",
-      caption: "Was this the first time I ever opened up to you?? But most importantly, is this the first time that I told you about how I felt inside? Maybe it was. Not something that I really want to flex. But I know that I trusted you enough to tell you and just mention it to you because of how much I trusted you but also how much you meant to me. I could have agreed with anything you said and backed it because you are Radha. Just there for me."
-    }
-  ]
-},
-{
-  month: "July",
-  year: "2025",
-  items: [
-    {
-      date: "2025-07-04",
-      title: "Jota Incident",
-      tag: "core memory",
-      image: "neves_jota.png",
-      caption: "Maybe the first time I said the thing I shouldn't have. But reading that Neves letter to Jota really made me think a lot Radha. Genuinely. That was his best friend. That was everything to him. And then I thought of the person I consider as close to me. I said it to you. I know we live and wake up but one day if something happened and I hadn't said it then I would have regretted it beyond belief."
-    },
-    {
-      date: "2025-07-06",
-      title: "Manifesting",
-      tag: "core memory",
-      image: "manifesting.png",
-      caption: "Manifesting a good and happy vibe for you as always and still want to. Just remember everything is going to be okay. I always tell you. I do mean it."
-    },
-     {
-      date: "2025-07-19",
-      title: "Paragraph",
-      tag: "core memory",
-      image: "19_july.png",
-      caption: "Paragraph."
-    },
-     {
-      date: "2025-07-19",
-      title: "Paragraph",
-      tag: "core memory",
-      image: "image.png",
-      caption: "This is genuinely one of the craziest experiences. I know that we talked and saw each other and stuff during puja but this is nearly a whole year later? Obviously it is a bit awkward purely because of the fact that we are amongst so many people and stuff and just how we were. But I liked just being in  that presence. Not really talk talk but just being around, ygm? But  bare in mind. This also became an iconic day because. Uncle told me about "can Radha go to the concert?" It was the day that essentially changed everything? I feel like we were going in one direction until then but that day genuinely changed everything around."
-    },
-     {
-      date: "2025-07-19",
-      title: "Paragraph",
-      tag: "core memory",
-      image: "19_july.png",
-      caption: "Paragraph."
-    },
-    {
-    month: "August",
-      year: "2025",
-      items: 
-      [
-         {
-      date: "2025-08-05",
-      title: "Don't catch feelings",
-      tag: "core memory",
-      image: "Dont_.png",
-      caption: "I still say this. Don't catch feelings. I hate it. I still do. I think I might like someone but I can't or actually, I refuse to act upon those feelings. Control yourself and lowkey you are already on the route to being a monk. Don't forget that. Best control is self control"
-      },
-        {
-      date: "2025-08-07",
-      title: "50 reasons why",
-      tag: "core memory",
-      image: "50_reasons.png",
-      caption: "Just to let you know I definitely smiled writing that title for this one. But not much else to say, just take a look and it says it all. And I still stand by it."
-    },
-         {
-      date: "2025-08-07",
-      title: "Squishmellow",
-      tag: "core memory",
-      image: "Dont_.png",
-      caption: "New year, new squishmellow maybe???"
-         },
-         {
-      date: "2025-08-10",
-      title: "Paragraph",
-      tag: "core memory",
-      image: "paragraph.png",
-      caption: "Just read it"
-         },
-         {
-      date: "2025-08-18",
-      title: "Call Screenshot",
-      tag: "core memory",
-      image: "IMG_8040.png",
-      caption: "You know I just got off the phone with you right now when your heating started leaking. But it is ironic that this is the image that I am uploading now. Isn't it interesting how much we used to call before. I miss that. I miss our random calls. Maybe the night ones as well. Obviously I understand so won't ever say anything about it. But I miss our calls throughout the day. We just talked random, said random stuff and just yeah. It always felt like you were around even if you weren't physically. But it is also locked in Radha season so I totally get it. But I really miss those :) "
-         },
-         {
-      date: "2025-08-18",
-      title: "Paragraph",
-      tag: "core memory",
-      image: "fell_asleep.png",
-      caption: "Sighhhh, same as the earlier screenshot. But I can't believe you had to hear Novo snore shushhh. We shall never speak about it."
-         },
-         {
-      date: "2025-08-18",
-      title: "Aloo joke",
-      tag: "core memory",
-      image: "joke_aloo.png",
-      caption: "I made Radha laugh I think?? hehe"
-         },
-         {
-      date: "2025-08-20",
-      title: "Shein",
-      tag: "core memory",
-      image: "20_aug.png",
-      caption: "Omg the first time I bought you anything? I am 100% sure it was a shein cart. I remember your happiness. I remember your smile. I remember how excited you were. I want that Radha. Not now. But forever. Just always happy and excited and smiling. You deserve that much :) And thank you for saying those words. I know despite how strong and everything I am, hearing someone say those words does matter a lot to me and you did it so thank you Radha"
-         },
-         {
-      date: "2025-08-21",
-      title: "Eyebrows",
-      tag: "core memory",
-      image: "eyebrow_gcse.png",
-      caption: "I am going to shave off my eyebrows if you aren't happy with your GCSE results?? Might be cooked cos your expectations are all 9s..."
-         },
-        
-        
-        
-        
-      
-        
-        ]
-        
-        
-        
-    
-    
-    
-  ]
-}
 
-        
+      // ===== FIXED: June / July / August are separate month objects =====
+      {
+        month: "June",
+        year: "2025",
+        items: [
+          {
+            date: "2025-06-09",
+            title: "Getting affected by crushes",
+            tag: "core memory",
+            image: "crush_feelings.png",
+            caption: "You must get so tired of me saying the same bs over and over but still here."
+          },
+          {
+            date: "2025-06-09",
+            title: "Control",
+            tag: "core memory",
+            image: "not_replying.png",
+            caption: `I have no idea what this situation is. But it might be when you didn't reply to someone who wasn't treating you right. You did the hard but right thing. You genuinely made the step yourself. You were okay. Just remember how strong this Radha was and still is.`
+          },
+          {
+            date: "2025-06-20",
+            title: "Not rushing in",
+            tag: "core memory",
+            image: "rushing_in.png",
+            caption: "Advice."
+          },
+          {
+            date: "2025-06-25",
+            title: "Everyone cares",
+            tag: "core memory",
+            image: "snapchat_convo_jun25_uktime.png",
+            caption: "I know you still do it and I can't do anything to stop it but genuinely. Genuinely care so so much. Like I know I say it all the time. But actually care. I hope you feel better. I hope you know it. There's so many people who would do anything to make you smile and laugh and just be okay. The little things matter the most. Just know that it is okay to not be okay Radha."
+          },
+          {
+            date: "2025-06-29",
+            title: "Good week",
+            tag: "core memory",
+            image: "snapchat_chat_2025-06-29.png",
+            caption: "Advice."
+          },
+          {
+            date: "2025-06-29",
+            title: "First time opening up?",
+            tag: "core memory",
+            image: "first_time_opening_up.png",
+            caption: "Was this the first time I ever opened up to you?? But most importantly, is this the first time that I told you about how I felt inside? Maybe it was. Not something that I really want to flex. But I know that I trusted you enough to tell you and just mention it to you because of how much I trusted you but also how much you meant to me. I could have agreed with anything you said and backed it because you are Radha. Just there for me."
+          }
+        ]
+      },
+      {
+        month: "July",
+        year: "2025",
+        items: [
+          {
+            date: "2025-07-04",
+            title: "Jota Incident",
+            tag: "core memory",
+            image: "neves_jota.png",
+            caption: "Maybe the first time I said the thing I shouldn't have. But reading that Neves letter to Jota really made me think a lot Radha. Genuinely. That was his best friend. That was everything to him. And then I thought of the person I consider as close to me. I said it to you. I know we live and wake up but one day if something happened and I hadn't said it then I would have regretted it beyond belief."
+          },
+          {
+            date: "2025-07-06",
+            title: "Manifesting",
+            tag: "core memory",
+            image: "manifesting.png",
+            caption: "Manifesting a good and happy vibe for you as always and still want to. Just remember everything is going to be okay. I always tell you. I do mean it."
+          },
+          {
+            date: "2025-07-19",
+            title: "Paragraph",
+            tag: "core memory",
+            image: "19_july.png",
+            caption: "Paragraph."
+          },
+          {
+            date: "2025-07-19",
+            title: "That day",
+            tag: "core memory",
+            image: "image.png",
+            caption: "This is genuinely one of the craziest experiences. I know that we talked and saw each other and stuff during puja but this is nearly a whole year later? Obviously it is a bit awkward purely because of the fact that we are amongst so many people and stuff and just how we were. But I liked just being in that presence. Not really talk talk but just being around, ygm? But bare in mind. This also became an iconic day because. Uncle told me about \"can Radha go to the concert?\" It was the day that essentially changed everything? I feel like we were going in one direction until then but that day genuinely changed everything around."
+          }
+        ]
+      },
+      {
+        month: "August",
+        year: "2025",
+        items: [
+          {
+            date: "2025-08-05",
+            title: "Don't catch feelings",
+            tag: "core memory",
+            image: "Dont_.png",
+            caption: "I still say this. Don't catch feelings. I hate it. I still do. I think I might like someone but I can't or actually, I refuse to act upon those feelings. Control yourself and lowkey you are already on the route to being a monk. Don't forget that. Best control is self control"
+          },
+          {
+            date: "2025-08-07",
+            title: "50 reasons why",
+            tag: "core memory",
+            image: "50_reasons.png",
+            caption: "Just to let you know I definitely smiled writing that title for this one. But not much else to say, just take a look and it says it all. And I still stand by it."
+          },
+          {
+            date: "2025-08-07",
+            title: "Squishmellow",
+            tag: "core memory",
+            image: "Dont_.png",
+            caption: "New year, new squishmellow maybe???"
+          },
+          {
+            date: "2025-08-10",
+            title: "Paragraph",
+            tag: "core memory",
+            image: "paragraph.png",
+            caption: "Just read it"
+          },
+          {
+            date: "2025-08-18",
+            title: "Call Screenshot",
+            tag: "core memory",
+            image: "IMG_8040.png",
+            caption: "You know I just got off the phone with you right now when your heating started leaking. But it is ironic that this is the image that I am uploading now. Isn't it interesting how much we used to call before. I miss that. I miss our random calls. Maybe the night ones as well. Obviously I understand so won't ever say anything about it. But I miss our calls throughout the day. We just talked random, said random stuff and just yeah. It always felt like you were around even if you weren't physically. But it is also locked in Radha season so I totally get it. But I really miss those :)"
+          },
+          {
+            date: "2025-08-18",
+            title: "Fell asleep",
+            tag: "core memory",
+            image: "fell_asleep.png",
+            caption: "Sighhhh, same as the earlier screenshot. But I can't believe you had to hear Novo snore shushhh. We shall never speak about it."
+          },
+          {
+            date: "2025-08-18",
+            title: "Aloo joke",
+            tag: "core memory",
+            image: "joke_aloo.png",
+            caption: "I made Radha laugh I think?? hehe"
+          },
+          {
+            date: "2025-08-20",
+            title: "Shein",
+            tag: "core memory",
+            image: "20_aug.png",
+            caption: "Omg the first time I bought you anything? I am 100% sure it was a shein cart. I remember your happiness. I remember your smile. I remember how excited you were. I want that Radha. Not now. But forever. Just always happy and excited and smiling. You deserve that much :) And thank you for saying those words. I know despite how strong and everything I am, hearing someone say those words does matter a lot to me and you did it so thank you Radha"
+          },
+          {
+            date: "2025-08-21",
+            title: "Eyebrows",
+            tag: "core memory",
+            image: "eyebrow_gcse.png",
+            caption: "I am going to shave off my eyebrows if you aren't happy with your GCSE results?? Might be cooked cos your expectations are all 9s..."
+          }
+        ]
+      }
     ];
 
+    // ===== HELPERS =====
     function escHTML(str) {
       return String(str)
         .replaceAll("&","&amp;")
@@ -611,6 +585,7 @@
       return [...items].sort((a,b) => new Date(a.date) - new Date(b.date));
     }
 
+    // ===== PAGE INIT =====
     document.getElementById("friendName").textContent = FRIEND_NAME;
     const monthsEl = document.getElementById("months");
 
@@ -626,6 +601,7 @@
 
     function render() {
       monthsEl.innerHTML = "";
+
       MONTHS.forEach((m, idx) => {
         const items = sortChronologicalItems(m.items || []);
         const monthBlock = document.createElement("div");
@@ -645,19 +621,22 @@
           </button>
           <div class="monthContent">
             <div class="memList">
-              ${items.map((it) => `
-                <div class="mem">
-                  <div class="memTop">
-                    <div>
-                      <p class="memTitle">${escHTML(it.title || "")}</p>
-                      ${it.tag ? `<span class="memTag">${escHTML(it.tag)}</span>` : ""}
+              ${items.map((it, i) => {
+                const memId = `m${idx}-i${i}`;
+                return `
+                  <div class="mem" data-mem-id="${memId}">
+                    <div class="memTop">
+                      <div>
+                        <p class="memTitle">${escHTML(it.title || "")}</p>
+                        ${it.tag ? `<span class="memTag">${escHTML(it.tag)}</span>` : ""}
+                      </div>
+                      <div class="memDate">${escHTML(formatDate(it.date || ""))}</div>
                     </div>
-                    <div class="memDate">${escHTML(formatDate(it.date || ""))}</div>
+                    ${it.image ? `<img class="memImg expandable" src="${escHTML(it.image)}" alt="memory screenshot">` : ""}
+                    ${it.caption ? `<div class="memCaption">${escHTML(it.caption)}</div>` : ""}
                   </div>
-                  ${it.image ? `<img class="memImg expandable" src="${escHTML(it.image)}" alt="memory screenshot">` : ""}
-                  ${it.caption ? `<div class="memCaption">${escHTML(it.caption)}</div>` : ""}
-                </div>
-              `).join("")}
+                `;
+              }).join("")}
             </div>
           </div>
         `;
@@ -676,6 +655,7 @@
 
     render();
 
+    // ===== IMAGE MODAL =====
     const modal = document.getElementById("imageModal");
     const modalImg = document.getElementById("modalImg");
 
@@ -693,9 +673,10 @@
       modal.setAttribute("aria-hidden", "true");
     });
 
+    // ===== SURPRISE ME: GO TO AN ACTUAL MEMORY CARD =====
     document.getElementById("randomBtn").addEventListener("click", () => {
       const allItems = [];
-      MONTHS.forEach((m, mi) => (m.items || []).forEach((it) => allItems.push({ mi, it })));
+      MONTHS.forEach((m, mi) => (m.items || []).forEach((it, ii) => allItems.push({ mi, ii })));
       if (allItems.length === 0) return;
 
       const pick = allItems[Math.floor(Math.random() * allItems.length)];
@@ -707,32 +688,36 @@
       const btn = monthEl.querySelector(".monthBtn");
       if (btn) btn.setAttribute("aria-expanded", "true");
 
-      const firstMem = monthEl.querySelector(".mem");
-      if (firstMem) firstMem.scrollIntoView({ behavior: "smooth", block: "center" });
+      // Scroll to the picked memory
+      const memId = `m${pick.mi}-i${pick.ii}`;
+      const memEl = monthEl.querySelector(`.mem[data-mem-id="${memId}"]`);
+      if (memEl) memEl.scrollIntoView({ behavior: "smooth", block: "start" });
     });
 
-    // ===== IMAGE LOCK + MIDNIGHT AUTO UNLOCK =====
+    // ===== LOCK + COUNTDOWN (NO AUTO UNLOCK) =====
     const lock = document.getElementById("lock");
     const countdown = document.getElementById("countdown");
     const lockLabel = document.getElementById("lockLabel");
     const unlockBtn = document.getElementById("unlockBtn");
     const codeError = document.getElementById("codeError");
-    
+
     const pinRow = document.getElementById("pinRow");
     const pinBoxes = [...pinRow.querySelectorAll(".pinBox")];
-
 
     function pad(n){ return String(n).padStart(2,"0"); }
 
     function tick() {
       const now = new Date();
       const diff = UNLOCK_AT - now;
+
+      // IMPORTANT: we do NOT auto-unlock anymore.
+      // It will show 00:00:00, but user still needs the code.
       if (diff <= 0) {
         countdown.textContent = "00:00:00";
-        lockLabel.textContent = "Unlocked ✨";
-        openSite();
+        lockLabel.textContent = "Enter the code ✨";
         return;
       }
+
       const s = Math.floor(diff / 1000);
       const hh = Math.floor(s / 3600);
       const mm = Math.floor((s % 3600) / 60);
@@ -746,78 +731,72 @@
     }
 
     function getPin() {
-  return pinBoxes.map(b => (b.value || "").trim()).join("");
-}
+      return pinBoxes.map(b => (b.value || "").trim()).join("");
+    }
 
-function clearPin() {
-  pinBoxes.forEach(b => b.value = "");
-  pinBoxes[0].focus();
-}
+    function clearPin() {
+      pinBoxes.forEach(b => b.value = "");
+      pinBoxes[0].focus();
+    }
 
-function tryUnlock() {
-  const typed = getPin();
-  if (typed.length !== 6) {
-    codeError.style.display = "block";
-    codeError.textContent = "Enter all 6 digits";
-    return;
-  }
-  if (typed === SECRET_CODE) {
-    codeError.style.display = "none";
-    lockLabel.textContent = "Unlocked ✨";
-    openSite();
-  } else {
-    codeError.style.display = "block";
-    codeError.textContent = "Wrong code 😭 try again";
-    clearPin();
-  }
-}
-
+    function tryUnlock() {
+      const typed = getPin();
+      if (typed.length !== 6) {
+        codeError.style.display = "block";
+        codeError.textContent = "Enter all 6 digits";
+        return;
+      }
+      if (typed === SECRET_CODE) {
+        codeError.style.display = "none";
+        lockLabel.textContent = "Unlocked ✨";
+        openSite();
+      } else {
+        codeError.style.display = "block";
+        codeError.textContent = "Wrong code 😭 try again";
+        clearPin();
+      }
+    }
 
     unlockBtn.addEventListener("click", tryUnlock);
+
     pinBoxes.forEach((box, idx) => {
-  box.addEventListener("input", () => {
-    // only allow digits
-    box.value = (box.value || "").replace(/\D/g, "").slice(0,1);
+      box.addEventListener("input", () => {
+        // only allow digits
+        box.value = (box.value || "").replace(/\D/g, "").slice(0,1);
 
-    // auto advance
-    if (box.value && idx < pinBoxes.length - 1) pinBoxes[idx + 1].focus();
+        // auto advance
+        if (box.value && idx < pinBoxes.length - 1) pinBoxes[idx + 1].focus();
 
-    // auto-unlock when 6 digits filled
-    if (getPin().length === 6) tryUnlock();
-  });
+        // auto-unlock when 6 digits filled
+        if (getPin().length === 6) tryUnlock();
+      });
 
-  box.addEventListener("keydown", (e) => {
-    if (e.key === "Backspace" && !box.value && idx > 0) {
-      pinBoxes[idx - 1].focus();
-    }
-    if (e.key === "Enter") tryUnlock();
-  });
+      box.addEventListener("keydown", (e) => {
+        if (e.key === "Backspace" && !box.value && idx > 0) {
+          pinBoxes[idx - 1].focus();
+        }
+        if (e.key === "Enter") tryUnlock();
+      });
 
-  box.addEventListener("paste", (e) => {
-    e.preventDefault();
-    const pasted = (e.clipboardData.getData("text") || "").replace(/\D/g, "").slice(0,6);
-    pasted.split("").forEach((ch, i) => { if (pinBoxes[i]) pinBoxes[i].value = ch; });
-    (pinBoxes[Math.min(pasted.length, 6) - 1] || pinBoxes[5]).focus();
-    if (pasted.length === 6) tryUnlock();
-  });
-});
+      box.addEventListener("paste", (e) => {
+        e.preventDefault();
+        const pasted = (e.clipboardData.getData("text") || "").replace(/\D/g, "").slice(0,6);
+        pasted.split("").forEach((ch, i) => { if (pinBoxes[i]) pinBoxes[i].value = ch; });
+        (pinBoxes[Math.min(pasted.length, 6) - 1] || pinBoxes[5]).focus();
+        if (pasted.length === 6) tryUnlock();
+      });
+    });
 
-// focus first box on load
-pinBoxes[0].focus();
+    // focus first box on load
+    pinBoxes[0].focus();
 
-
-    // countdown display + auto unlock at midnight
-    const interval = setInterval(tick, 250);
+    // countdown display
+    setInterval(tick, 250);
     tick();
 
-    // Preview mode: add ?preview=1
+    // Preview mode: add ?preview=1 (bypasses lock)
     const params = new URLSearchParams(location.search);
     if (params.get("preview") === "1") openSite();
   </script>
 </body>
 </html>
-
-
-
-
-
