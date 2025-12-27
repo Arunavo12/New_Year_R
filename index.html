@@ -108,19 +108,25 @@
       color: rgba(255,255,255,.85);
       font-weight: 750;
     }
-    .memImg {
+
+    /* ✅ Landscape media blocks (16:9) that don't squish */
+    .mediaFrame{
       width: 100%;
-      height: 220px;
-      object-fit: cover;
+      aspect-ratio: 16 / 9;
       border-radius: 12px;
+      overflow: hidden;
       margin-top: 10px;
-      opacity: .92;
-      cursor: zoom-in;
-      display:block;
       background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.10);
     }
-    /* Videos should not show zoom cursor */
-    video.memImg { cursor: default; }
+    .mediaFrame img,
+    .mediaFrame video{
+      width: 100%;
+      height: 100%;
+      object-fit: contain; /* ✅ no squish + no crop */
+      display:block;
+    }
+
     .memCaption {
       margin-top: 10px;
       color: rgba(255,255,255,.88);
@@ -189,7 +195,6 @@
     }
 
     @media (max-width: 780px) {
-      .memImg { height: 240px; }
       .count { font-size: 36px; }
     }
   </style>
@@ -255,9 +260,10 @@
     const SECRET_CODE = "011210"; // <-- CHANGE THIS
     const FRIEND_NAME = "Radhaaaaaa";
 
-    // ===== DATA (FIXED) =====
+    // ===== DATA =====
+    // ✅ PUT YOUR FULL MONTHS ARRAY HERE (Jan–Dec). I’m keeping your September example below.
     const MONTHS = [
-      {
+       {
         month: "January",
         year: "2025",
         items: [
@@ -457,32 +463,19 @@
         month: "September",
         year: "2025",
         items: [
-          {
-            date: "2025-09-02",
-            title: "Trust.",
-            tag: "core memory",
-            image: "trust.png",
-            caption: "This. The. Most. Significant. Day."
-          },
+          { date: "2025-09-02", title: "Trust.", tag: "core memory", image: "trust.png", caption: "This. The. Most. Significant. Day." },
 
-          // CONCERT (images + videos)
           { date: "2025-09-05", title: "First picture ever?", tag: "concert", mediaType: "image", src: "IMG_8461.jpg", caption: "Our first selfie of the day... (and ever??)" },
           { date: "2025-09-05", title: "First video together?", tag: "concert", mediaType: "video", src: "first_video.mp4", caption: "Our first video together ever???" },
           { date: "2025-09-05", title: "Tum Hi Ho", tag: "concert", mediaType: "video", src: "tum_hi_ho.mp4", caption: "Radhika version of Tum Hi Ho..." },
-          { date: "2025-09-05", title: "Cough cough", tag: "concert", mediaType: "video", src: "vape.mp4", caption: "No caption needed. My shock was so genuine that I stopped recording." },
+          { date: "2025-09-05", title: "Cough cough", tag: "concert", mediaType: "video", src: "vape.mp4", caption: "No caption needed." },
           { date: "2025-09-05", title: "Concert – photo", tag: "concert", mediaType: "image", src: "IMG_8490.jpg", caption: "" },
           { date: "2025-09-05", title: "Last pic of the night", tag: "concert", mediaType: "image", src: "IMG_8523.jpg", caption: "Our last picture of the night" },
           { date: "2025-09-05", title: "Snapchat Recap", tag: "concert", mediaType: "image", src: "IMG_8589.jpg", caption: "" },
 
-          { date: "2025-09-07", title: "After Concert", tag: "core memory", image: "hmmm.png", caption: "After concert vibes." },
-
-          // placeholders
-          { date: "2025-09-XX", title: "Event 2 – title", tag: "event", mediaType: "image", src: "sept/event2_01.jpg", caption: "Write your caption here." },
-          { date: "2025-09-XX", title: "Event 2 – video", tag: "event", mediaType: "video", src: "sept/event2_02.mp4", caption: "Write your caption here." },
-          { date: "2025-09-XX", title: "Event 3 – title", tag: "event", mediaType: "image", src: "sept/event3_01.jpg", caption: "Write your caption here." },
-          { date: "2025-09-XX", title: "Event 4 – title", tag: "event", mediaType: "image", src: "sept/event4_01.jpg", caption: "Write your caption here." }
+          { date: "2025-09-07", title: "After Concert", tag: "core memory", image: "hmmm.png", caption: "After concert vibes." }
         ]
-      }
+      },
     ];
 
     // ===== HELPERS =====
@@ -519,22 +512,31 @@
       });
     }
 
+    // ✅ FIXED: supports BOTH styles:
+    // - old style: it.image
+    // - new style: it.mediaType + it.src
     function renderMedia(it) {
-      const path = it.src || it.image; // support both styles
+      const path = it.src || it.image;
       if (!path) return "";
 
       const type = it.mediaType || (it.image ? "image" : "image");
 
       if (type === "video") {
         return `
-          <video class="memImg" controls playsinline preload="metadata">
-            <source src="${escHTML(path)}">
-            Your browser can’t play this video.
-          </video>
+          <div class="mediaFrame">
+            <video controls playsinline preload="metadata">
+              <source src="${escHTML(path)}">
+              Your browser can’t play this video.
+            </video>
+          </div>
         `;
       }
 
-      return `<img class="memImg expandable" src="${escHTML(path)}" alt="memory screenshot">`;
+      return `
+        <div class="mediaFrame">
+          <img class="expandable" src="${escHTML(path)}" alt="memory screenshot">
+        </div>
+      `;
     }
 
     function render() {
@@ -611,7 +613,7 @@
       modal.setAttribute("aria-hidden", "true");
     });
 
-    // ===== SURPRISE ME: GO TO AN ACTUAL MEMORY CARD =====
+    // ===== SURPRISE ME =====
     document.getElementById("randomBtn").addEventListener("click", () => {
       const allItems = [];
       MONTHS.forEach((m, mi) => (m.items || []).forEach((it, ii) => allItems.push({ mi, ii })));
@@ -631,7 +633,7 @@
       if (memEl) memEl.scrollIntoView({ behavior: "smooth", block: "start" });
     });
 
-    // ===== LOCK + COUNTDOWN (NO AUTO UNLOCK) =====
+    // ===== LOCK + COUNTDOWN =====
     const lock = document.getElementById("lock");
     const countdown = document.getElementById("countdown");
     const lockLabel = document.getElementById("lockLabel");
@@ -665,9 +667,7 @@
       lock.setAttribute("aria-hidden", "true");
     }
 
-    function getPin() {
-      return pinBoxes.map(b => (b.value || "").trim()).join("");
-    }
+    function getPin() { return pinBoxes.map(b => (b.value || "").trim()).join(""); }
 
     function clearPin() {
       pinBoxes.forEach(b => b.value = "");
@@ -702,9 +702,7 @@
       });
 
       box.addEventListener("keydown", (e) => {
-        if (e.key === "Backspace" && !box.value && idx > 0) {
-          pinBoxes[idx - 1].focus();
-        }
+        if (e.key === "Backspace" && !box.value && idx > 0) pinBoxes[idx - 1].focus();
         if (e.key === "Enter") tryUnlock();
       });
 
@@ -722,6 +720,7 @@
     setInterval(tick, 250);
     tick();
 
+    // Preview mode: add ?preview=1 (bypasses lock)
     const params = new URLSearchParams(location.search);
     if (params.get("preview") === "1") openSite();
   </script>
