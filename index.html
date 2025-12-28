@@ -81,17 +81,33 @@
       margin-top: 14px;
     }
     .choice{
-      grid-column: span 4;
-      min-height: 98px;
-      border-radius: 18px;
-      padding: 16px;
-      cursor:pointer;
-      background: rgba(255,255,255,.06);
-      border: 1px solid rgba(255,255,255,.12);
-      box-shadow: 0 10px 30px rgba(0,0,0,.20);
-      transition: transform .12s ease, background .12s ease, border-color .12s ease;
-      display:flex; flex-direction:column; gap:6px;
-    }
+  grid-column: span 4;
+  min-height: 110px;
+  border-radius: 18px;
+  padding: 16px;
+  cursor:pointer;
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.12);
+  box-shadow: 0 10px 30px rgba(0,0,0,.20);
+
+  display:flex;
+  flex-direction:column;
+  align-items:center;      /* ✅ centers icon + text */
+  justify-content:center;  /* ✅ centers vertically */
+  text-align:center;       /* ✅ centers text */
+  gap: 8px;
+}
+
+    .choiceTitle{
+  font-weight: 900;
+  font-size: 17px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap: 8px;
+}
+
+
     .choice:hover{ transform: translateY(-2px); background: rgba(255,255,255,.08); border-color: rgba(124,92,255,.35); }
     .choiceTitle{ font-weight: 900; font-size: 16px; }
     .choiceMeta{ color: rgba(255,255,255,.65); font-size: 13px; line-height:1.4; }
@@ -101,27 +117,34 @@
       .bigTitle{ font-size: 30px; }
     }
     /* 🥒🌸 Pretty cucumber homepage background */
+/* Make the home view fill the screen */
 #view-home{
   position: relative;
-  overflow: hidden;
+  min-height: 100vh;
 }
 
+/* Make sure the repeating background spans the whole view */
 #view-home::before{
   content:"";
   position:absolute;
   inset:0;
-  background-image: url("cucumber.png");
+  background-image: url("cucumber_tile_pretty.png"); /* or cucumber.png */
   background-repeat: repeat;
-  background-size: 220px 220px; /* adjust density */
-  opacity: 0.18;               /* subtle but visible */
+  background-size: 220px 220px;
+  opacity: 0.18;
   pointer-events:none;
   z-index:0;
 }
 
+/* Keep content above it */
 #view-home .wrap{
   position: relative;
   z-index: 1;
+  min-height: 100vh; /* important */
+  display: flex;
+  flex-direction: column;
 }
+
 
 
     /* Video view */
@@ -786,7 +809,31 @@
 
           { date: "2025-10-28", title: "Soch Na Sake", tag: "core memory", mediaType: "video", src: "soch_na_sake.mp4", caption: "Singing my favourite song..." }
         ]
-      }
+      },
+              {
+        month: "November",
+        year: "2025",
+        items: [
+            { date: "2025-11-11", title: "Mad Radha?", tag: "core memory", mediaType: "image", src: "IMG_1621.jpg", caption: "I know I am ill right now while I do this but I genuinely thought I would be okay and fingers crossed I was. But that rain was genuinely horrible. But I think I kept this cos it showed me theres actually shmucks who care even tho I do dumb stuff" },
+            { date: "2025-11-25", title: "Lose R", tag: "core memory", mediaType: "image", src: "loseyou.png", caption: "I know you have to say this a lot but I guess I am just an insecure person who does not want lose the person they talk to the most and just have the best bond with" },
+            
+          ]
+          
+      },
+      {
+        month: "December",
+        year: "2025",
+        items: [
+          { date: "2025-12-01", title: "Birthday Paragraph", tag: "core memory", mediaType: "image", src: "birthday_para.png", caption: "I mean I knew I was going to get a paragraph but you know it still feels nice and welcoming to hear it. I know it. But every once in a while, it feels nice to just hear it from someone else as well when I am quick to put myself down. So yes, you had the best paragraph and the one I cherish the most :)" },
+          { date: "2025-12-05", title: "Twinism", tag: "core memory", mediaType: "image", src: "twinsim.png", caption: "Us talking about the exact part of the song as I recorded myself to it and sent it to you says a lot doesn't it (yes, twinism is real shush)" },
+          { date: "2025-12-13", title: "Eat", tag: "core memory", mediaType: "image", src: "starve.png", caption: "A common theme in our day to day convos is Radha being hungry and not always eating then Novo having to request over and over but yes. Eat fr fr." },
+          { date: "2025-12-13", title: "Eyelashes", tag: "core memory", mediaType: "image", src: "eyelashes.png", caption: "I know how insecure you feel about your eyelashes so I knew it was only right that I tried to do the thing and get you the serum so let me know when it is about to run out. I want you to feel proud and happy with those stuff" },
+          { date: "2025-12-17", title: "Biceps", tag: "core memory", mediaType: "image", src: "biceps.png", caption: "Shush, this is now my motivation to prove you wrong (never back down from a challenge)" },
+          
+          ]
+          
+        
+      },
     ];
 
     // ===== VIEW ROUTER =====
@@ -1076,5 +1123,6 @@
   </script>
 </body>
 </html>
+
 
 
