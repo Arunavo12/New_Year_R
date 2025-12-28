@@ -7,31 +7,140 @@
   <style>
     :root { --bg:#070711; --card:#0f1020; --text:#f3f4ff; --muted:#b9b9d6; --accent:#7c5cff; }
     * { box-sizing:border-box; }
-    body {
+    body{
       margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      background: radial-gradient(1200px 600px at 20% 0%, rgba(124,92,255,.25), transparent 60%),
-                  radial-gradient(1000px 500px at 90% 20%, rgba(0,255,198,.12), transparent 60%),
-                  var(--bg);
+      background:
+        radial-gradient(1200px 600px at 20% 0%, rgba(124,92,255,.25), transparent 60%),
+        radial-gradient(1000px 500px at 90% 20%, rgba(0,255,198,.12), transparent 60%),
+        var(--bg);
       color:var(--text);
+      overflow-x:hidden;
     }
+
     .wrap { max-width: 980px; margin: 0 auto; padding: 28px 18px 60px; }
     header { display:flex; gap:16px; align-items:center; justify-content:space-between; flex-wrap:wrap; }
     .title h1 { margin:0; font-size: 28px; letter-spacing: .2px; }
     .title p { margin: 6px 0 0; color:var(--muted); }
+
     .pill { display:inline-flex; align-items:center; gap:10px; padding:10px 14px; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12); border-radius: 999px; backdrop-filter: blur(10px); }
     .dot { width:10px; height:10px; border-radius:50%; background: var(--accent); box-shadow: 0 0 18px rgba(124,92,255,.9); }
-    .grid { display:grid; gap:14px; }
-    .cards { grid-template-columns: repeat(12, 1fr); margin-top: 18px; }
+
     .card { background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12); border-radius: 18px; padding: 16px; box-shadow: 0 10px 30px rgba(0,0,0,.25); }
-    .hero { grid-column: span 12; padding: 22px; }
-    .hero h2 { margin: 0 0 8px; font-size: 22px; }
-    .hero p { margin: 0; color: var(--muted); line-height: 1.55; }
-    .btn { margin-top: 14px; display:inline-flex; align-items:center; justify-content:center; padding: 10px 14px; border-radius: 12px; cursor:pointer; background: linear-gradient(135deg, rgba(124,92,255,.95), rgba(124,92,255,.55)); color: white; border: 0; font-weight: 600; }
+    .btn {
+      display:inline-flex; align-items:center; justify-content:center;
+      padding: 10px 14px; border-radius: 12px; cursor:pointer;
+      background: linear-gradient(135deg, rgba(124,92,255,.95), rgba(124,92,255,.55));
+      color: white; border: 0; font-weight: 700;
+      transition: transform .12s ease, filter .12s ease;
+      text-decoration:none;
+    }
+    .btn:hover { filter: brightness(1.05); }
     .btn:active { transform: translateY(1px); }
+
+    .ghostBtn{
+      display:inline-flex; align-items:center; justify-content:center;
+      padding: 10px 14px; border-radius: 12px; cursor:pointer;
+      background: rgba(255,255,255,.06);
+      color: rgba(255,255,255,.92);
+      border: 1px solid rgba(255,255,255,.14);
+      font-weight: 700;
+    }
+    .ghostBtn:hover { background: rgba(255,255,255,.09); }
+
+    /* Views */
+    .view { display:none; }
+    .view.active { display:block; animation: fadeIn .25s ease; }
+    @keyframes fadeIn { from {opacity:0; transform: translateY(6px);} to {opacity:1; transform: translateY(0);} }
+
+    /* Welcome */
+    .welcomeWrap { max-width: 980px; margin: 0 auto; padding: 60px 18px 70px; min-height: 100vh; display:flex; align-items:center; justify-content:center; }
+    .welcomeCard { width: min(780px, 100%); padding: 22px; text-align:center; }
+    .bigTitle { font-size: 34px; margin: 0; letter-spacing:.2px; font-weight: 900; }
+    .subTitle { margin: 10px 0 0; color: var(--muted); line-height: 1.6; }
+    .actionsRow { margin-top: 18px; display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
+
+    /* Home menu */
+    .menuGrid{
+      display:grid; gap: 14px;
+      grid-template-columns: repeat(12, 1fr);
+      margin-top: 18px;
+    }
+    .menuCard{ grid-column: span 12; padding: 22px; }
+    .menuCard h2{ margin:0 0 6px; font-size: 20px; }
+    .menuCard p{ margin:0; color: var(--muted); line-height:1.55; }
+    .menuButtons{
+      display:grid; gap: 12px;
+      grid-template-columns: repeat(12, 1fr);
+      margin-top: 14px;
+    }
+    .choice{
+      grid-column: span 4;
+      min-height: 98px;
+      border-radius: 18px;
+      padding: 16px;
+      cursor:pointer;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.12);
+      box-shadow: 0 10px 30px rgba(0,0,0,.20);
+      transition: transform .12s ease, background .12s ease, border-color .12s ease;
+      display:flex; flex-direction:column; gap:6px;
+    }
+    .choice:hover{ transform: translateY(-2px); background: rgba(255,255,255,.08); border-color: rgba(124,92,255,.35); }
+    .choiceTitle{ font-weight: 900; font-size: 16px; }
+    .choiceMeta{ color: rgba(255,255,255,.65); font-size: 13px; line-height:1.4; }
+
+    @media (max-width: 820px){
+      .choice{ grid-column: span 12; }
+      .bigTitle{ font-size: 30px; }
+    }
+
+    /* Video view */
+    .playerWrap{ margin-top: 16px; }
+    .mediaFrame{
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border-radius: 16px;
+      overflow: hidden;
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.10);
+    }
+    .mediaFrame video{ width:100%; height:100%; object-fit: contain; display:block; background: rgba(0,0,0,.25); }
+
+    /* Paragraph view */
+    .letter{
+      margin-top: 16px;
+      padding: 22px;
+    }
+    .letterInner{
+      max-width: 680px;
+      margin: 0 auto;
+      line-height: 1.75;
+      color: rgba(255,255,255,.92);
+      font-size: 15.5px;
+    }
+    .letterInner h3{
+      margin: 0 0 10px;
+      font-size: 22px;
+      font-weight: 950;
+      letter-spacing: .15px;
+    }
+    .letterInner p{ margin: 0 0 14px; color: rgba(255,255,255,.90); }
+    .letterInner .soft{ color: rgba(255,255,255,.78); }
+    .divider{
+      height: 1px;
+      background: rgba(255,255,255,.12);
+      margin: 18px 0;
+    }
+    .signature{
+      margin-top: 16px;
+      font-weight: 850;
+      color: rgba(255,255,255,.88);
+    }
+
+    /* Memories (your existing styles, mostly) */
     .sectionTitle { margin: 28px 0 10px; font-size: 16px; color: var(--muted); letter-spacing: .12em; text-transform: uppercase; }
 
-    /* Month accordion */
-    .months { display:flex; flex-direction:column; gap:12px; }
+    .months { display:flex; flex-direction:column; gap:12px; margin-top: 10px; }
     .month { border-radius: 18px; overflow: hidden; border: 1px solid rgba(255,255,255,.12); background: rgba(255,255,255,.05); }
     .monthBtn { width: 100%; text-align: left; display:flex; align-items:center; justify-content:space-between; gap: 12px; padding: 14px 16px; background: transparent; border: 0; color: var(--text); cursor: pointer; }
     .monthBtn:hover { background: rgba(255,255,255,.04); }
@@ -43,7 +152,6 @@
     .monthContent { display:none; padding: 0 16px 16px; }
     .month.open .monthContent { display:block; }
 
-    /* Memory cards inside months */
     .memList { display:flex; flex-direction:column; gap:12px; margin-top: 10px; }
     .mem { background: rgba(0,0,0,.18); border: 1px solid rgba(255,255,255,.10); border-radius: 16px; padding: 12px; scroll-margin-top: 90px; }
     .memTop { display:flex; align-items:flex-start; justify-content:space-between; gap: 10px; }
@@ -51,33 +159,30 @@
     .memTitle { margin: 0; font-size: 15px; font-weight: 850; line-height: 1.25; }
     .memTag { display:inline-block; margin-top: 8px; font-size: 12px; padding: 5px 10px; border-radius: 999px; background: rgba(124,92,255,.18); border: 1px solid rgba(124,92,255,.35); color: rgba(255,255,255,.85); font-weight: 750; }
 
-    /* ✅ Landscape media blocks (16:9) that don't squish */
-    .mediaFrame{ width: 100%; aspect-ratio: 16 / 9; border-radius: 12px; overflow: hidden; margin-top: 10px; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.10); }
-    .mediaFrame img, .mediaFrame video{ width: 100%; height: 100%; object-fit: contain; /* ✅ no squish + no crop */ display:block; }
+    .memMediaFrame{ width: 100%; aspect-ratio: 16 / 9; border-radius: 12px; overflow: hidden; margin-top: 10px; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.10); }
+    .memMediaFrame img, .memMediaFrame video{ width: 100%; height: 100%; object-fit: contain; display:block; }
     .memCaption { margin-top: 10px; color: rgba(255,255,255,.88); line-height: 1.55; white-space: pre-wrap; }
-
-    /* Lock overlay */
-    .lockOverlay { position: fixed; inset: 0; display:flex; align-items:center; justify-content:center; background: rgba(7,7,17,.92); backdrop-filter: blur(10px); z-index: 50; }
-    .lockBox { width:min(520px, 92vw); text-align:center; }
-    .count { font-size: 42px; font-weight: 800; letter-spacing: .02em; margin: 10px 0 6px; }
-    .sub { color: var(--muted); margin: 0 0 16px; line-height: 1.5; }
-    .hint { color: rgba(255,255,255,.75); font-size: 13px; margin-top: 10px; }
-    .codeRow{ display:flex; gap:10px; justify-content:center; margin-top:14px; flex-wrap:wrap; }
-    .pinRow{display:flex;gap:10px;justify-content:center;margin-top:14px; flex-wrap:wrap;}
-    .pinBox{ width:44px;height:54px; border-radius:14px; border:1px solid rgba(255,255,255,.16); background:rgba(255,255,255,.06); color:var(--text); font-size:22px; font-weight:800; text-align:center; outline:none; }
-    .pinBox:focus{ border-color: rgba(124,92,255,.55); box-shadow: 0 0 0 4px rgba(124,92,255,.18); }
-    .codeError{ color: rgba(255,120,120,.95); display:none; margin-top:10px; }
 
     /* Image modal */
     .image-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.85); display: none; align-items: center; justify-content: center; z-index: 100; cursor: zoom-out; padding: 18px; }
     .image-modal img { max-width: 92vw; max-height: 92vh; border-radius: 14px; box-shadow: 0 20px 60px rgba(0,0,0,0.6); }
 
+    /* Lock overlay (keep your existing lock if you want; this is optional) */
+    .lockOverlay { position: fixed; inset: 0; display:flex; align-items:center; justify-content:center; background: rgba(7,7,17,.92); backdrop-filter: blur(10px); z-index: 200; }
+    .lockBox { width:min(520px, 92vw); text-align:center; }
+    .count { font-size: 42px; font-weight: 800; letter-spacing: .02em; margin: 10px 0 6px; }
+    .sub { color: var(--muted); margin: 0 0 16px; line-height: 1.5; }
+    .hint { color: rgba(255,255,255,.75); font-size: 13px; margin-top: 10px; }
+    .pinRow{display:flex;gap:10px;justify-content:center;margin-top:14px; flex-wrap:wrap;}
+    .pinBox{ width:44px;height:54px; border-radius:14px; border:1px solid rgba(255,255,255,.16); background:rgba(255,255,255,.06); color:var(--text); font-size:22px; font-weight:800; text-align:center; outline:none; }
+    .pinBox:focus{ border-color: rgba(124,92,255,.55); box-shadow: 0 0 0 4px rgba(124,92,255,.18); }
+    .codeError{ color: rgba(255,120,120,.95); display:none; margin-top:10px; }
     @media (max-width: 780px) { .count { font-size: 36px; } }
   </style>
 </head>
 <body>
 
-  <!-- LOCK OVERLAY -->
+  <!-- OPTIONAL LOCK (keep if you still want it) -->
   <div id="lock" class="lockOverlay" aria-hidden="false">
     <div class="lockBox card">
       <div class="pill"><span class="dot"></span><span id="lockLabel">Enter the code ✨</span></div>
@@ -93,38 +198,132 @@
         <input class="pinBox" inputmode="numeric" maxlength="1" />
       </div>
 
-      <div class="codeRow" style="justify-content:center;">
-        <button id="unlockBtn" class="btn" style="margin-top:0;">Unlock</button>
+      <div class="actionsRow" style="margin-top:14px;">
+        <button id="unlockBtn" class="btn" style="margin:0;">Unlock</button>
       </div>
 
-      <div id="codeError" class="hint codeError">Wrong code 😭 hehehe</div>
-      <div class="hint">Tip: press Enter to unlock.</div>
+      <div id="codeError" class="hint codeError">Wrong code 😭 hehehe </div>
+      <div class="hint">Tip: press Enter to unlock. (Preview: add ?preview=1)</div>
     </div>
   </div>
 
-  <div class="wrap">
-    <header>
-      <div class="title">
-        <h1>For <span id="friendName">My Favourite Person</span> ✨</h1>
-        <p>Months you can open like little folders. Screenshots included. 🫶</p>
-      </div>
-      <div class="pill"><span class="dot"></span><span id="yearLabel">2025 → 2026</span></div>
-    </header>
+  <!-- WELCOME VIEW -->
+  <section id="view-welcome" class="view active">
+    <div class="welcomeWrap">
+      <div class="welcomeCard card">
+        <div class="pill" style="justify-content:center; margin: 0 auto 14px; width: fit-content;">
+          <span class="dot"></span><span id="welcomePill">A little gift ✨</span>
+        </div>
 
-    <div class="grid cards">
-      <div class="card hero">
-        <h2 id="heroTitle">Happy New Year 🥂</h2>
-        <p id="heroText">
-          I made this so you can open each month and replay our year. Tap any screenshot to zoom in.
+        <h1 class="bigTitle">Happy New Year, <span id="friendNameWelcome">Radha</span> 🥂</h1>
+        <p class="subTitle">
+          I made this so you can replay our year whenever you want. Little folders, little moments, and a little us.
         </p>
-        <button class="btn" id="randomBtn">Surprise me 🎲</button>
+
+        <div class="actionsRow">
+          <button class="btn" id="startBtn">Start ✨</button>
+          <button class="ghostBtn" id="skipToHomeBtn">Skip → Home</button>
+        </div>
       </div>
     </div>
+  </section>
 
-    <div class="sectionTitle">Months</div>
-    <div class="months" id="months"></div>
-  </div>
+  <!-- HOME VIEW -->
+  <section id="view-home" class="view">
+    <div class="wrap">
+      <header>
+        <div class="title">
+          <h1>For <span id="friendName">My Favourite Person</span> ✨</h1>
+          <p>Pick a door. You can always come back. 🫶</p>
+        </div>
+        <div class="pill"><span class="dot"></span><span id="yearLabel">2025 → 2026</span></div>
+      </header>
 
+      <div class="menuGrid">
+        <div class="menuCard card">
+          <h2>Where do you want to start?</h2>
+          <p>Video for vibes, Paragraph for feelings, Memories for the whole timeline.</p>
+
+          <div class="menuButtons">
+            <button class="choice" id="goVideo" type="button">
+              <div class="choiceTitle">🎬 Video</div>
+              <div class="choiceMeta">A short little recap (Radz.mp4)</div>
+            </button>
+
+            <button class="choice" id="goParagraph" type="button">
+              <div class="choiceTitle">💌 Paragraph</div>
+              <div class="choiceMeta">One big letter. Take your time.</div>
+            </button>
+
+            <button class="choice" id="goMemories" type="button">
+              <div class="choiceTitle">🗓️ Memories</div>
+              <div class="choiceMeta">Months you can open like folders.</div>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- VIDEO VIEW -->
+  <section id="view-video" class="view">
+    <div class="wrap">
+      <header>
+        <div class="title">
+          <h1>🎬 Video</h1>
+          <p class="soft" style="color:var(--muted); margin:6px 0 0;">A quick recap.</p>
+        </div>
+        <button class="ghostBtn" id="backFromVideo">← Back home</button>
+      </header>
+
+      <div class="card playerWrap">
+        <div class="mediaFrame">
+          <video controls playsinline preload="metadata">
+            <source src="Radz.mp4" type="video/mp4">
+            Your browser can’t play this video.
+          </video>
+        </div>
+        <div class="hint">If it doesn’t load, make sure <b>Radz.mp4</b> is in the same folder as the HTML and you’re running via Live Server / a host (not file://).</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PARAGRAPH VIEW -->
+  <section id="view-paragraph" class="view">
+    <div class="wrap">
+      <header>
+        <div class="title">
+          <h1>💌 Paragraph</h1>
+          <p style="margin:6px 0 0; color:var(--muted);">One big letter.</p>
+        </div>
+        <button class="ghostBtn" id="backFromParagraph">← Back home</button>
+      </header>
+
+      <div class="card letter">
+        <div class="letterInner" id="letterMount">
+          <!-- injected by JS -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MEMORIES VIEW -->
+  <section id="view-memories" class="view">
+    <div class="wrap">
+      <header>
+        <div class="title">
+          <h1>🗓️ Memories</h1>
+          <p style="margin:6px 0 0; color:var(--muted);">Months you can open like little folders.</p>
+        </div>
+        <button class="ghostBtn" id="backFromMemories">← Back home</button>
+      </header>
+
+      <div class="sectionTitle">Months</div>
+      <div class="months" id="months"></div>
+    </div>
+  </section>
+
+  <!-- IMAGE MODAL -->
   <div id="imageModal" class="image-modal" aria-hidden="true">
     <img id="modalImg" src="" alt="expanded memory">
   </div>
@@ -132,412 +331,68 @@
   <script>
     // ===== SETTINGS =====
     const UNLOCK_AT = new Date("2026-01-01T00:00:00");
-    const SECRET_CODE = "011210"; // <-- CHANGE THIS
+    const SECRET_CODE = "011210"; // <-- change
     const FRIEND_NAME = "Radhaaaaaa";
 
+    // ✅ Your letter (edit freely)
+    const LETTER_HTML = `
+      <h3>Happy New Year, Radha.</h3>
+      <p class="soft">
+        I don’t even know where to start properly, but I wanted you to have something you can come back to whenever you feel like it —
+        something that feels like me, and feels like us.
+      </p>
+      <div class="divider"></div>
+      <p>
+        (Put your full letter here. Break it into short paragraphs so it hits harder and feels easier to read.)
+      </p>
+      <p>
+        You don’t need to rush this. Just read it slowly, whenever you’re in the right mood.
+      </p>
+      <div class="divider"></div>
+      <p>
+        And as always… I’m proud of you. More than you realise.
+      </p>
+      <p class="signature">— Novo</p>
+    `;
+
     // ===== DATA =====
-    // ✅ PUT YOUR FULL MONTHS ARRAY HERE (Jan–Dec). I’m keeping your September example below.
+    // ✅ PASTE YOUR FULL MONTHS ARRAY HERE (Jan–Dec). Using a placeholder for now.
     const MONTHS = [
-      {
-        month: "January",
-        year: "2025",
-        items: [
-          {
-            date: "2024-12-01",
-            title: "Unadd",
-            tag: "core memory",
-            image: "snapchat_convo.png",
-            caption: "I might lowkey have the memory of a goldfish at times but I know that I definitely remember this. Yes we weren't close close but when you added me back and wished me. I did feel happy. I felt glad. I know we hadn't talked talks but I really really appreciated you for being you and just seemed like a very cool (still do) person and someone I would have wanted to spend more time getting to know and spending time with. That's why this pinky promise is important :)"
-          },
-          {
-            date: "2025-01-03",
-            title: "Yellow heart Radha 💛",
-            tag: "core memory",
-            image: "IMG_3377.PNG",
-            caption: "One of the only screenshots I could find on my phone from January. But I see a yellow heart and I see me replying to only one person. It has only been that case but it is still the case. I still reply to my number one (also my pinned). I think I came back from Desh and that was the first thing I did when I replied after getting internet back."
-          },
-          {
-            date: "2025-01-16",
-            title: "Not liking anyone",
-            tag: "core memory",
-            image: "day2_notlikinganyone.png",
-            caption: "This foreshadowing goes crazyyyyyy. But I know you did your best so well done for being you Radha and trying to do what you do. You are much better than anything I could have ever done:)"
-          },
-          {
-            date: "2025-01-27",
-            title: "Novo advice??",
-            tag: "core memory",
-            image: "snapchat_convo_arunavo.png",
-            caption: "I am sure you know how much I care anyway but I came across this and it made me realise that I still wish you loved yourself more. I wish you could see yourself the way I see you. Sundor both on the inside and outside. You need to hype yourself up more Radha. You could pull anyone if you really wanted to (but Radha knows her priorities so won't x) but think about your amazing qualities from your dress sense to knowing what clothes to buy to knowing what to style and maybe actually helping me style?? Shush we don't count the concert clothing that you told me to wear- I take credit. But just know that people would want to have your eyes, ears, hair, lips, body, and anything else you can think of. So appreciate it and if you do then even more :)"
-          }
-        ]
-      },
-
-      {
-        month: "February",
-        year: "2025",
-        items: [
-          {
-            date: "2025-02-01",
-            title: "Our bet",
-            tag: "core memory",
-            image: "snapchat_convo_bet.png",
-            caption: "I do roughly remember this but reading back at it made me realise what I actually said. I stand by it still of course. I will tell you the reasons why. Obviously firstly is exams and stuff and I need you as much as you need yourself to smash these exams and do amazing and just show your talent off to everyone because that is who you are. But also, I do think a lot of it is distractions and just your mind acting up and I know how close you get, attached and I saw a lot of myself in you so maybe I was trying to protect you as well. But this being in February I wonder if it was also because of me not wanting to lose our bond and the amount of time that we spend talking to each other."
-          },
-          {
-            date: "2025-02-01",
-            title: "Our bet added on",
-            tag: "core memory",
-            image: "snapchat_convo_bf18.png",
-            caption: "Lowkey reminding you of our bet still because I did not remember the 18 one. But I now make it a 100 quid bet instead. But deep down I know that money won't ever stop you if you really want to get into a relationship. So this isn't anything that bad. I am just giving my incentive for you. Whether its a protect or not, you can decide."
-          }
-        ]
-      },
-
-      {
-        month: "March",
-        year: "2025",
-        items: [
-          {
-            date: "2025-03-06",
-            title: "Pain",
-            tag: "core memory",
-            image: "pain_quote.png",
-            caption: "I have no memory of me saying this. But it sounds like a lot of stuff I normally say anyway so not surprised. I know when you are mad, you don't think about it. I know you don't really feel it I guess but it hurts knowing that I can't help or be there. I can't say it for others because I know you have people close and I know how you have many people who care especially now. But I still want to be there when I can be. If I can lend you a hand or just even temporarily make you smile while you're going through something then it is better than nothing and it actually makes me happy. You take on too much pressure, sadness and emotions all on your shoulders. Letting someone help you even for a second isn't a sign of weakness, it is you growing up. When you were growing up and learning to walk, did you not use a walker? Did aunty and uncle not hold your hand? It is that Radha. Let people, let us, let me, help you and be there for when you need it. We all face tough times, it makes us human. But having those people genuinely means you have someone who cares so don't forget it :)"
-          },
-          {
-            date: "2025-03-06",
-            title: "Steal what???",
-            tag: "core memory",
-            image: "handwriting_r.png",
-            caption: "I know this just says handwriting. But there is so much more I would happily take from you. I know I say it anyways but your voice, your handwriting, even your dancing? In my eyes, you have so many good qualities that you will know but it still surprises me every time. The way you have perfected so many things. The way you do them. I do feel proud knowing you."
-          },
-          {
-            date: "2025-03-21",
-            title: "Don't get hurt.",
-            tag: "core memory",
-            image: "snapchat_convo_march21_full.png",
-            caption: "Do I repeat myself that much? Why does it feel like I have said this so many times... or maybe I just have. Radha, there is so much pain around. And I know you face it. The \"something is better than nothing\" line hurts. It really does. Not because it is a painful experience (it is) but also because I have been there. Maybe I still am. I was talking about this with someone the other day and I said that sometimes when you love someone the most, you almost want them to find someone first. You know that you physically can't. You know that while they are single, deep down you're going to want to look for a chance to be with them. You do this a lot. I have before as well. It is a new year so let's try not to do this anymore. Radha's feelings. Radha's emotions. Radha's health. Radha's everything comes first. No one else. Nothing else. I know you can't help not be attached. I know. I can't either. That's why I hurt so much. That's why I hate it so much. But let's try it. Even if we like someone, we need to try and do something more. Let's not sit there idly. Let's not let them have their way around it. It is you. It has always been you Radha. From the start. No one else. Don't forget that."
-          },
-          {
-            date: "2025-03-26",
-            title: "Ask out J",
-            tag: "core memory",
-            image: "ask_out_jay.png",
-            caption: "I take blame for the whole incident. Was I wrong? Maybe. I think me seeing it eat away at you really just hurt me I guess to an extent. Maybe you shouldn't have said anything. I am sorry Radha. I know what happens next. I know what happened next. I blame myself. I am sorry the lil prick did that. Even if he is a fine shyt, he still hurt you. So he immediately pmo. And if I ever see this guy on the streets, best believe there will be unthinkable things happening."
-          }
-        ]
-      },
-
-      {
-        month: "April",
-        year: "2025",
-        items: [
-          {
-            date: "2025-04-04",
-            title: "Moving forward",
-            tag: "core memory",
-            image: "snapchat_convo_apr04.png",
-            caption: "You got rejected. So what. As time goes on, you will meet more people. You will find better people. You will find more fine shyts. You will find more love. But you know what it is: time won't stop. That crush is gone. But you know what isn't? Radha isn't. And sometimes, just take a second to look at the people around you. Look at the people you are talking to right now. Look at the love you are getting from them. Yes, we all want our crush's love, we all want that love — but this love isn't bad either. The love from these people: friends, family, whatever. And when it comes to friends and life — Radha, you know how scared I am of losing people. You know how much I couldn't lose you even during your whole off time — but you will find a way if it is needed. You will find a way to be loved. You will find a way to be okay. You will keep the friends you want to if they want to. You will lose a few. But guess what — you will be okay because you have more than enough amazing loving people, and the ones who have gone are just part of God's plan :)"
-          },
-          {
-            date: "2025-04-21",
-            title: "Fav Saha",
-            tag: "core memory",
-            image: "snapchat_convo_apr21_saha.png",
-            caption: "Pretty sure you have this as a sticker anyway. After getting to know you more and more, I might actually agree when I say that Radha might be my favourite Saha."
-          },
-          {
-            date: "2025-04-24",
-            title: "N being a hoe?",
-            tag: "core memory",
-            image: "snapchat_convo_apr24.png",
-            caption: "Nothing to even comment, just a hoe behaviour from everyone's favourite N💔"
-          },
-          {
-            date: "2025-04-28",
-            title: "Cut?",
-            tag: "core memory",
-            image: "blood.png",
-            caption: "Ummmm, was this when the cut happened and I told you to put salt?? Either a very dumb or a very good decision from me. All I know is Radha was defooo in pain so apologies maybeee. But maybe I did help it heal faster so shushhh"
-          }
-        ]
-      },
-
-      {
-        month: "May",
-        year: "2025",
-        items: [
-          {
-            date: "2025-05-16",
-            title: "Birthday paragraph",
-            tag: "core memory",
-            image: "snapchat_convo_may15.png",
-            caption: "Tbhhh, I have no clue why I am showing the birthday paragraph again. Maybe to show you the change in how I used to talk to you compared to how I talk to you now? But also maybe because the part where you said that I am the best kind of stays with me? I really really appreciate little things and you know it just feels to hear it. I tell myself it all the time but it gets to a point where you just need to hear it from someone else. I am glad you had a good birthday though."
-          },
-          {
-            date: "2025-05-17",
-            title: "C",
-            tag: "core memory",
-            image: "snapchat_convo_may17_uktime.png",
-            caption: "Why did this kinda make me laugh or smile? I feel like JB Priestley writing an inspector calls with all the foreshadowing. Arthur Birling talking about the titanic and Novo asking about C. Obviously I became jealous of him for obvious reasons (cough cough, yellow heart being stolen and not making enough time). But deep down, I did wish that you and him could have at least had a whole thing so you could be satisfied cos you know Radha's happiness on top. But you know those memories stay with you still. The thoughts, the feelings, the moments- the video calls and tiktok password, snapchat password. Don't forget those things even if you want to. They were all learning experiences. They were all things that defined you. I know it ended as a bad chapter but it isn't over over Radha. You know why? Cos you are still here, with more than enough that love and care about you."
-          },
-          {
-            date: "2025-05-24",
-            title: "Attachment",
-            tag: "core memory",
-            image: "attachment.png",
-            caption: "Something I struggle with. I always have. I still do. I probably always will. I care too much and I hate it. But I can't handle that side of me. I care too much. I love too hard. And end up getting hurt and just hurts overall. I know how much that is annoying. That's why I say that you are like me. Both idiots of one coin. We get hurt for that reason. We think too much. We love too much. We care too much. What the fuck can we do. You tell me Radha. How the fuck can I change myself. How do you stop loving so much and so hard. How do you end up trying to control yourself and just being okay? I don't think I can so it just really fucking annoys me. I wish I had more control in that aspect. I just wish I was okay in that way. I mean I will say it as it is but I am attached to people right now even. Maybe if we even take you as an instance, if you're not okay, it will be running through my mind. I will think and think and just yeah. Maybe that's just me. But I don't know if I recommend you doing it cos care just hurts a lot. At the end of the day it really fucking hurts. Even if we say a thousand times that we don't care and it doesn't bother us, it does. I know it does. We just have to act like we don't give a fuck. That's what we are. Just fakers I guess."
-          },
-          {
-            date: "2025-05-27",
-            title: "Phone Habit",
-            tag: "core memory",
-            image: "phone_habit.png",
-            caption: "Okay you're not going to take this as a blame or anything so don't. But you know as much as I talked to you and stuff but you know how I always left my phone in the other room for charging or just went on it when I wanted to. I always had that self control. The day I stopped this habit was the day your car broke down and you called me. And I remember the words \"you're never there when I need you.\" And it really made an impact-ish. Not because just anyway. But I actually felt needed. Like someone actually remembered me. Someone remembered me while they were in a crisis. The least I could do is be free. From that day onwards, I mean I don't know if you noticed it or not but I started being free on my phone. I also got a lot of notifications. So I changed my DND to a social media where only my social media notifs would come through: WhatsApp, Snapchat and Instagram. When a Snapchat notif came through with a sound, I would take a look to see if it was Radha or not. Maybe it wasn't obvious obvious but I made those lil changes. I wasn't gonna be relied on by someone and let them down. Not again. Probably why we got even closer to be honest."
-          }
-        ]
-      },
-
-      {
-        month: "June",
-        year: "2025",
-        items: [
-          {
-            date: "2025-06-09",
-            title: "Getting affected by crushes",
-            tag: "core memory",
-            image: "crush_feelings.png",
-            caption: "You must get so tired of me saying the same bs over and over but still here."
-          },
-          {
-            date: "2025-06-09",
-            title: "Control",
-            tag: "core memory",
-            image: "not_replying.png",
-            caption: "I have no idea what this situation is. But it might be when you didn't reply to someone who wasn't treating you right. You did the hard but right thing. You genuinely made the step yourself. You were okay. Just remember how strong this Radha was and still is."
-          },
-          {
-            date: "2025-06-20",
-            title: "Not rushing in",
-            tag: "core memory",
-            image: "rushing_in.png",
-            caption: "Advice."
-          },
-          {
-            date: "2025-06-25",
-            title: "Everyone cares",
-            tag: "core memory",
-            image: "snapchat_convo_jun25_uktime.png",
-            caption: "I know you still do it and I can't do anything to stop it but genuinely. Genuinely care so so much. Like I know I say it all the time. But actually care. I hope you feel better. I hope you know it. There's so many people who would do anything to make you smile and laugh and just be okay. The little things matter the most. Just know that it is okay to not be okay Radha."
-          },
-          {
-            date: "2025-06-29",
-            title: "Good week",
-            tag: "core memory",
-            image: "snapchat_chat_2025-06-29.png",
-            caption: "Advice."
-          },
-          {
-            date: "2025-06-29",
-            title: "First time opening up?",
-            tag: "core memory",
-            image: "first_time_opening_up.png",
-            caption: "Was this the first time I ever opened up to you?? But most importantly, is this the first time that I told you about how I felt inside? Maybe it was. Not something that I really want to flex. But I know that I trusted you enough to tell you and just mention it to you because of how much I trusted you but also how much you meant to me. I could have agreed with anything you said and backed it because you are Radha. Just there for me."
-          }
-        ]
-      },
-
-      {
-        month: "July",
-        year: "2025",
-        items: [
-          {
-            date: "2025-07-04",
-            title: "Jota Incident",
-            tag: "core memory",
-            image: "neves_jota.png",
-            caption: "Maybe the first time I said the thing I shouldn't have. But reading that Neves letter to Jota really made me think a lot Radha. Genuinely. That was his best friend. That was everything to him. And then I thought of the person I consider as close to me. I said it to you. I know we live and wake up but one day if something happened and I hadn't said it then I would have regretted it beyond belief."
-          },
-          {
-            date: "2025-07-06",
-            title: "Manifesting",
-            tag: "core memory",
-            image: "manifesting.png",
-            caption: "Manifesting a good and happy vibe for you as always and still want to. Just remember everything is going to be okay. I always tell you. I do mean it."
-          },
-          {
-            date: "2025-07-19",
-            title: "Paragraph",
-            tag: "core memory",
-            image: "19_july.png",
-            caption: "Paragraph."
-          },
-          {
-            date: "2025-07-19",
-            title: "That day",
-            tag: "core memory",
-            image: "image.png",
-            caption: "This is genuinely one of the craziest experiences. I know that we talked and saw each other and stuff during puja but this is nearly a whole year later? Obviously it is a bit awkward purely because of the fact that we are amongst so many people and stuff and just how we were. But I liked just being in that presence. Not really talk talk but just being around, ygm? But bare in mind. This also became an iconic day because. Uncle told me about \"can Radha go to the concert?\" It was the day that essentially changed everything? I feel like we were going in one direction until then but that day genuinely changed everything around."
-          }
-        ]
-      },
-
-      {
-        month: "August",
-        year: "2025",
-        items: [
-          {
-            date: "2025-08-05",
-            title: "Don't catch feelings",
-            tag: "core memory",
-            image: "Dont_.png",
-            caption: "I still say this. Don't catch feelings. I hate it. I still do. I think I might like someone but I can't or actually, I refuse to act upon those feelings. Control yourself and lowkey you are already on the route to being a monk. Don't forget that. Best control is self control"
-          },
-          {
-            date: "2025-08-07",
-            title: "50 reasons why",
-            tag: "core memory",
-            image: "50_reasons.png",
-            caption: "Just to let you know I definitely smiled writing that title for this one. But not much else to say, just take a look and it says it all. And I still stand by it."
-          },
-          {
-            date: "2025-08-07",
-            title: "Squishmellow",
-            tag: "core memory",
-            image: "Dont_.png",
-            caption: "New year, new squishmellow maybe???"
-          },
-          {
-            date: "2025-08-10",
-            title: "Paragraph",
-            tag: "core memory",
-            image: "paragraph.png",
-            caption: "Just read it"
-          },
-          {
-            date: "2025-08-18",
-            title: "Call Screenshot",
-            tag: "core memory",
-            image: "IMG_8040.jpg",
-            caption: "I miss our random calls. Maybe the night ones as well."
-          },
-          {
-            date: "2025-08-18",
-            title: "Fell asleep",
-            tag: "core memory",
-            image: "fell_asleep.png",
-            caption: "Sighhhh, same as the earlier screenshot. But I can't believe you had to hear Novo snore shushhh. We shall never speak about it."
-          },
-          {
-            date: "2025-08-18",
-            title: "Aloo joke",
-            tag: "core memory",
-            image: "joke_aloo.png",
-            caption: "I made Radha laugh I think?? hehe"
-          },
-          {
-            date: "2025-08-20",
-            title: "Shein",
-            tag: "core memory",
-            image: "20_aug.png",
-            caption: "Omg the first time I bought you anything? I am 100% sure it was a shein cart."
-          },
-          {
-            date: "2025-08-21",
-            title: "Eyebrows",
-            tag: "core memory",
-            image: "eyebrow_gcse.png",
-            caption: "I am going to shave off my eyebrows if you aren't happy with your GCSE results??"
-          },
-          {
-            date: "2025-08-26",
-            title: "Denmark",
-            tag: "core memory",
-            image: "denmark.png",
-            caption: "I remember this like it was yesterday."
-          },
-          {
-            date: "2025-08-28",
-            title: "Ring",
-            tag: "core memory",
-            image: "ring.jpg",
-            caption: "Just a screenshot from the Disney themed new rings that came out and you first said you wanted but then you didn't."
-          }
-        ]
-      },
-
-      {
-        month: "September",
-        year: "2025",
-        items: [
-          { date: "2025-09-02", title: "Trust.", tag: "core memory", image: "trust.png", caption: "This. The. Most. Significant. Day." },
-
-          { date: "2025-09-05", title: "First picture ever?", tag: "concert", mediaType: "image", src: "IMG_8461.JPG", caption: "Our first selfie of the day... (and ever??)" },
-          { date: "2025-09-05", title: "First video together?", tag: "concert", mediaType: "video", src: "first_video.mp4", caption: "Our first video together ever???" },
-          { date: "2025-09-05", title: "Tum Hi Ho", tag: "concert", mediaType: "video", src: "tum_hi_ho.mp4", caption: "Radhika version of Tum Hi Ho..." },
-          { date: "2025-09-05", title: "Cough cough", tag: "concert", mediaType: "video", src: "vape.mp4", caption: "No caption needed." },
-          { date: "2025-09-05", title: "Concert – photo", tag: "concert", mediaType: "image", src: "IMG_8490.JPG", caption: "" },
-          { date: "2025-09-05", title: "Last pic of the night", tag: "concert", mediaType: "image", src: "IMG_8523.JPG", caption: "Our last picture of the night" },
-          { date: "2025-09-05", title: "Snapchat Recap", tag: "concert", mediaType: "image", src: "IMG_8589.jpg", caption: "" },
-
-          { date: "2025-09-07", title: "After Concert", tag: "concert", image: "hmmm.png", caption: "After concert vibes. I won't talk much about this because the 2 days after the concert were so tough. The whole stuff and stuff. But I can't be happier that you are back. That you are still here. And still Radha :)" },
-
-          { date: "2025-09-13", title: "First picture ever?", tag: "birthday", mediaType: "image", src: "IMG_8738.JPG", caption: "Omg I would genuinely pay to watch your face drop over and over again when you saw me. The shock. The excitement. The happiness. Both you and Arj were just in disbelief. But your reaction was like a \"omg your real?\" type thing and it was heart warming. I haven't found that kind of balobasha in a very long time so I really appreciated it. But I also loved surprising you. So much. It was so nice." },
-
-          { date: "2025-09-20", title: "Twins", tag: "core memory", mediaType: "image", src: "twins.png", caption: "I know you are reading this with \"omg I am so cringe\" but the way we say the same things at the same time is genuinely so. It actually feels like I have found someone who is literally the same? That is why I call you mini Novo. Because of our thoughts. The way we are. The way we talk. And just our personalities. I am glad to have that bond and twinism with you." },
-
-          { date: "2025-09-28", title: "Matching", tag: "Durga Puja", image: "colour_combo.png", caption: "I know this was basically planned as a last minute thing but the fact we pulled it off and it actually seemed kinda cold is genuinely crazy. I had pretty much the same punjabis and you had the lehengas anyway. But this was very sweet and I know it won't happen again but I really appreciated so thank you as always. " },
-
-          { date: "2025-09-29", title: "Shashti", tag: "Durga Puja", image: "IMG_9296.jpg", caption: "Our Shashti Picture :)" },
-          { date: "2025-09-29", title: "Shashti", tag: "Durga Puja", image: "shashti.png", caption: "Radha saying I need to take pictures and videos outside which I definitely wasn't going to do anyway" },
-          { date: "2025-09-29", title: "Shmucks", tag: "Durga Puja", image: "vibe.png", caption: "Icl this sums us up. Shmucks at times but also serious :)" },
-          { date: "2025-09-29", title: "Nephew", tag: "Durga Puja", image: "IMG_9358.jpg", caption: "" },
-
-          { date: "2025-09-29", title: "Singing", tag: "Durga Puja", mediaType: "video", src: "singing.mp4", caption: "First time ever hearing you live. First time ever hearing Radha sing. First time being your hype man and hopefully not the last. I still remember how you said that you looked in the crowd and saw me hyping you up and how it made you happy so I am glad I gave you the confidence to do it so keep doing it again and again because I am your number 1 fan Radha. I really am. I don't think there is anything better than hearing it. Not to mention, the compliments you got afterwards from everyone. I had to even hear \"look what a lokhi meye she is\" from mum sigh (definitely wasn't internally smiling cos Radha compliments is needed) " },
-
-          { date: "2025-09-29", title: "Tiktok Trend", tag: "Durga Puja", mediaType: "video", src: "lift.mp4", caption: "No caption needed. Also never challenge me again :)" },
-          { date: "2025-09-29", title: "Yap Sesh", tag: "Durga Puja", mediaType: "image", src: "IMG_9377.PNG", caption: "Us having our nightly yap sesh about life, people and events" }
-        ]
-      },
-
-      {
-        month: "October",
-        year: "2025",
-        items: [
-          { date: "2025-10-01", title: "Colour Scheme", tag: "Durga Puja", mediaType: "image", src: "blue.png", caption: "What did I say..." },
-          { date: "2025-10-01", title: "FT", tag: "Durga Puja", mediaType: "image", src: "IMG_9551.PNG", caption: "I remember being in east London while you were getting ready to go and then you called me and I saw it. And yeah, you were right. I think you can pull off a green-blue combo. Not as good as me buttt still " },
-
-          { date: "2025-10-02", title: "Dashami", tag: "Durga Puja", mediaType: "image", src: "IMG_9734.JPG", caption: "I got too many memories from dashami from me going all the way back to the hall with you. To sitting next to you on the street. To going with you to the bench and making you skip pictures just so I could get dinner. To the adventures in the park. To everything and anything in between." },
-          { date: "2025-10-02", title: "Sync", tag: "Durga Puja", mediaType: "video", src: "sync.mp4", caption: "Us walking from the hall back to the park and taking a quick snap in between. But just pree the sync in between- it's actually so colddd" },
-
-          { date: "2025-10-05", title: "Insecure", tag: "core memory", mediaType: "image", src: "replace.png", caption: "Radha. I am sorry. I know sometimes I have really bad stuff going on in my head. And I am sorry for that. I am sorry for disturbing your peace. I am sorry for ruining your day sometimes. I am sorry for making you worry about me. But thank you. For being here. I am sorry for being insecure all the time. And just. having to have you reassure me. But genuinely, it means a lot that someone takes that time out to do it. It means a lot. So thank you Radha. A lot." },
-
-          { date: "2025-10-08", title: "Goodnight", tag: "core memory", mediaType: "image", src: "smiley.png", caption: "I think this is the first time we did the whole goodnight and smiley spam routine" },
-          { date: "2025-10-08", title: "Qualities", tag: "core memory", mediaType: "image", src: "qualities.png", caption: "How can we forget this when finding the ideal man for Radhika" },
-          { date: "2025-10-08", title: "Affection", tag: "core memory", mediaType: "image", src: "affectiono.png", caption: "I appreciate that we don't need to use those words to essentially show or prove it and that we are okay doing it the way we are right now" },
-          { date: "2025-10-08", title: "Qualities", tag: "core memory", mediaType: "image", src: "qualities.png", caption: "How can we forget this when finding the ideal man for Radhika" },
-          { date: "2025-10-08", title: "Lifetime Contract", tag: "core memory", mediaType: "image", src: "makeup.png", caption: "I said this so I will stick to it every month" },
-
-          { date: "2025-10-16", title: "Low Maintenace", tag: "core memory", mediaType: "image", src: "low_maintenace.png", caption: "" },
-
-          { date: "2025-10-20", title: "Pre Diwali", tag: "Diwali", mediaType: "image", src: "diwali_come.png", caption: "The fact that I still didn't know if I was going to go when I wanted to go so badly just for both FOMO but also take more pics and spend more time with you?" },
-          { date: "2025-10-20", title: "Diwali Pics", tag: "Diwali", mediaType: "image", src: "pics_diwali.png", caption: "Ofc on photo duty as always :)" },
-          { date: "2025-10-20", title: "Pics with you", tag: "Diwali", mediaType: "image", src: "diwali_R.png", caption: "I know I went without my parents but I realised that festivals are made by the people. I enjoyed it more and more because you were there. Because it was you there. Because everyone was there. Because I was loved. Because I was cared about :)" },
-          { date: "2025-10-20", title: "Stop Speaking", tag: "Diwali", mediaType: "image", src: "stop_speaking.png", caption: "I am gonna stop making fashion statements and stuff. Also wanted to add when I snapped you from the hall and your happiness was evident (despite coming hours later sigh)" },
-
-          { date: "2025-10-21", title: "Big 16", tag: "core memory", mediaType: "image", src: "birthday_16.png", caption: "" },
-
-          { date: "2025-10-22", title: "Matching", tag: "Diwali", mediaType: "image", src: "matching.png", caption: "It just hit me that we basically matched every single puja so far. Like either knowingly or unknowingly. That's actually crazy to me. But the Diwali pics turned out the best cos no one else wore it so :)" },
-          { date: "2025-10-22", title: "Weight Loss", tag: "core memory", mediaType: "image", src: "weight_loss.png", caption: "Thank you for this. I know it feels really insignificant but it means a lot when the person closest to you notices the effort and actually comments on it so thank you for making me feel that way." },
-          { date: "2025-10-22", title: "Thank you", tag: "core memory", mediaType: "image", src: "thankyou.png", caption: "<3" },
-
-          { date: "2025-10-26", title: "Number 1", tag: "core memory", mediaType: "image", src: "number_1.png", caption: "" },
-
-          { date: "2025-10-28", title: "Soch Na Sake", tag: "core memory", mediaType: "video", src: "soch_na_sake.mp4", caption: "Singing my favourite song..." }
-        ]
-      }
+      // paste your months array here exactly like before
     ];
+
+    // ===== VIEW ROUTER =====
+    const VIEWS = ["welcome","home","video","paragraph","memories"];
+    function setView(name){
+      VIEWS.forEach(v => {
+        const el = document.getElementById(`view-${v}`);
+        if (!el) return;
+        el.classList.toggle("active", v === name);
+      });
+      // nice UX: jump to top on screen change
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    // Inject names
+    document.getElementById("friendName").textContent = FRIEND_NAME;
+    document.getElementById("friendNameWelcome").textContent = FRIEND_NAME;
+
+    // Welcome actions
+    document.getElementById("startBtn").addEventListener("click", () => setView("home"));
+    document.getElementById("skipToHomeBtn").addEventListener("click", () => setView("home"));
+
+    // Menu choices
+    document.getElementById("goVideo").addEventListener("click", () => setView("video"));
+    document.getElementById("goParagraph").addEventListener("click", () => setView("paragraph"));
+    document.getElementById("goMemories").addEventListener("click", () => setView("memories"));
+
+    // Back buttons
+    document.getElementById("backFromVideo").addEventListener("click", () => setView("home"));
+    document.getElementById("backFromParagraph").addEventListener("click", () => setView("home"));
+    document.getElementById("backFromMemories").addEventListener("click", () => setView("home"));
+
+    // Mount letter
+    document.getElementById("letterMount").innerHTML = LETTER_HTML;
 
     // ===== HELPERS =====
     function escHTML(str) {
@@ -559,10 +414,6 @@
       return [...items].sort((a,b) => new Date(a.date) - new Date(b.date));
     }
 
-    // ===== PAGE INIT =====
-    document.getElementById("friendName").textContent = FRIEND_NAME;
-    const monthsEl = document.getElementById("months");
-
     function closeAllMonths(exceptIndex = null) {
       const all = [...document.querySelectorAll(".month")];
       all.forEach((mEl) => {
@@ -573,7 +424,7 @@
       });
     }
 
-    // ✅ FIXED: supports BOTH styles:
+    // supports BOTH:
     // - old style: it.image
     // - new style: it.mediaType + it.src
     function renderMedia(it) {
@@ -583,9 +434,9 @@
 
       if (type === "video") {
         return `
-          <div class="mediaFrame">
+          <div class="memMediaFrame">
             <video controls playsinline preload="metadata">
-              <source src="${escHTML(path)}">
+              <source src="${escHTML(path)}" type="video/mp4">
               Your browser can’t play this video.
             </video>
           </div>
@@ -593,13 +444,16 @@
       }
 
       return `
-        <div class="mediaFrame">
+        <div class="memMediaFrame">
           <img class="expandable" src="${escHTML(path)}" alt="memory screenshot">
         </div>
       `;
     }
 
-    function render() {
+    // ===== RENDER MEMORIES =====
+    const monthsEl = document.getElementById("months");
+
+    function renderMonths() {
       monthsEl.innerHTML = "";
 
       MONTHS.forEach((m, idx) => {
@@ -658,7 +512,7 @@
       });
     }
 
-    render();
+    renderMonths();
 
     // ===== IMAGE MODAL (only for images) =====
     const modal = document.getElementById("imageModal");
@@ -678,31 +532,10 @@
       modal.setAttribute("aria-hidden", "true");
     });
 
-    // ===== SURPRISE ME =====
-    document.getElementById("randomBtn").addEventListener("click", () => {
-      const allItems = [];
-      MONTHS.forEach((m, mi) => (m.items || []).forEach((it, ii) => allItems.push({ mi, ii })));
-      if (allItems.length === 0) return;
-
-      const pick = allItems[Math.floor(Math.random() * allItems.length)];
-      const monthEl = document.querySelector(`.month[data-index="${pick.mi}"]`);
-      if (!monthEl) return;
-
-      closeAllMonths(pick.mi);
-      monthEl.classList.add("open");
-
-      const btn = monthEl.querySelector(".monthBtn");
-      if (btn) btn.setAttribute("aria-expanded", "true");
-
-      const memId = `m${pick.mi}-i${pick.ii}`;
-      const memEl = monthEl.querySelector(`.mem[data-mem-id="${memId}"]`);
-      if (memEl) memEl.scrollIntoView({ behavior: "smooth", block: "start" });
-    });
-
     // ===== LOCK + COUNTDOWN =====
     const params = new URLSearchParams(location.search);
     const IS_PREVIEW = params.get("preview") === "1";
-    
+
     function canOpenNow() {
       return IS_PREVIEW || new Date() >= UNLOCK_AT;
     }
@@ -717,33 +550,31 @@
 
     function pad(n){ return String(n).padStart(2,"0"); }
 
-    function tick() {
-  const now = new Date();
-  const diff = UNLOCK_AT - now;
-
-  if (diff <= 0) {
-    countdown.textContent = "00:00:00";
-    lockLabel.textContent = "Enter the code ✨";
-
-    if (IS_PREVIEW || localStorage.getItem("ny_unlocked_code_ok") === "1") {
-      openSite();
-    }
-    return;
-  }
-
-  const s = Math.floor(diff / 1000);
-  const hh = Math.floor(s / 3600);
-  const mm = Math.floor((s % 3600) / 60);
-  const ss = s % 60;
-
-  countdown.textContent = `${pad(hh)}:${pad(mm)}:${pad(ss)}`;
-}
-
-
-
     function openSite() {
       lock.style.display = "none";
       lock.setAttribute("aria-hidden", "true");
+    }
+
+    function tick() {
+      const now = new Date();
+      const diff = UNLOCK_AT - now;
+
+      if (diff <= 0) {
+        countdown.textContent = "00:00:00";
+        lockLabel.textContent = "Enter the code ✨";
+
+        if (IS_PREVIEW || localStorage.getItem("ny_unlocked_code_ok") === "1") {
+          openSite();
+        }
+        return;
+      }
+
+      const s = Math.floor(diff / 1000);
+      const hh = Math.floor(s / 3600);
+      const mm = Math.floor((s % 3600) / 60);
+      const ss = s % 60;
+
+      countdown.textContent = `${pad(hh)}:${pad(mm)}:${pad(ss)}`;
     }
 
     function getPin() {
@@ -756,33 +587,32 @@
     }
 
     function tryUnlock() {
-  const typed = getPin();
+      const typed = getPin();
 
-  if (typed.length !== 6) {
-    codeError.style.display = "block";
-    codeError.textContent = "Enter all 6 digits";
-    return;
-  }
+      if (typed.length !== 6) {
+        codeError.style.display = "block";
+        codeError.textContent = "Enter all 6 digits";
+        return;
+      }
 
-  if (typed === SECRET_CODE) {
-    codeError.style.display = "none";
-    lockLabel.textContent = "Code accepted ✨";
+      if (typed === SECRET_CODE) {
+        codeError.style.display = "none";
+        lockLabel.textContent = "Code accepted ✨";
 
-    if (canOpenNow()) {
-      openSite();
-    } else {
-      localStorage.setItem("ny_unlocked_code_ok", "1");
-      codeError.style.display = "block";
-      codeError.textContent = "Code accepted ✅ Come back at midnight on New Years :) ✨";
+        if (canOpenNow()) {
+          openSite();
+        } else {
+          localStorage.setItem("ny_unlocked_code_ok", "1");
+          codeError.style.display = "block";
+          codeError.textContent = "Code accepted ✅ Come back at midnight ✨";
+        }
+      } else {
+        codeError.style.display = "block";
+        codeError.textContent = "Wrong code 😭 hehehe";
+        localStorage.removeItem("ny_unlocked_code_ok");
+        clearPin();
+      }
     }
-  } else {
-    codeError.style.display = "block";
-    codeError.textContent = "Wrong code 😭 hehehe";
-    localStorage.removeItem("ny_unlocked_code_ok");
-    clearPin();
-  }
-}
-
 
     unlockBtn.addEventListener("click", tryUnlock);
 
@@ -807,19 +637,14 @@
       });
     });
 
-    pinBoxes[0].focus();
-
-    setInterval(tick, 250);
-    tick();
-
-    // Preview mode: add ?preview=1 (bypasses lock)
+    // If preview, unlock immediately
+    if (IS_PREVIEW) {
+      openSite();
+    } else {
+      pinBoxes[0].focus();
+      setInterval(tick, 250);
+      tick();
+    }
   </script>
 </body>
 </html>
-
-
-
-
-
-
-
