@@ -700,6 +700,13 @@
     });
 
     // ===== LOCK + COUNTDOWN =====
+    const params = new URLSearchParams(location.search);
+    const IS_PREVIEW = params.get("preview") === "1";
+    
+    function canOpenNow() {
+      return IS_PREVIEW || new Date() >= UNLOCK_AT;
+    }
+
     const lock = document.getElementById("lock");
     const countdown = document.getElementById("countdown");
     const lockLabel = document.getElementById("lockLabel");
@@ -791,10 +798,10 @@
 
     // Preview mode: add ?preview=1 (bypasses lock)
     const params = new URLSearchParams(location.search);
-    if (params.get("preview") === "1") openSite();
   </script>
 </body>
 </html>
+
 
 
 
