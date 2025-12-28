@@ -725,7 +725,7 @@
     countdown.textContent = "00:00:00";
     lockLabel.textContent = "Enter the code ✨";
 
-    if (localStorage.getItem("ny_unlocked_code_ok") === "1") {
+    if (IS_PREVIEW || localStorage.getItem("ny_unlocked_code_ok") === "1") {
       openSite();
     }
     return;
@@ -738,6 +738,7 @@
 
   countdown.textContent = `${pad(hh)}:${pad(mm)}:${pad(ss)}`;
 }
+
 
 
     function openSite() {
@@ -812,10 +813,10 @@
     tick();
 
     // Preview mode: add ?preview=1 (bypasses lock)
-    const params = new URLSearchParams(location.search);
   </script>
 </body>
 </html>
+
 
 
 
