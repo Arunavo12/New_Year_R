@@ -5,7 +5,14 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Our 2025 ✨</title>
   <style>
-    :root { --bg:#070711; --card:#0f1020; --text:#f3f4ff; --muted:#b9b9d6; --accent:#7c5cff; }
+   :root{
+  --bg:#0c0710;        /* deep rosy night */
+  --card:#1a0f1f;      /* soft plum/pink glass */
+  --text:#fff6fb;      /* warm white */
+  --muted:#e7c8d8;     /* muted blush */
+  --accent:#ff8fc8;    /* light pink accent/glow */
+}
+
     * { box-sizing:border-box; }
     body{
       margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
@@ -93,6 +100,29 @@
       .choice{ grid-column: span 12; }
       .bigTitle{ font-size: 30px; }
     }
+    /* 🥒🌸 Pretty cucumber homepage background */
+#view-home{
+  position: relative;
+  overflow: hidden;
+}
+
+#view-home::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background-image: url("cucumber.png");
+  background-repeat: repeat;
+  background-size: 220px 220px; /* adjust density */
+  opacity: 0.18;               /* subtle but visible */
+  pointer-events:none;
+  z-index:0;
+}
+
+#view-home .wrap{
+  position: relative;
+  z-index: 1;
+}
+
 
     /* Video view */
     .playerWrap{ margin-top: 16px; }
@@ -1046,4 +1076,5 @@
   </script>
 </body>
 </html>
+
 
