@@ -718,21 +718,27 @@
     function pad(n){ return String(n).padStart(2,"0"); }
 
     function tick() {
-      const now = new Date();
-      const diff = UNLOCK_AT - now;
+  const now = new Date();
+  const diff = UNLOCK_AT - now;
 
-      if (diff <= 0) {
-        countdown.textContent = "00:00:00";
-        lockLabel.textContent = "Enter the code ✨";
-        return;
-      }
+  if (diff <= 0) {
+    countdown.textContent = "00:00:00";
+    lockLabel.textContent = "Enter the code ✨";
 
-      const s = Math.floor(diff / 1000);
-      const hh = Math.floor(s / 3600);
-      const mm = Math.floor((s % 3600) / 60);
-      const ss = s % 60;
-      countdown.textContent = `${pad(hh)}:${pad(mm)}:${pad(ss)}`;
+    if (localStorage.getItem("ny_unlocked_code_ok") === "1") {
+      openSite();
     }
+    return;
+  }
+
+  const s = Math.floor(diff / 1000);
+  const hh = Math.floor(s / 3600);
+  const mm = Math.floor((s % 3600) / 60);
+  const ss = s % 60;
+
+  countdown.textContent = `${pad(hh)}:${pad(mm)}:${pad(ss)}`;
+}
+
 
     function openSite() {
       lock.style.display = "none";
@@ -749,24 +755,33 @@
     }
 
     function tryUnlock() {
-      const typed = getPin();
+  const typed = getPin();
 
-      if (typed.length !== 6) {
-        codeError.style.display = "block";
-        codeError.textContent = "Enter all 6 digits";
-        return;
-      }
+  if (typed.length !== 6) {
+    codeError.style.display = "block";
+    codeError.textContent = "Enter all 6 digits";
+    return;
+  }
 
-      if (typed === SECRET_CODE) {
-        codeError.style.display = "none";
-        lockLabel.textContent = "Unlocked ✨";
-        openSite();
-      } else {
-        codeError.style.display = "block";
-        codeError.textContent = "Wrong code 😭 try again";
-        clearPin();
-      }
+  if (typed === SECRET_CODE) {
+    codeError.style.display = "none";
+    lockLabel.textContent = "Code accepted ✨";
+
+    if (canOpenNow()) {
+      openSite();
+    } else {
+      localStorage.setItem("ny_unlocked_code_ok", "1");
+      codeError.style.display = "block";
+      codeError.textContent = "Code accepted ✅ Come back at midnight ✨";
     }
+  } else {
+    codeError.style.display = "block";
+    codeError.textContent = "Wrong code 😭 try again";
+    localStorage.removeItem("ny_unlocked_code_ok");
+    clearPin();
+  }
+}
+
 
     unlockBtn.addEventListener("click", tryUnlock);
 
@@ -801,6 +816,7 @@
   </script>
 </body>
 </html>
+
 
 
 
