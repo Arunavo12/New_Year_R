@@ -1037,32 +1037,30 @@ I just want you to know that I will always be here to give you advice, to suppor
     document.getElementById("backFromMemories").addEventListener("click", () => setView("home"));
 
     // Mount letter
-    const letterMount = document.getElementById("letterMount");
+   // ===== MOUNT LETTER (FINAL) =====
+const letterMount = document.getElementById("letterMount");
+letterMount.innerHTML = LETTER_HTML;
 
-// Build the letter HTML
-letterMount.innerHTML = `
-  <h3>Happy New Year, Radha.</h3>
-  <p class="soft">I don’t even know where to start properly, but I wanted you to have something you can come back to whenever you feel like it, something that feels like me, and feels like us.</p>
-  <div class="divider"></div>
-  ${LETTER_PARAS.map(t => `<p class="letterLine">${escHTML(t)}</p>`).join("")}
-  <div class="divider"></div>
-  <p>You don’t need to rush this. Just read it slowly, whenever you’re in the right mood.</p>
-  <p class="signature">— Novo</p>
-`;
+const revealParas = [...letterMount.querySelectorAll("p")].filter(p => {
+  return !p.classList.contains("soft") && !p.classList.contains("signature");
+});
 
-// Scroll reveal
-const lines = [...letterMount.querySelectorAll(".letterLine")];
+revealParas.forEach(p => p.classList.add("letterLine"));
 
-const obs = new IntersectionObserver((entries) => {
+const letterObs = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting){
       entry.target.classList.add("isVisible");
-      obs.unobserve(entry.target); // reveal once
+      letterObs.unobserve(entry.target);
     }
   });
 }, { threshold: 0.15, rootMargin: "0px 0px -10% 0px" });
 
-lines.forEach(el => obs.observe(el));
+revealParas.forEach(el => letterObs.observe(el));
+
+
+
+
 
 
     //Quiz
@@ -1459,6 +1457,7 @@ renderQuiz();
   </script>
 </body>
 </html>
+
 
 
 
