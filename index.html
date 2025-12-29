@@ -13,15 +13,22 @@
   --accent:#ff8fc8;    /* light pink accent/glow */
 }
 
+#view-home{
+position: relative;
+min-height: 100vh;
+}
+
     * { box-sizing:border-box; }
     body{
-      margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      background:
-        radial-gradient(1200px 600px at 20% 0%, rgba(124,92,255,.25), transparent 60%),
-        radial-gradient(1000px 500px at 90% 20%, rgba(0,255,198,.12), transparent 60%),
-        var(--bg);
-      color:var(--text);
-      overflow-x:hidden;
+  margin:0;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  background:
+    radial-gradient(1200px 650px at 15% 0%, rgba(255,143,200,.22), transparent 60%),
+    radial-gradient(900px 520px at 85% 20%, rgba(124,92,255,.18), transparent 60%),
+    radial-gradient(1100px 650px at 50% 110%, rgba(255,143,200,.10), transparent 55%),
+    var(--bg);
+  color:var(--text);
+  overflow-x:hidden;
     }
 
     .wrap { max-width: 980px; margin: 0 auto; padding: 28px 18px 60px; }
@@ -35,25 +42,42 @@
 
     .card { background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12); border-radius: 18px; padding: 16px; box-shadow: 0 10px 30px rgba(0,0,0,.25); }
 .btn{
-  display:inline-flex; align-items:center; justify-content:center;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
   padding: 10px 14px;
   border-radius: 12px;
   cursor:pointer;
+
   background: linear-gradient(
     135deg,
     color-mix(in srgb, var(--accent) 95%, white 0%),
     color-mix(in srgb, var(--accent) 55%, transparent 45%)
   );
+
   color: white;
   border: 0;
-  font-weight: 700;
+  font-weight: 800;
   transition: transform .12s ease, filter .12s ease;
   text-decoration:none;
 }
 
-    }
     .btn:hover { filter: brightness(1.05); }
     .btn:active { transform: translateY(1px); }
+
+
+    .card{
+  background: rgba(255,255,255,.065);
+  border: 1px solid rgba(255,143,200,.18);
+  box-shadow: 0 14px 44px rgba(0,0,0,.35);
+}
+.choice{
+  border: 1px solid rgba(255,143,200,.16);
+}
+.choice:hover{
+  border-color: rgba(255,143,200,.35);
+  box-shadow: 0 16px 46px rgba(0,0,0,.28);
+}
 
     .ghostBtn{
       display:inline-flex; align-items:center; justify-content:center;
@@ -83,6 +107,13 @@
       grid-template-columns: repeat(12, 1fr);
       margin-top: 18px;
     }
+    .menuButtons .choice:last-child{
+    grid-column: 5 / span 4; /* centers it in a 12-col grid */
+    }
+    @media (max-width: 820px){
+    .menuButtons .choice:last-child{ grid-column: span 12; }
+    }
+
     .menuCard{ grid-column: span 12; padding: 22px; }
     .menuCard h2{ margin:0 0 6px; font-size: 20px; }
     .menuCard p{ margin:0; color: var(--muted); line-height:1.55; }
@@ -129,10 +160,17 @@
     }
     /* 🥒🌸 Pretty cucumber homepage background */
 /* Make the home view fill the screen */
-#view-home{
+#view-home .wrap{
   position: relative;
+  z-index: 1;
+
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 24px 18px;
 }
+
 
 /* Make sure the repeating background spans the whole view */
 #view-home::before{
@@ -148,13 +186,20 @@
 }
 
 /* Keep content above it */
+/* Center HOME content vertically */
 #view-home .wrap{
-  position: relative;
-  z-index: 1;
-  min-height: 100vh; /* important */
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
+  justify-content: center;       /* vertical center */
+  padding: 24px 18px;            /* less top-heavy */
 }
+
+/* remove the extra top spacing so it truly centers */
+#view-home .menuGrid{ margin-top: 0; }
+
+/* optional: keep header closer to the card */
+#view-home header{ margin-bottom: 14px; }
 
 
 
@@ -434,19 +479,20 @@
   </section>
 
     <!-- QUIZ VIEW -->
-  <section id="view-quiz" class="view">
-    <div class="wrap quizWrap">
-      <header>
-        <div class="title">
-          <h1>🧠 Quiz</h1>
-          <p style="margin:6px 0 0; color:var(--muted);">How well do you know me?</p>
-        </div>
-        <button class="ghostBtn" id="backFromQuiz">← Back home</button>
-      </header>
-        <div id="quizMount"></div>
+ <!-- QUIZ VIEW -->
+<section id="view-quiz" class="view">
+  <div class="wrap quizWrap">
+    <header>
+      <div class="title">
+        <h1>🧠 Quiz</h1>
+        <p style="margin:6px 0 0; color:var(--muted);">How well do you know me?</p>
       </div>
-    </div>
-  </section>
+      <button class="ghostBtn" id="backFromQuiz">← Back home</button>
+    </header>
+    <div id="quizMount"></div>
+  </div>
+</section>
+
 
 
   <!-- IMAGE MODAL -->
@@ -1076,7 +1122,7 @@ function renderQuiz(){
 
       if (picked === correct) {
         quizScore++;
-        feedback.textContent = "✅ Correctttt 😭";
+        feedback.textContent = "✅ Correctttt 🤩";
       } else {
         feedback.textContent = `❌ ${pick(WRONG_MESSAGES)} — The right answer was: ${item.choices[correct]}`;
       }
@@ -1342,6 +1388,7 @@ renderQuiz();
   </script>
 </body>
 </html>
+
 
 
 
