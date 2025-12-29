@@ -194,6 +194,22 @@
       color: rgba(255,255,255,.88);
     }
 
+    .quizChoiceBtn{
+  grid-column: span 12;
+  text-align:left;
+  border-radius: 16px;
+  padding: 14px 14px;
+  cursor:pointer;
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.12);
+  color: rgba(255,255,255,.92);
+  font-weight: 800;
+}
+.quizChoiceBtn:hover{ background: rgba(255,255,255,.09); }
+.quizChoiceBtn.correct{ border-color: rgba(65,245,192,.65); box-shadow: 0 0 0 3px rgba(65,245,192,.15); }
+.quizChoiceBtn.wrong{ border-color: rgba(255,77,109,.65); box-shadow: 0 0 0 3px rgba(255,77,109,.15); }
+
+
     /* Memories (your existing styles, mostly) */
     .sectionTitle { margin: 28px 0 10px; font-size: 16px; color: var(--muted); letter-spacing: .12em; text-transform: uppercase; }
 
@@ -314,6 +330,11 @@
             <button class="choice" id="goMemories" type="button">
               <div class="choiceTitle">🗓️ Memories</div>
               <div class="choiceMeta">Months you can open like folders.</div>
+             </button>
+
+            <button class="choice" id="goQuiz" type="button">
+              <div class="choiceTitle">🧠 Quiz</div>
+              <div class="choiceMeta">How well do you know me?</div>
             </button>
           </div>
         </div>
@@ -1130,6 +1151,7 @@ And I hope you know that you can tell me anything and vice versa. I just want to
   </script>
 </body>
 </html>
+
 
 
 
