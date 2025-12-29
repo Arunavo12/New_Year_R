@@ -34,16 +34,23 @@
 
 
     .card { background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12); border-radius: 18px; padding: 16px; box-shadow: 0 10px 30px rgba(0,0,0,.25); }
-    .btn {
-      display:inline-flex; align-items:center; justify-content:center;
-      padding: 10px 14px; border-radius: 12px; cursor:pointer;
-      .btn{
-  background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 95%, white 0%), color-mix(in srgb, var(--accent) 55%, transparent 45%));
+.btn{
+  display:inline-flex; align-items:center; justify-content:center;
+  padding: 10px 14px;
+  border-radius: 12px;
+  cursor:pointer;
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--accent) 95%, white 0%),
+    color-mix(in srgb, var(--accent) 55%, transparent 45%)
+  );
+  color: white;
+  border: 0;
+  font-weight: 700;
+  transition: transform .12s ease, filter .12s ease;
+  text-decoration:none;
 }
 
-      color: white; border: 0; font-weight: 700;
-      transition: transform .12s ease, filter .12s ease;
-      text-decoration:none;
     }
     .btn:hover { filter: brightness(1.05); }
     .btn:active { transform: translateY(1px); }
@@ -193,6 +200,33 @@
       font-weight: 850;
       color: rgba(255,255,255,.88);
     }
+
+
+    /* Center content nicely in middle for quiz + paragraph + video (optional) */
+#view-video .wrap,
+#view-paragraph .wrap,
+#view-quiz .wrap{
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 14px;
+  padding-top: 24px;
+  padding-bottom: 24px;
+}
+
+
+/* keeps header at top-ish but still centered overall */
+.quizWrap header, #view-video header, #view-paragraph header{
+  margin-bottom: 14px;
+}
+
+/* make the main card sit centered and not glued to top */
+#view-video .playerWrap,
+#view-paragraph .letter,
+#quizCard{
+  margin-top: 0 !important;
+}
 
     .quizChoiceBtn{
   grid-column: span 12;
@@ -398,6 +432,22 @@
       <div class="months" id="months"></div>
     </div>
   </section>
+
+    <!-- QUIZ VIEW -->
+  <section id="view-quiz" class="view">
+    <div class="wrap quizWrap">
+      <header>
+        <div class="title">
+          <h1>🧠 Quiz</h1>
+          <p style="margin:6px 0 0; color:var(--muted);">How well do you know me?</p>
+        </div>
+        <button class="ghostBtn" id="backFromQuiz">← Back home</button>
+      </header>
+        <div id="quizMount"></div>
+      </div>
+    </div>
+  </section>
+
 
   <!-- IMAGE MODAL -->
   <div id="imageModal" class="image-modal" aria-hidden="true">
@@ -865,7 +915,8 @@ And I hope you know that you can tell me anything and vice versa. I just want to
     ];
 
     // ===== VIEW ROUTER =====
-    const VIEWS = ["welcome","home","video","paragraph","memories"];
+    const VIEWS = ["welcome","home","video","paragraph","memories","quiz"];
+
     function setView(name){
       VIEWS.forEach(v => {
         const el = document.getElementById(`view-${v}`);
@@ -897,6 +948,11 @@ And I hope you know that you can tell me anything and vice versa. I just want to
     // Mount letter
     document.getElementById("letterMount").innerHTML = LETTER_HTML;
 
+    //Quiz
+    document.getElementById("goQuiz").addEventListener("click", () => setView("quiz"));
+    document.getElementById("backFromQuiz").addEventListener("click", () => setView("home"));
+
+
     // ===== HELPERS =====
     function escHTML(str) {
       return String(str ?? "")
@@ -906,6 +962,141 @@ And I hope you know that you can tell me anything and vice versa. I just want to
         .replaceAll('"',"&quot;")
         .replaceAll("'","&#039;");
     }
+
+    const WRONG_MESSAGES = [
+  "Nahhh 😭 you’re selling",
+  "WRONGGG 😭 revise",
+  "That’s crazy… you should know this 😭",
+  "I’m disappointed icl 😭",
+  "Nope 😭 try again next time",
+  "How are you getting that wrong?? 😭",
+  "You’ve rattled me 😭"
+];
+function pick(arr){ return arr[Math.floor(Math.random() * arr.length)]; }
+
+// ✅ Quiz questions (answers properly shuffled: 0/1/2/3 spread)
+const QUIZ = [
+  { q:"What’s my fav vegetarian food?", choices:["Paneer","Dal","Broccoli","Cauliflower"], answerIndex:0 },
+  { q:"What’s my fav non-veg food?", choices:["Egg","Fish","Chicken","Lamb"], answerIndex:3 },
+  { q:"Where was I born?", choices:["Hounslow","Madrid","Sylhet","Lisbon"], answerIndex:3 },
+  { q:"What’s my favourite colour?", choices:["Purple","Lilac","Red","Blue"], answerIndex:2 },
+  { q:"What’s my biggest insecurity?", choices:["Weight","Hair","Forehead","Teeth"], answerIndex:3 },
+  { q:"Which one is most me?", choices:["Late replies","Gym everyday","Always serious","Overthinking"], answerIndex:3 },
+  { q:"What’s my position in football?", choices:["Goalkeeper","Defender","Striker","Midfielder"], answerIndex:1 },
+  { q:"What’s my best way of receiving love?", choices:["Gifts","Going out","Touch","Time"], answerIndex:3 },
+  { q:"What’s my biggest fear?", choices:["Spiders","Public speaking","Heights","Failure"], answerIndex:2 },
+  { q:"What did I want to be when I was a kid?", choices:["Artist","Teacher","Pilot","Police officer"], answerIndex:2 },
+  { q:"What’s my morning drink?", choices:["Soda","Coffee","Alcohol","Tea"], answerIndex:3 },
+  { q:"Who’s the first person I tell something to (excluding family)?", choices:["Arijit","Ayushi","Rafiu","Radha"], answerIndex:3 },
+  { q:"What was my favourite subject?", choices:["Chemistry","English","PE","Maths"], answerIndex:3 },
+  { q:"What’s my favourite football team?", choices:["Chelsea","Arsenal","Liverpool","Manchester United"], answerIndex:3 },
+  { q:"What’s my favourite type of movie?", choices:["Rom-com","Action","Horror","Thriller"], answerIndex:0 },
+  { q:"What’s my dream holiday destination?", choices:["Dubai","Bali","Maldives","Santorini"], answerIndex:2 },
+];
+
+let quizIndex = 0;
+let quizScore = 0;
+let quizLocked = false;
+
+function quizEndMessage(score, total){
+  if (score === total) return "Perfect score 😭🫶 yeah you’re actually MY person.";
+  if (score >= Math.ceil(total * 0.75)) return "Okayyy you know me fr 😭🫶";
+  if (score >= Math.ceil(total * 0.5)) return "Not bad… but you can do better 😭";
+  return "Nahhhh 😭 we need a revision session ASAP.";
+}
+
+function renderQuiz(){
+  const mount = document.getElementById("quizMount");
+  if (!mount) return;
+
+  const total = QUIZ.length;
+
+  if (quizIndex >= total){
+    mount.innerHTML = `
+      <div class="pill" style="width:fit-content; margin:0 auto 14px; justify-content:center;">
+        <span class="dot"></span><span>Quiz finished ✨</span>
+      </div>
+      <h2 style="margin:0 0 8px; text-align:center;">Score: ${quizScore} / ${total}</h2>
+      <p style="margin:0 0 16px; color:var(--muted); text-align:center; line-height:1.6;">
+        ${escHTML(quizEndMessage(quizScore, total))}
+      </p>
+      <div class="actionsRow">
+        <button class="btn" id="quizRestartBtn">Restart 🔁</button>
+        <button class="ghostBtn" id="quizHomeBtn">Back home</button>
+      </div>
+    `;
+
+    document.getElementById("quizRestartBtn").addEventListener("click", () => {
+      quizIndex = 0; quizScore = 0; quizLocked = false;
+      renderQuiz();
+    });
+    document.getElementById("quizHomeBtn").addEventListener("click", () => setView("home"));
+    return;
+  }
+
+  const item = QUIZ[quizIndex];
+
+  mount.innerHTML = `
+    <div class="pill" style="width:fit-content; margin:0 0 14px;">
+      <span class="dot"></span><span>Question ${quizIndex + 1} of ${total}</span>
+    </div>
+
+    <h2 style="margin:0 0 12px;">${escHTML(item.q)}</h2>
+
+    <div class="menuButtons" style="margin-top: 10px;">
+      ${item.choices.map((c, i) => `
+        <button class="quizChoiceBtn" data-i="${i}" type="button">${escHTML(c)}</button>
+      `).join("")}
+    </div>
+
+    <p id="quizFeedback" style="margin: 12px 0 0; color: var(--muted); font-weight: 800;"></p>
+
+    <div class="actionsRow" style="margin-top: 14px;">
+      <button class="ghostBtn" id="quizNextBtn" disabled style="opacity:.55; pointer-events:none;">Next →</button>
+    </div>
+  `;
+
+  const feedback = document.getElementById("quizFeedback");
+  const nextBtn = document.getElementById("quizNextBtn");
+  const btns = [...mount.querySelectorAll(".quizChoiceBtn")];
+
+  btns.forEach(b => {
+    b.addEventListener("click", () => {
+      if (quizLocked) return;
+      quizLocked = true;
+
+      const picked = Number(b.dataset.i);
+      const correct = item.answerIndex;
+
+      btns.forEach(x => x.disabled = true);
+
+      // mark correct + wrong
+      btns[correct].classList.add("correct");
+      if (picked !== correct) btns[picked].classList.add("wrong");
+
+      if (picked === correct) {
+        quizScore++;
+        feedback.textContent = "✅ Correctttt 😭";
+      } else {
+        feedback.textContent = `❌ ${pick(WRONG_MESSAGES)} — The right answer was: ${item.choices[correct]}`;
+      }
+
+      nextBtn.disabled = false;
+      nextBtn.style.opacity = "1";
+      nextBtn.style.pointerEvents = "auto";
+    });
+  });
+
+  nextBtn.addEventListener("click", () => {
+    quizLocked = false;
+    quizIndex++;
+    renderQuiz();
+  });
+}
+
+// Render once on load
+renderQuiz();
+
 
     function formatDate(dateStr) {
       const d = new Date(dateStr + "T00:00:00");
@@ -1151,6 +1342,7 @@ And I hope you know that you can tell me anything and vice versa. I just want to
   </script>
 </body>
 </html>
+
 
 
 
