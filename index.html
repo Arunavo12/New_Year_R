@@ -1230,7 +1230,6 @@ function renderQuiz(){
       <div class="pill" style="width:fit-content; margin:0 auto 14px; justify-content:center;">
         <span class="dot"></span><span>Quiz finished ✨</span>
       </div>
-      ${renderQuizSelector()}
       <h2 style="margin:0 0 8px; text-align:center;">${getActiveQuizTitle()} — Score: ${quizScore} / ${total}</h2>
       <p style="margin:0 0 16px; color:var(--muted); text-align:center; line-height:1.6;">
         ${escHTML(quizEndMessage(quizScore, total))}
@@ -1561,6 +1560,7 @@ renderQuiz();
   </script>
 </body>
 </html>
+
 
 
 
