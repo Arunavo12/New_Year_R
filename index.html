@@ -428,9 +428,16 @@ min-height: 100vh;
               <div class="choiceMeta">Months you can open like folders.</div>
              </button>
 
-            <button class="choice" id="goQuiz" type="button">
-              <div class="choiceTitle">🧠 Quiz</div>
+            <button class="choice" id="goQuizMe" type="button">
+              <div class="choiceTitle">🧠 Quiz about me</div>
               <div class="choiceMeta">How well do you know me?</div>
+            </button>
+            
+            <button class="choice" id="goQuizHer" type="button">
+              <div class="choiceTitle">🧠 Quiz about you</div>
+              <div class="choiceMeta">How well do I know you?</div>
+            </button>
+
             </button>
           </div>
         </div>
@@ -1068,8 +1075,20 @@ revealParas.forEach(el => letterObs.observe(el));
 
 
     //Quiz
-    document.getElementById("goQuiz").addEventListener("click", () => setView("quiz"));
-    document.getElementById("backFromQuiz").addEventListener("click", () => setView("home"));
+    document.getElementById("goQuizMe").addEventListener("click", () => {
+      activeQuizKey = "me";
+      quizIndex = 0; quizScore = 0; quizLocked = false;
+      setView("quiz");
+      renderQuiz();
+    });
+    
+    document.getElementById("goQuizHer").addEventListener("click", () => {
+      activeQuizKey = "her";
+      quizIndex = 0; quizScore = 0; quizLocked = false;
+      setView("quiz");
+      renderQuiz();
+    });
+
 
 
     // ===== HELPERS =====
@@ -1126,29 +1145,6 @@ function correctMsg(){
 }
 
 
-function renderQuizSelector(){
-  return `
-    <div class="actionsRow" style="margin: 4px 0 14px; justify-content:center;">
-      <button class="ghostBtn" id="quizSelectMe" type="button" style="${activeQuizKey==="me" ? "border-color: rgba(255,143,200,.55); box-shadow: 0 0 0 4px rgba(255,143,200,.12);" : ""}">Quiz about me</button>
-      <button class="ghostBtn" id="quizSelectHer" type="button" style="${activeQuizKey==="her" ? "border-color: rgba(255,143,200,.55); box-shadow: 0 0 0 4px rgba(255,143,200,.12);" : ""}">Quiz about you</button>
-    </div>
-  `;
-}
-
-function bindQuizSelector(){
-  const meBtn = document.getElementById("quizSelectMe");
-  const herBtn = document.getElementById("quizSelectHer");
-  if (meBtn) meBtn.addEventListener("click", () => {
-    activeQuizKey = "me";
-    quizIndex = 0; quizScore = 0; quizLocked = false;
-    renderQuiz();
-  });
-  if (herBtn) herBtn.addEventListener("click", () => {
-    activeQuizKey = "her";
-    quizIndex = 0; quizScore = 0; quizLocked = false;
-    renderQuiz();
-  });
-}
 
 // ✅ Quiz questions
 const QUIZ_ME = [
@@ -1245,7 +1241,6 @@ function renderQuiz(){
       </div>
     `;
 
-    bindQuizSelector();
 
     document.getElementById("quizRestartBtn").addEventListener("click", () => {
       quizIndex = 0; quizScore = 0; quizLocked = false;
@@ -1261,7 +1256,6 @@ function renderQuiz(){
     <div class="pill" style="width:fit-content; margin:0 0 14px;">
       <span class="dot"></span><span>Question ${quizIndex + 1} of ${total}</span>
     </div>
-    ${renderQuizSelector()}
 
     <h2 style="margin:0 0 12px;">${escHTML(item.q)}</h2>
 
@@ -1278,7 +1272,6 @@ function renderQuiz(){
     </div>
   `;
 
-  bindQuizSelector();
 
   const feedback = document.getElementById("quizFeedback");
   const nextBtn = document.getElementById("quizNextBtn");
@@ -1568,6 +1561,7 @@ renderQuiz();
   </script>
 </body>
 </html>
+
 
 
 
