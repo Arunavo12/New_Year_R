@@ -1082,7 +1082,7 @@ revealParas.forEach(el => letterObs.observe(el));
         .replaceAll("'","&#039;");
     }
 
-    const WRONG_MESSAGES = [
+   const WRONG_MESSAGES_ME = [
   "Nahhh 😭 you’re selling",
   "WRONGGG 😭 revise",
   "That’s crazy… you should know this 😭",
@@ -1091,7 +1091,39 @@ revealParas.forEach(el => letterObs.observe(el));
   "How are you getting that wrong?? 😭",
   "You’ve rattled me 😭"
 ];
+
+const WRONG_MESSAGES_HER = [
+  "LOOOOL 😭 you don’t even know yourself??",
+  "Wronggg 😭 Radha please…",
+  "Nah this is self-sabotage 😭",
+  "I’m crying 😭 how did you get THAT wrong",
+  "You’re trolling 😭",
+  "Nope 😭 but it’s okay (it's not)",
+  "Ain’t no way 😭"
+];
+
+const CORRECT_MESSAGES_ME = [
+  "✅ Correctttt 🤩",
+  "✅ Yessss you know me fr",
+  "✅ Coldddd 😮‍💨",
+  "✅ Fairsssss",
+];
+
+const CORRECT_MESSAGES_HER = [
+  "✅ Correctttt 😌 you know yourself",
+  "✅ Yesss Radhaaaa",
+  "✅ Slayyy you got it",
+  "✅ Okayyyy confident",
+];
+
 function pick(arr){ return arr[Math.floor(Math.random() * arr.length)]; }
+
+function wrongMsg(){
+  return activeQuizKey === "her" ? pick(WRONG_MESSAGES_HER) : pick(WRONG_MESSAGES_ME);
+}
+function correctMsg(){
+  return activeQuizKey === "her" ? pick(CORRECT_MESSAGES_HER) : pick(CORRECT_MESSAGES_ME);
+}
 
 
 function renderQuizSelector(){
@@ -1171,11 +1203,25 @@ let quizScore = 0;
 let quizLocked = false;
 
 function quizEndMessage(score, total){
-  if (score === total) return "Perfect score, Fairsssss yeah you’re actually himmmmmmm (herrrrr) and numero uno";
-  if (score >= Math.ceil(total * 0.75)) return "Okayyy you know me fr :)";
-  if (score >= Math.ceil(total * 0.5)) return "Not bad… but you can do better 😭";
-  return "Nahhhh 😭 we need a revision session ASAP. Bun exams — we need to talk, this is serious.";
+  const isHer = activeQuizKey === "her";
+
+  if (score === total) return isHer
+    ? "Perfecttt 😮‍💨 okay main character — you know yourself fr."
+    : "Perfect score, Fairsssss yeah you’re actually himmmmmmm (herrrrr) and numero uno";
+
+  if (score >= Math.ceil(total * 0.75)) return isHer
+    ? "Okayyy you’re self-aware 😭 I respect it."
+    : "Okayyy you know me fr :)";
+
+  if (score >= Math.ceil(total * 0.5)) return isHer
+    ? "Not bad… but you’re forgetting your own lore 😭"
+    : "Not bad… but you can do better 😭";
+
+  return isHer
+    ? "Nahhhh 😭 we need a revision session — about YOU."
+    : "Nahhhh 😭 we need a revision session ASAP. Bun exams — we need to talk, this is serious.";
 }
+
 
 function renderQuiz(){
   const mount = document.getElementById("quizMount");
@@ -1252,12 +1298,14 @@ function renderQuiz(){
       btns[correct].classList.add("correct");
       if (picked !== correct) btns[picked].classList.add("wrong");
 
-      if (picked === correct) {
-        quizScore++;
-        feedback.textContent = "✅ Correctttt 🤩";
-      } else {
-        feedback.textContent = `❌ ${pick(WRONG_MESSAGES)} — The right answer was: ${item.choices[correct]}`;
-      }
+     if (picked === correct) {
+  quizScore++;
+  feedback.textContent = correctMsg();
+} else {
+  const rightLabel = activeQuizKey === "her" ? "Your answer is" : "The right answer was";
+  feedback.textContent = `❌ ${wrongMsg()} — ${rightLabel}: ${item.choices[correct]}`;
+}
+
 
       nextBtn.disabled = false;
       nextBtn.style.opacity = "1";
@@ -1520,6 +1568,7 @@ renderQuiz();
   </script>
 </body>
 </html>
+
 
 
 
