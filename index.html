@@ -1139,21 +1139,21 @@ const QUIZ_ME = [
 
 // ✅ Quiz about YOU (Radha)
 const QUIZ_HER = [
-  { q:"What is your favourite colour?", choices:["Pink","Lilac","Purple","Blue"], answerIndex:0 },
-  { q:"What is your favourite food?", choices:["Sushi","Pasta","Pizza","Biryani"], answerIndex:0 },
+  { q:"What is your favourite colour?", choices:["Lilac","Purple","Blue","Pink"], answerIndex:3 },
+  { q:"What is your favourite food?", choices:["Pasta","Pizza","Sushi","Biryani"], answerIndex:2 },
   { q:"What is your favourite song?", choices:["Haileys Comet (Billie Eilish)","Ocean Eyes (Billie Eilish)","greedy (Tate McRae)","vampire (Olivia Rodrigo)"], answerIndex:0 },
-  { q:"Which artist are you currently obsessed with?", choices:["Ariana Grande","Taylor Swift","Billie Eilish","Doja Cat"], answerIndex:0 },
-  { q:"What is your middle name?", choices:["Rani","Ria","Renee","Rosa"], answerIndex:0 },
+  { q:"Which artist are you currently obsessed with?", choices:["Taylor Swift","Billie Eilish","Doja Cat","Ariana Grande"], answerIndex:3 },
+  { q:"What is your middle name?", choices:["Rani","Ria","Rambo","Rara"], answerIndex:0 },
   { q:"Which sport do you enjoy?", choices:["Netball","Football","Tennis","Badminton"], answerIndex:0 },
   { q:"Who is your closest school friend?", choices:["Saranshi","Emma","Holly","Megan"], answerIndex:0 },
-  { q:"What instrument can you play?", choices:["Piano","Guitar","Violin","Drums"], answerIndex:0 },
-  { q:"Are you more of a morning person or night person?", choices:["Night person","Morning person","Both equally","Neither"], answerIndex:0 },
-  { q:"What is your favourite chocolate?", choices:["Kinder Bueno (white)","Dairy Milk","KitKat","Ferrero Rocher"], answerIndex:0 },
+  { q:"What instrument can you play?", choices:["Guitar","Violin","Piano","Drums"], answerIndex:2 },
+  { q:"Are you more of a morning person or night person?", choices:["Night person","Morning person"], answerIndex:0 },
+  { q:"What is your favourite chocolate?", choices:["Dairy Milk","KitKat","Ferrero Rocher","Kinder Bueno"], answerIndex:3 },
   { q:"What McDonald’s breakfast item do you love?", choices:["Hash browns","McMuffin","Pancakes","McNuggets"], answerIndex:0 },
   { q:"Which one do you like?", choices:["Olives","Pickles","Both","Neither"], answerIndex:0 },
   { q:"What do you dislike?", choices:["Pickles","Olives","Chocolate","Sushi"], answerIndex:0 },
-  { q:"What do you prefer to wear (if you could)?", choices:["Contact lenses","Glasses","Either is fine","Neither"], answerIndex:0 },
-  { q:"What’s your biggest dream?", choices:["Making everyone proud","Being famous","Travelling the world","Owning a supercar"], answerIndex:0 },
+  { q:"What do you prefer to wear (if you could)?", choices:["Glasses","Contact lenses","Either is fine","Neither"], answerIndex:1 },
+  { q:"What’s your biggest dream?", choices:["Being famous","Travelling the world","Making everyone proud","Owning a supercar"], answerIndex:2 },
 ];
 
 let activeQuizKey = "me"; // "me" or "her"
@@ -1161,7 +1161,7 @@ function getActiveQuiz(){
   return activeQuizKey === "her" ? QUIZ_HER : QUIZ_ME;
 }
 function getActiveQuizTitle(){
-  return activeQuizKey === "her" ? "Quiz about you 🩷" : "Quiz about me 🧠";
+  return activeQuizKey === "her" ? "Quiz about you 🧠" : "Quiz about me 🧠";
 }
 
 ];
@@ -1520,3 +1520,4 @@ renderQuiz();
   </script>
 </body>
 </html>
+
