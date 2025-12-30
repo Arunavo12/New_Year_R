@@ -1093,8 +1093,33 @@ revealParas.forEach(el => letterObs.observe(el));
 ];
 function pick(arr){ return arr[Math.floor(Math.random() * arr.length)]; }
 
+
+function renderQuizSelector(){
+  return `
+    <div class="actionsRow" style="margin: 4px 0 14px; justify-content:center;">
+      <button class="ghostBtn" id="quizSelectMe" type="button" style="${activeQuizKey==="me" ? "border-color: rgba(255,143,200,.55); box-shadow: 0 0 0 4px rgba(255,143,200,.12);" : ""}">Quiz about me</button>
+      <button class="ghostBtn" id="quizSelectHer" type="button" style="${activeQuizKey==="her" ? "border-color: rgba(255,143,200,.55); box-shadow: 0 0 0 4px rgba(255,143,200,.12);" : ""}">Quiz about you</button>
+    </div>
+  `;
+}
+
+function bindQuizSelector(){
+  const meBtn = document.getElementById("quizSelectMe");
+  const herBtn = document.getElementById("quizSelectHer");
+  if (meBtn) meBtn.addEventListener("click", () => {
+    activeQuizKey = "me";
+    quizIndex = 0; quizScore = 0; quizLocked = false;
+    renderQuiz();
+  });
+  if (herBtn) herBtn.addEventListener("click", () => {
+    activeQuizKey = "her";
+    quizIndex = 0; quizScore = 0; quizLocked = false;
+    renderQuiz();
+  });
+}
+
 // ✅ Quiz questions (answers properly shuffled: 0/1/2/3 spread)
-const QUIZ = [
+const QUIZ_ME = [
   { q:"What’s my fav vegetarian food?", choices:["Paneer","Dal","Broccoli","Cauliflower"], answerIndex:0 },
   { q:"What’s my fav non-veg food?", choices:["Egg","Fish","Chicken","Lamb"], answerIndex:3 },
   { q:"Where was I born?", choices:["Hounslow","Madrid","Sylhet","Lisbon"], answerIndex:3 },
@@ -1111,6 +1136,34 @@ const QUIZ = [
   { q:"What’s my favourite football team?", choices:["Chelsea","Arsenal","Liverpool","Manchester United"], answerIndex:3 },
   { q:"What’s my favourite type of movie?", choices:["Rom-com","Action","Horror","Thriller"], answerIndex:0 },
   { q:"What’s my dream holiday destination?", choices:["Dubai","Bali","Maldives","Santorini"], answerIndex:2 },
+
+// ✅ Quiz about YOU (Radha)
+const QUIZ_HER = [
+  { q:"What is your favourite colour?", choices:["Pink","Lilac","Purple","Blue"], answerIndex:0 },
+  { q:"What is your favourite food?", choices:["Sushi","Pasta","Pizza","Biryani"], answerIndex:0 },
+  { q:"What is your favourite song?", choices:["Haileys Comet (Billie Eilish)","Ocean Eyes (Billie Eilish)","greedy (Tate McRae)","vampire (Olivia Rodrigo)"], answerIndex:0 },
+  { q:"Which artist are you currently obsessed with?", choices:["Ariana Grande","Taylor Swift","Billie Eilish","Doja Cat"], answerIndex:0 },
+  { q:"What is your middle name?", choices:["Rani","Ria","Renee","Rosa"], answerIndex:0 },
+  { q:"Which sport do you enjoy?", choices:["Netball","Football","Tennis","Badminton"], answerIndex:0 },
+  { q:"Who is your closest school friend?", choices:["Saranshi","Emma","Holly","Megan"], answerIndex:0 },
+  { q:"What instrument can you play?", choices:["Piano","Guitar","Violin","Drums"], answerIndex:0 },
+  { q:"Are you more of a morning person or night person?", choices:["Night person","Morning person","Both equally","Neither"], answerIndex:0 },
+  { q:"What is your favourite chocolate?", choices:["Kinder Bueno (white)","Dairy Milk","KitKat","Ferrero Rocher"], answerIndex:0 },
+  { q:"What McDonald’s breakfast item do you love?", choices:["Hash browns","McMuffin","Pancakes","McNuggets"], answerIndex:0 },
+  { q:"Which one do you like?", choices:["Olives","Pickles","Both","Neither"], answerIndex:0 },
+  { q:"What do you dislike?", choices:["Pickles","Olives","Chocolate","Sushi"], answerIndex:0 },
+  { q:"What do you prefer to wear (if you could)?", choices:["Contact lenses","Glasses","Either is fine","Neither"], answerIndex:0 },
+  { q:"What’s your biggest dream?", choices:["Making everyone proud","Being famous","Travelling the world","Owning a supercar"], answerIndex:0 },
+];
+
+let activeQuizKey = "me"; // "me" or "her"
+function getActiveQuiz(){
+  return activeQuizKey === "her" ? QUIZ_HER : QUIZ_ME;
+}
+function getActiveQuizTitle(){
+  return activeQuizKey === "her" ? "Quiz about you 🩷" : "Quiz about me 🧠";
+}
+
 ];
 
 let quizIndex = 0;
@@ -1121,21 +1174,22 @@ function quizEndMessage(score, total){
   if (score === total) return "Perfect score, Fairsssss yeah you’re actually himmmmmmm (herrrrr) and numero uno";
   if (score >= Math.ceil(total * 0.75)) return "Okayyy you know me fr :)";
   if (score >= Math.ceil(total * 0.5)) return "Not bad… but you can do better 😭";
-  return "Nahhhh 😭 we need a revision session ASAP. Bun exams, "we need to talk, this is serious" ";
+  return "Nahhhh 😭 we need a revision session ASAP. Bun exams — we need to talk, this is serious.";
 }
 
 function renderQuiz(){
   const mount = document.getElementById("quizMount");
   if (!mount) return;
 
-  const total = QUIZ.length;
+  const total = getActiveQuiz().length;
 
   if (quizIndex >= total){
     mount.innerHTML = `
       <div class="pill" style="width:fit-content; margin:0 auto 14px; justify-content:center;">
         <span class="dot"></span><span>Quiz finished ✨</span>
       </div>
-      <h2 style="margin:0 0 8px; text-align:center;">Score: ${quizScore} / ${total}</h2>
+      ${renderQuizSelector()}
+      <h2 style="margin:0 0 8px; text-align:center;">${getActiveQuizTitle()} — Score: ${quizScore} / ${total}</h2>
       <p style="margin:0 0 16px; color:var(--muted); text-align:center; line-height:1.6;">
         ${escHTML(quizEndMessage(quizScore, total))}
       </p>
@@ -1145,6 +1199,8 @@ function renderQuiz(){
       </div>
     `;
 
+    bindQuizSelector();
+
     document.getElementById("quizRestartBtn").addEventListener("click", () => {
       quizIndex = 0; quizScore = 0; quizLocked = false;
       renderQuiz();
@@ -1153,12 +1209,13 @@ function renderQuiz(){
     return;
   }
 
-  const item = QUIZ[quizIndex];
+  const item = getActiveQuiz()[quizIndex];
 
   mount.innerHTML = `
     <div class="pill" style="width:fit-content; margin:0 0 14px;">
       <span class="dot"></span><span>Question ${quizIndex + 1} of ${total}</span>
     </div>
+    ${renderQuizSelector()}
 
     <h2 style="margin:0 0 12px;">${escHTML(item.q)}</h2>
 
@@ -1174,6 +1231,8 @@ function renderQuiz(){
       <button class="ghostBtn" id="quizNextBtn" disabled style="opacity:.55; pointer-events:none;">Next →</button>
     </div>
   `;
+
+  bindQuizSelector();
 
   const feedback = document.getElementById("quizFeedback");
   const nextBtn = document.getElementById("quizNextBtn");
@@ -1461,20 +1520,3 @@ renderQuiz();
   </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
