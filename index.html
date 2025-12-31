@@ -1179,6 +1179,19 @@ revealParas.forEach(el => letterObs.observe(el));
         .replaceAll('"',"&quot;")
         .replaceAll("'","&#039;");
     }
+    function assetUrl(path) {
+  return new URL(path, document.baseURI).toString(); // fixes GitHub Pages /repo/ base path
+}
+
+function audioMimeFor(path) {
+  const p = String(path || "").toLowerCase();
+  if (p.endsWith(".mp3")) return "audio/mpeg";
+  if (p.endsWith(".ogg") || p.endsWith(".oga")) return "audio/ogg";
+  if (p.endsWith(".m4a") || p.endsWith(".mp4")) return "audio/mp4";
+  if (p.endsWith(".wav")) return "audio/wav";
+  return "";
+}
+
 
    const WRONG_MESSAGES_ME = [
   "Nahhh 😭 you’re selling",
@@ -1378,14 +1391,6 @@ const QUIZ_SONGS = [
   { q:"Listen & guess the song:", audioUrl:"all-too-well.mp3", choices:["All Too Well - Taylor Swift","Enchanted - Taylor Swift","Style - Taylor Swift","Out of the Woods - Taylor Swift"], answerIndex:0 },
   { q:"Listen & guess the song:", audioUrl:"cruel-summer.mp3", choices:["Cruel Summer - Taylor Swift","Lover - Taylor Swift","Delicate - Taylor Swift","Cornelia Street - Taylor Swift"], answerIndex:0 },
 
-  // Olivia Rodrigo (more)
-  { q:"Listen & guess the song:", audioUrl:"deja-vu.mp3", choices:["brutal - Olivia Rodrigo","deja vu - Olivia Rodrigo","bad idea right? - Olivia Rodrigo","vampire - Olivia Rodrigo"], answerIndex:1 },
-
-  // Billie Eilish
- 
-  // =========================
-// BANGLA CLASSICS ROUND
-// =========================
 
 {
   q:"Listen & guess the song:",
@@ -1589,6 +1594,10 @@ function renderSongQuiz(){
   }
 
   const item = songOrder[songIndex];
+  const srcUrl = assetUrl(item.audioUrl);
+const mime = audioMimeFor(item.audioUrl);
+
+  
 
   mount.innerHTML = `
     <div class="pill" style="width:fit-content; margin:0 0 14px;">
@@ -1599,10 +1608,10 @@ function renderSongQuiz(){
 
     <div class="card" style="padding:14px; margin-bottom:12px;">
       <audio id="songAudio" controls preload="metadata" style="width:100%;">
-        <source src="${escHTML(item.audioUrl)}" type="mpeg">
-        <source src="${escHTML(item.audioUrl)}" type="ogg">
-        Your browser can’t play this audio.
-      </audio>
+  <source src="${escHTML(srcUrl)}" ${mime ? `type="${mime}"` : ""}>
+  Your browser can’t play this audio.
+</audio>
+
       <p style="margin:10px 0 0; color:var(--muted); font-size:13px;">
         If it says “can’t play”, your audioUrl is wrong or the file isn’t accessible.
       </p>
@@ -2003,6 +2012,7 @@ function sortChronologicalItems(items) {
   </script>
 </body>
 </html>
+
 
 
 
