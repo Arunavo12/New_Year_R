@@ -418,6 +418,12 @@ min-height: 100vh;
               <div class="choiceMeta">A short little recap Radhikaaaa</div>
             </button>
 
+            <button class="choice" id="goSurprise" type="button">
+              <div class="choiceTitle">🎥 Surprise me</div>
+              <div class="choiceMeta">Space time 😮‍💨✨</div>
+            </button>
+
+
             <button class="choice" id="goParagraph" type="button">
               <div class="choiceTitle">💌 Paragraph</div>
               <div class="choiceMeta">One big letter. Take your time.</div>
@@ -442,6 +448,7 @@ min-height: 100vh;
               <div class="choiceTitle">🎵 Guess the song</div>
               <div class="choiceMeta">Listen to the clips & guess! ✨</div>
             </button>
+            
           </div>
         </div>
       </div>
@@ -469,6 +476,30 @@ min-height: 100vh;
       </div>
     </div>
   </section>
+
+  <!-- SURPRISE VIEW -->
+<section id="view-surprise" class="view">
+  <div class="wrap">
+    <header>
+      <div class="title">
+        <h1>🎥 Surprise me</h1>
+        <p class="soft" style="color:var(--muted); margin:6px 0 0;">Interstellar ✨</p>
+      </div>
+      <button class="ghostBtn" id="backFromSurprise">← Back home</button>
+    </header>
+
+    <div class="card playerWrap">
+      <div class="mediaFrame">
+        <iframe
+          src="https://drive.google.com/file/d/1cNca5uuOHUl9wDfhzYXSETajcUwIymLj/preview"
+          allow="autoplay; fullscreen"
+          style="width:100%; height:100%; border:0;"
+        ></iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
 
   <!-- PARAGRAPH VIEW -->
   <section id="view-paragraph" class="view">
@@ -1050,7 +1081,7 @@ I just want you to know that I will always be here to give you advice, to suppor
 
     
     // ===== VIEW ROUTER =====
-    const VIEWS = ["welcome","home","video","paragraph","memories","quiz","song"];
+    const VIEWS = ["welcome","home","video","surprise","paragraph","memories","quiz","song"];
 
     function setView(name){
       VIEWS.forEach(v => {
@@ -1074,11 +1105,17 @@ I just want you to know that I will always be here to give you advice, to suppor
     document.getElementById("goVideo").addEventListener("click", () => setView("video"));
     document.getElementById("goParagraph").addEventListener("click", () => setView("paragraph"));
     document.getElementById("goMemories").addEventListener("click", () => setView("memories"));
+    document.getElementById("goSurprise").addEventListener("click", () => setView("surprise"));
+
 
     // Back buttons
     document.getElementById("backFromVideo").addEventListener("click", () => setView("home"));
     document.getElementById("backFromParagraph").addEventListener("click", () => setView("home"));
     document.getElementById("backFromMemories").addEventListener("click", () => setView("home"));
+    document.getElementById("backFromQuiz").addEventListener("click", () => setView("home"));
+    document.getElementById("backFromSurprise").addEventListener("click", () => setView("home"));
+
+
 
     document.getElementById("goSongQuiz").addEventListener("click", () => {
     songStart();          // resets + shuffles
@@ -1965,3 +2002,4 @@ function sortChronologicalItems(items) {
   </script>
 </body>
 </html>
+
