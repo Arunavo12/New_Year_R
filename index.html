@@ -417,6 +417,64 @@ body{
   opacity: 0.10 !important;
   filter: saturate(1.05) brightness(1.02);
 }
+    /* =========================================
+   BABY PINK FIX: FORCE TEXT DARK (override)
+   Paste at END of <style>
+========================================= */
+
+/* Global default text on light theme */
+body{
+  color: var(--text) !important;
+}
+
+/* Paragraph view text (your current CSS hard-codes white here) */
+#view-paragraph .letterInner,
+#view-paragraph .letterInner p,
+#view-paragraph .letterInner h3,
+#view-paragraph .signature{
+  color: var(--text) !important;
+}
+
+#view-paragraph .letterInner .soft{
+  color: var(--muted) !important;
+}
+
+/* Quiz text */
+#view-quiz h2,
+#view-quiz .quizChoiceBtn,
+#view-quiz #quizFeedback{
+  color: var(--text) !important;
+}
+
+/* Song quiz text */
+#view-song h2,
+#view-song .quizChoiceBtn,
+#view-song #songFeedback{
+  color: var(--text) !important;
+}
+
+/* Memories text */
+#view-memories .memTitle,
+#view-memories .memCaption,
+#view-memories .monthTitle,
+#view-memories .monthBtn,
+#view-memories .memDate{
+  color: var(--text) !important;
+}
+
+#view-memories .monthMeta,
+#view-memories .sectionTitle{
+  color: var(--muted) !important;
+}
+
+/* Buttons/labels that were “white-ish” */
+.ghostBtn,
+.choiceTitle,
+.choiceMeta,
+.title p,
+.subTitle{
+  color: var(--text) !important;
+}
 
   </style>
 </head>
@@ -2087,6 +2145,7 @@ function sortChronologicalItems(items) {
   </script>
 </body>
 </html>
+
 
 
 
