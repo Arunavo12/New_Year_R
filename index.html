@@ -347,6 +347,77 @@ min-height: 100vh;
     .pinBox:focus{ border-color: rgba(124,92,255,.55); box-shadow: 0 0 0 4px rgba(124,92,255,.18); }
     .codeError{ color: rgba(255,120,120,.95); display:none; margin-top:10px; }
     @media (max-width: 780px) { .count { font-size: 36px; } }
+
+    /* ================================
+   BABY PINK THEME (override)
+   Paste at END of <style>
+================================ */
+:root{
+  --bg: #ffe6f1;        /* baby pink */
+  --card: rgba(255,255,255,.62);
+  --text: #2a1020;      /* deep plum text for contrast */
+  --muted: rgba(42,16,32,.62);
+  --accent: #ff77b7;    /* pink accent */
+}
+
+/* page background */
+body{
+  color: var(--text);
+  background:
+    radial-gradient(1100px 650px at 15% 0%, rgba(255,119,183,.26), transparent 60%),
+    radial-gradient(900px 520px at 85% 20%, rgba(186,150,255,.18), transparent 60%),
+    radial-gradient(1100px 650px at 50% 110%, rgba(255,119,183,.14), transparent 55%),
+    var(--bg);
+}
+
+/* soften “glass” blocks for light background */
+.card,
+.choice,
+.pill,
+.ghostBtn,
+.mediaFrame,
+.month,
+.mem,
+.memMediaFrame,
+.quizChoiceBtn{
+  background: var(--card) !important;
+  border-color: rgba(42,16,32,.14) !important;
+  box-shadow: 0 14px 44px rgba(42,16,32,.10) !important;
+}
+
+/* text tones */
+.title p,
+.subTitle,
+.sectionTitle,
+.choiceMeta,
+.monthMeta,
+.memDate,
+.letterInner .soft{
+  color: var(--muted) !important;
+}
+
+/* buttons */
+.ghostBtn{
+  color: rgba(42,16,32,.88) !important;
+}
+.btn{
+  color: white !important;
+}
+
+/* hover states */
+.choice:hover,
+.quizChoiceBtn:hover,
+.monthBtn:hover{
+  background: rgba(255,255,255,.72) !important;
+  border-color: rgba(255,119,183,.35) !important;
+}
+
+/* cucumber tile: keep it subtle on light bg */
+#view-home::before{
+  opacity: 0.10 !important;
+  filter: saturate(1.05) brightness(1.02);
+}
+
   </style>
 </head>
 <body>
@@ -2016,6 +2087,7 @@ function sortChronologicalItems(items) {
   </script>
 </body>
 </html>
+
 
 
 
